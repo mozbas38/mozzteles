@@ -101,14 +101,14 @@ export let gridStackInstance;
 export const saveGridStackLayout = () => {
     if (!gridStackInstance) return;
 
-    // Read the prior saved state to prevent sequential loading from erasing inactive configurations
+    // Etkin olmayan yapılandırmaların sıralı yükleme tarafından silinmesini önlemek için önceden kaydedilmiş durumu oku
     const savedPayload = localStorage.getItem(LS_KEY_TELES_GRIDSTACK_LAYOUT);
     let layout = {};
     if (savedPayload) {
         try {
             layout = JSON.parse(savedPayload);
         } catch (e) {
-            console.error('[teles] Error loading prior gridstack layout:', e);
+            console.error('[teles] Önceki gridstack düzeni yüklenirken hata oluştu:', e);
         }
     }
 
@@ -134,7 +134,7 @@ export let singleViewVideoContainer;
 
 export let singleViewNoSignalIcon;
 
-// URL dinámica
+// Dinamik URL
 export let isDynamicUrlMode = false;
 try { isDynamicUrlMode = JSON.parse(localStorage.getItem(LS_KEY_DYNAMIC_URL)) ?? false; } catch { }
 
@@ -145,14 +145,13 @@ export let dynamicUrlValueSpan;
 let dynamicUrlIcon;
 
 /**
- * Syncs the dynamic URL toggle UI with a given state.
- * UI strings remain in Spanish intentionally.
+ * Dinamik URL geçiş arayüzünü (UI) verilen durumla eşitler.
  * @param {boolean} enabled
  */
 export const applyDynamicUrlState = (enabled) => {
     if (!dynamicUrlCheckbox || !dynamicUrlValueSpan || !dynamicUrlIcon) return;
     dynamicUrlCheckbox.checked = enabled;
-    dynamicUrlValueSpan.textContent = enabled ? '[habilitada]' : '[deshabilitada]';
+    dynamicUrlValueSpan.textContent = enabled ? '[etkin]' : '[devre dışı]';
     dynamicUrlIcon.classList.toggle('text-success', enabled);
     dynamicUrlIcon.classList.toggle('text-secondary', !enabled);
 };
@@ -160,7 +159,7 @@ export const applyDynamicUrlState = (enabled) => {
 export let musicIcon;
 
 /**
- * Returns default channels set, adding extra defaults on desktop.
+ * Varsayılan kanal kümesini döndürür, masaüstünde ek varsayılanları ekler.
  * @param {boolean} isMobile
  * @returns {string[]}
  */
@@ -168,17 +167,17 @@ export const getDefaultChannels = (isMobile) => {
     return isMobile ? DEFAULT_CHANNELS_ARRAY : DEFAULT_CHANNELS_ARRAY.concat(EXTRA_DEFAULT_CHANNELS_ARRAY);
 }
 
-// Customization
-// Number channels per row
+// Kişiselleştirme
+// Satır başına kanal sayısı
 export let numberChannelsPerRowSpan;
 export let numberChannelsPerRowButtons;
-// Floating buttons
+// Kayan düğmeler
 export let floatingButtonsPositionButtons;
-// Horizontal width
+// Yatay genişlik
 export let widthRangeInput;
 export let widthRangeValue;
 
-// Toggle full height
+// Tam yüksekliği aç/kapat
 export let fullHeightCheckbox;
 export let fullHeightSpan;
 
@@ -194,7 +193,7 @@ window.addEventListener('DOMContentLoaded', () => {
     gridViewContainer = document.querySelector('#container-vision-cuadricula');
     freeViewContainer = document.querySelector('#container-vision-libre');
 
-    // plugin to move channels in grid using Sortable
+    // Sortable kullanarak kanalları ızgarada taşımak için eklenti
     new Sortable(gridViewContainer, {
         animation: 150,
         ghostClass: 'clase-fantasma-arrastre-sortable',
@@ -208,7 +207,7 @@ window.addEventListener('DOMContentLoaded', () => {
     dynamicUrlValueSpan = document.querySelector('#span-valor-url-dinamica');
     dynamicUrlIcon = document.querySelector('#icono-url-dinamica');
 
-    // MARK: Customization
+    // MARK: Kişiselleştirme
     // MARK: Navbar
     const navbarCheckboxEl = document.querySelector('#checkbox-personalizar-visualizacion-navbar');
 
@@ -233,7 +232,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     syncNavbarVisibility(localStorage.getItem(LS_KEY_NAVBAR_VISIBILITY) !== 'hide');
 
-    // MARK: View mode
+    // MARK: Görünüm Modu
     const gridViewActivateButtonEl = document.querySelector('#boton-activar-diseño-vision-grid');
     const singleViewActivateButtonEl = document.querySelector('#boton-activar-diseño-single-view');
     const freeViewActivateButtonEl = document.querySelector('#boton-activar-diseño-free-view');
@@ -253,30 +252,30 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Initialize UI on load
+    // Yükleme sırasında arayüzü başlat
     updateViewButtonsState(localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) || 'grid-view');
 
     const switchGridToFreeViewAndBack = (targetMode) => {
         if (targetMode === 'single-view') return;
 
-        // Limpieza exhaustiva antes de cambiar modo
+        // Mod değiştirmeden önce kapsamlı temizlik
         const activeIds = Object.keys(JSON.parse(localStorage.getItem(LS_KEY_SAVED_CHANNELS_GRID_VIEW)) || {});
 
-        // 1. Limpiar recursos de Gridstack (Vista Libre)
+        // 1. Gridstack kaynaklarını temizle (Serbest Görünüm)
         if (freeViewContainer) {
             const currentLibreItems = freeViewContainer.querySelectorAll('div[data-canal]');
             currentLibreItems.forEach(item => cleanTransmissionResources(item));
         }
 
-        // 2. Limpiar recursos de Grid (Vista Cuadrícula)
+        // 2. Grid kaynaklarını temizle (Izgara Görünümü)
         if (gridViewContainer) {
             const currentGridItems = gridViewContainer.querySelectorAll('div[data-canal]');
             currentGridItems.forEach(item => cleanTransmissionResources(item));
         }
 
-        // 3. Vaciar contenedores
+        // 3. Konteynerleri boşalt
         gridViewContainer.innerHTML = '';
-        if (gridStackInstance) gridStackInstance.removeAll(true); // remove widgets and DOM nodes
+        if (gridStackInstance) gridStackInstance.removeAll(true); // bileşenleri ve DOM düğümlerini kaldır
 
         localStorage.setItem(LS_KEY_ACTIVE_VIEW_MODE, targetMode);
 
@@ -285,7 +284,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         toggleGridViewControls(targetMode === 'free-view');
 
-        // Unmount and reload channels using tele.add
+        // Kanalları tele.add kullanarak kaldır ve yeniden yükle
         activeIds.forEach(id => {
             if (channelsList[id]) tele.add(id);
         });
@@ -297,7 +296,7 @@ window.addEventListener('DOMContentLoaded', () => {
             activateSingleView();
             updateViewButtonsState('single-view');
         } else {
-            showToast({ title: 'Ya estas en modo visión única', type: 'info' });
+            showToast({ title: 'Zaten tekli görünüm modundasınız', type: 'info' });
         }
     });
 
@@ -311,7 +310,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             updateViewButtonsState('grid-view');
         } else {
-            showToast({ title: 'Ya estas en modo visión cuadrícula', type: 'info' });
+            showToast({ title: 'Zaten ızgara görünüm modundasınız', type: 'info' });
         }
     });
 
@@ -326,15 +325,15 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             updateViewButtonsState('free-view');
         } else {
-            showToast({ title: 'Ya estas en modo visión libre', type: 'info' });
+            showToast({ title: 'Zaten serbest görünüm modundasınız', type: 'info' });
         }
     });
 
 
-    // MARK: Overlay buttons 
-    // buttons overlay; signals, move, change, web, close
+    // MARK: Üst menü (Overlay) butonları 
+    // üst menü butonları; sinyaller, taşıma, değiştirme, web, kapatma
     const overlayToggleItems = document.querySelectorAll('.overlay-toggle-item');
-    // Optimization: cache references to avoid repeated querySelector calls
+    // Optimizasyon: Tekrarlanan querySelector çağrılarını önlemek için referansları önbelleğe al
     const overlayToggleCache = Array.from(overlayToggleItems).map(toggle => {
         const checkboxEl = toggle.querySelector('input[type="checkbox"]');
         const spanEl = toggle.querySelector('span');
@@ -348,13 +347,13 @@ window.addEventListener('DOMContentLoaded', () => {
     }).filter(item => item !== null);
 
     /**
-     * Syncs overlay customization controls with persisted visibility preferences.
+     * Üst menü özelleştirme kontrollerini kalıcı görünürlük tercihleriyle senkronize eder.
      */
     function updateOverlayCustomizationButtons() {
         try {
             const isOverlayVisible = localStorage.getItem(LS_KEY_OVERLAY_VISIBILITY) !== 'hide';
 
-            // Optimization: manipulate the global class only once
+            // Optimizasyon: Global sınıfı sadece bir kez manipüle et
             document.body.classList.toggle('d-none__barras-overlay', !isOverlayVisible);
 
             overlayToggleCache.forEach(({ checkboxEl, spanEl, buttonConfig }) => {
@@ -372,7 +371,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 } else {
                     checkboxEl.checked = false;
                     checkboxEl.disabled = true;
-                    spanEl.textContent = '[Oculto]';
+                    spanEl.textContent = '[Gizli]';
                 }
             });
 
@@ -385,16 +384,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
             hideOverlayButtonText();
         } catch (error) {
-            console.error(`[teles] Error while updating overlay customization buttons. Error: ${error}`);
+            console.error(`[teles] Üst menü özelleştirme butonlarının durumunu güncellerken hata oluştu. Hata: ${error}`);
             showToast({
-                title: 'Ha ocurrido un error durante la actualización del estado botones personalizar overlay.',
-                body: `Error: ${error}`,
+                title: 'Üst menü özelleştirme butonlarının durumu güncellenirken bir hata oluştu.',
+                body: `Hata: ${error}`,
                 type: 'danger',
             });
         }
     }
 
-    // button for the whole overlay
+    // tüm üst menü için buton
     const overlayVisibilityCheckbox = document.querySelector('#checkbox-personalizar-visualizacion-overlay');
     const overlayVisibilityValueSpan = document.querySelector('#span-valor-visualizacion-overlay');
     if (overlayVisibilityCheckbox && overlayVisibilityValueSpan) {
@@ -420,7 +419,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // checkbox overlay visibility on start
+    // başlangıçta üst menü görünürlüğü onay kutusu
     if (overlayVisibilityCheckbox && overlayVisibilityValueSpan) {
         syncCheckboxState({
             checkbox: overlayVisibilityCheckbox,
@@ -435,9 +434,9 @@ window.addEventListener('DOMContentLoaded', () => {
     updateOverlayCustomizationButtons();
 
     const hideOverlayButtonTextDebounced = debounce(hideOverlayButtonText, 150);
-    window.addEventListener('resize', hideOverlayButtonTextDebounced); // hide text if button size exceeds container
+    window.addEventListener('resize', hideOverlayButtonTextDebounced); // buton boyutu konteyneri aşarsa metni gizle
 
-    // MARK: player for m3u8
+    // MARK: m3u8 oynatıcı
     const lsReproductorM3u8 = localStorage.getItem(LS_KEY_M3U8_PLAYER_CHOICE) ?? 'videojs';
     const RADIOS_REPRODUCTOR_M3U8 = document.querySelectorAll('input[name="btnradio-reproductor-m3u8"]');
     const SPAN_VALOR_REPRODUCTOR_M3U8 = document.querySelector('#span-valor-reproductor-m3u8');
@@ -469,11 +468,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
                         let signalToUse;
 
-                        // 1. Priority: saved user preference
+                        // 1. Öncelik: Kaydedilmiş kullanıcı tercihi
                         if (channelSignalPreferences[channelId]) {
                             signalToUse = Object.keys(channelSignalPreferences[channelId])[0];
                         } else {
-                            // 2. Default: signal priority
+                            // 2. Varsayılan: Sinyal önceliği
                             const { iframe_url, m3u8_url, yt_id, yt_embed, yt_playlist, twitch_id } = channelData;
 
                             if (iframe_url?.length) signalToUse = 'iframe_url';
@@ -492,37 +491,37 @@ window.addEventListener('DOMContentLoaded', () => {
                 });
 
             } catch (error) {
-                console.error('[teles] Error reloading channels after changing m3u8 player:', error);
+                console.error('[teles] m3u8 oynatıcı değiştirildikten sonra kanallar yüklenirken hata oluştu:', error);
             }
         });
     });
 
 
-    // MARK: Change theme
+    // MARK: Tema Değiştir
     detectThemePreferences();
     const themeCheckboxEl = document.querySelector('#checkbox-change-theme');
     themeCheckboxEl?.addEventListener('change', () => {
         applyTheme(themeCheckboxEl.checked);
     });
 
-    // MARK: Slider horizontal width
+    // MARK: Kaydırıcı (Slider) yatay genişlik
     widthRangeInput = document.querySelector('#input-range-tamaño-container-vision-cuadricula');
     widthRangeValue = document.querySelector('#span-valor-input-range');
     /**
-     * Syncs horizontal width for the grid view container.
-     * @param {number} [newValue] - Optional new width value.
+     * Izgara görünümü konteyneri için yatay genişliği senkronize eder.
+     * @param {number} [newValue] - İsteğe bağlı yeni genişlik değeri.
      */
     const syncHorizontalWidthValue = (newValue) => {
-        // Obtener o establecer el valor, con manejo de valores nulos/undefined
+        // Null/undefined değerleri işleyerek değeri al veya ayarla
         const storedValue = localStorage.getItem(LS_KEY_HORIZONTAL_WIDTH_VALUE);
         const widthValue = newValue ?? (storedValue ? parseInt(storedValue, 10) : 100);
 
-        // Actualizar localStorage solo si hay un nuevo valor
+        // Yalnızca yeni bir değer varsa localStorage'ı güncelle
         if (newValue !== undefined) {
             localStorage.setItem(LS_KEY_HORIZONTAL_WIDTH_VALUE, widthValue);
         }
 
-        // Aplicar los cambios
+        // Değişiklikleri uygula
         const widthPercentage = `${widthValue}%`;
         widthRangeInput.value = widthValue;
         widthRangeValue.textContent = widthPercentage;
@@ -537,12 +536,12 @@ window.addEventListener('DOMContentLoaded', () => {
     syncHorizontalWidthValue();
 
 
-    // MARK: Checkbox use full height
+    // MARK: Tam yükseklik kullan onay kutusu
     fullHeightCheckbox = document.querySelector('#checkbox-personalizar-altura-canales');
     fullHeightSpan = document.querySelector('#span-valor-altura-canales');
     const iconElFullHeight = document.querySelector('#icono-personalizar-altura-canales');
 
-    // MARK: Show channels logo in buttons
+    // MARK: Butonlarda kanal logolarını göster
     const showLogosCheckbox = document.querySelector('#checkbox-mostrar-logos-botones');
     const showLogosSpan = document.querySelector('#span-valor-mostrar-logos-botones');
     const showLogosIcon = document.querySelector('#icono-mostrar-logos-botones');
@@ -559,7 +558,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             isEnabled ? showLogosIcon.classList.replace('bi-image', 'bi-image-fill') : showLogosIcon.classList.replace('bi-image-fill', 'bi-image');
 
-            // Re-render buttons to apply changes
+            // Değişiklikleri uygulamak için butonları yeniden oluştur
             clearChannelListContainers();
             createChannelButtons();
             createCountryButtons();
@@ -568,7 +567,7 @@ window.addEventListener('DOMContentLoaded', () => {
             initializeBootstrapTooltips();
 
             showToast({
-                body: `Logos en botones ${isEnabled ? 'habilitados' : 'deshabilitados'}`,
+                body: `Buton logoları ${isEnabled ? 'etkinleştirildi' : 'devre dışı bırakıldı'}`,
                 type: 'info',
                 duration: 2000
             });
@@ -588,11 +587,11 @@ window.addEventListener('DOMContentLoaded', () => {
         fullHeightCheckbox.checked
             ? (iconElFullHeight.classList.replace('bi-arrows-collapse', 'bi-arrows-vertical'),
                 JSON.stringify(localStorage.setItem(LS_KEY_LAYOUT_FULL_HEIGHT_ENABLED, true)),
-                fullHeightSpan.textContent = 'Expandido'
+                fullHeightSpan.textContent = 'Genişletildi'
             )
             : (iconElFullHeight.classList.replace('bi-arrows-vertical', 'bi-arrows-collapse'),
                 JSON.stringify(localStorage.setItem(LS_KEY_LAYOUT_FULL_HEIGHT_ENABLED, false)),
-                fullHeightSpan.textContent = 'Reducido'
+                fullHeightSpan.textContent = 'Daraltıldı'
             );
         adjustBootstrapColumnClasses()
     });
@@ -604,14 +603,14 @@ window.addEventListener('DOMContentLoaded', () => {
         JSON.stringify(localStorage.setItem(LS_KEY_LAYOUT_FULL_HEIGHT_ENABLED, true));
         fullHeightCheckbox.checked = true;
         iconElFullHeight.classList.replace('bi-arrows-collapse', 'bi-arrows-vertical');
-        fullHeightSpan.textContent = 'Expandido';
+        fullHeightSpan.textContent = 'Genişletildi';
     } else {
         fullHeightCheckbox.checked = false;
         iconElFullHeight.classList.replace('bi-arrows-vertical', 'bi-arrows-collapse');
-        fullHeightSpan.textContent = 'Reducido';
+        fullHeightSpan.textContent = 'Daraltıldı';
     }
 
-    // MARK: Number channels per row
+    // MARK: Satır başına kanal sayısı
     numberChannelsPerRowSpan = document.querySelector('#span-valor-transmisiones-por-fila');
     numberChannelsPerRowButtons = document.querySelectorAll('#container-botones-personalizar-transmisiones-por-fila button');
 
@@ -625,7 +624,7 @@ window.addEventListener('DOMContentLoaded', () => {
     numberChannelsPerRowSpan.innerHTML = `${obtainNumberOfChannelsPerRow()}`
 
 
-    // MARK: Floating buttons position
+    // MARK: Kayan düğmelerin konumu
     floatingButtonsPositionButtons = document.querySelectorAll('#grupo-botones-posicion-botones-flotantes .btn-check');
     floatingButtonsPositionButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -642,7 +641,7 @@ window.addEventListener('DOMContentLoaded', () => {
         updateFloatingButtons('bottom-0', 'start-50', 'mb-3', 'translate-middle-x');
     }
 
-    // MARK: Text on floating buttons
+    // MARK: Kayan düğmelerdeki metin
     const floatingButtonsTextCheckbox = document.querySelector('#checkbox-personalizar-texto-botones-flotantes');
     const floatingButtonsTextValueSpan = document.querySelector('#span-valor-texto-en-botones-flotante');
     const floatingButtonsTextIcon = document.querySelector('#icono-personalizar-texto-botones-flotantes');
@@ -686,7 +685,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // MARK: Dynamic URL
+    // MARK: Dinamik URL
     dynamicUrlCheckbox?.addEventListener('click', () => {
         isDynamicUrlMode = dynamicUrlCheckbox.checked;
         localStorage.setItem(LS_KEY_DYNAMIC_URL, JSON.stringify(isDynamicUrlMode));
@@ -701,12 +700,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const mergeCustomListsValueSpanEl = document.querySelector('#span-valor-combinar-listas-personalizadas');
 
     /**
-     * Initializes and syncs the toggle for merging similar channels between custom lists.
+     * Özel listeler arasındaki benzer kanalları birleştirme geçişini başlatır ve senkronize eder.
      */
     function initMergeCustomListsPreference() {
         if (!mergeCustomListsCheckboxEl || !mergeCustomListsValueSpanEl) { return }
 
-        const getStateLabel = (state) => state ? 'Combinar coincidencias' : 'Mantener listas separadas';
+        const getStateLabel = (state) => state ? 'Eşleşmeleri birleştir' : 'Listeleri ayrı tut';
 
         const applyState = (state) => {
             mergeCustomListsCheckboxEl.checked = state;
@@ -723,34 +722,34 @@ window.addEventListener('DOMContentLoaded', () => {
 
             try {
                 showToast({
-                    body: 'Actualizando listado de canales...',
+                    body: 'Kanal listesi güncelleniyor...',
                     type: 'dark',
                     duration: 2000
                 });
 
-                // 0. Capture active channels before the change (avoid duplicates)
+                // 0. Değişiklikten önce aktif kanalları yakala (kopyaları önle)
                 const activeGridChannels = getActiveChannelIds();
                 const activeSingleChannel = singleViewVideoContainer.querySelector('div[data-canal]')?.dataset.canal;
 
-                // 1. Reload base channels (resets defaults)
+                // 1. Temel kanalları yeniden yükle (varsayılanları sıfırlar)
                 await restoreChannelsFromMemory();
 
-                // 2. Restore personalized lists with the new preference
+                // 2. Yeni tercihle kişiselleştirilmiş listeleri geri yükle
                 restorePersonalizedLists();
 
-                // 3. Re-render UI
+                // 3. Arayüzü yeniden oluştur (Re-render)
                 createChannelButtons(channelsList);
 
-                // Update additional lists to ensure consistency
+                // Tutarlılığı sağlamak için ek listeleri güncelle
                 createButtonsForChangeChannelModal(channelsList);
                 createButtonsForSingleView(channelsList);
 
-                // Update base order for sorting features
+                // Sıralama özellikleri için temel sırayı güncelle
                 for (const PREFIX of ID_PREFIX_CONTAINERS_CHANNELS) {
                     saveOriginalOrder(`${PREFIX}-channels-buttons-container`);
                 }
 
-                // 4. Refresh active channels (Grid View)
+                // 4. Aktif kanalları yenile (Izgara Görünümü)
                 if (activeGridChannels.length > 0) {
                     activeGridChannels.forEach(channelId => {
                         if (tele && channelsList[channelId]) {
@@ -762,7 +761,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
-                // 5. Refresh active channel (Single View)
+                // 5. Aktif kanalı yenile (Tekli Görünüm)
                 if (activeSingleChannel) {
                     if (tele && channelsList[activeSingleChannel]) {
                         tele.remove(activeSingleChannel);
@@ -773,15 +772,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
 
                 showToast({
-                    body: 'Listado y canales activos actualizados correctamente',
+                    body: 'Liste ve aktif kanallar başarıyla güncellendi',
                     type: 'success'
                 });
 
             } catch (error) {
-                console.error('[teles] Error updating list after preference change', error);
+                console.error('[teles] Tercih değiştirildikten sonra liste güncellenirken hata', error);
                 showToast({
-                    title: 'Error',
-                    body: 'No se pudo actualizar el listado inmediatamente. Recarga la página.',
+                    title: 'Hata',
+                    body: 'Liste hemen güncellenemedi. Sayfayı yenileyin.',
                     type: 'danger'
                 });
             }
@@ -801,7 +800,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const toggleLoadingStateButton = (isLoading) => {
             if (isLoading) {
                 loadCustomListButtonEl.disabled = true;
-                loadCustomListButtonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Cargando...';
+                loadCustomListButtonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Yükleniyor...';
             } else {
                 loadCustomListButtonEl.disabled = false;
                 loadCustomListButtonEl.innerHTML = originalButtonText;
@@ -812,7 +811,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const listUrl = customListUrlInputEl.value.trim();
             if (!listUrl) {
                 showToast({
-                    body: 'Ingresa la URL a tu archivo .m3u antes de cargarla.',
+                    body: 'Yüklemeden önce .m3u dosyanızın URL\'sini girin.',
                     type: 'warning'
                 });
                 customListUrlInputEl.focus();
@@ -823,8 +822,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 new URL(listUrl);
             } catch {
                 showToast({
-                    title: 'La URL ingresada no es válida.',
-                    body: 'Verifica que comience con https://',
+                    title: 'Girilen URL geçersiz.',
+                    body: 'https:// ile başladığından emin olun.',
                     type: 'danger'
                 });
                 customListUrlInputEl.focus();
@@ -843,15 +842,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 renderPersonalizedListsUI();
                 showToast({
-                    title: 'Lista personalizada cargada correctamente.',
-                    body: 'Los nuevos canales se añadieron a su lista.',
+                    title: 'Özel liste başarıyla yüklendi.',
+                    body: 'Yeni kanallar listenize eklendi.',
                     type: 'success'
                 });
             } catch (error) {
-                console.error('[teles] Error loading personalized M3U list:', error);
+                console.error('[teles] Özel M3U listesi yüklenirken hata:', error);
                 showToast({
-                    title: 'No fue posible cargar la lista personalizada.',
-                    body: `Verifica la URL o si el servidor permite descargas (CORS). <br> Error: ${error}`,
+                    title: 'Özel liste yüklenemedi.',
+                    body: `URL'yi veya sunucunun indirmelere izin verip vermediğini (CORS) kontrol edin. <br> Hata: ${error}`,
                     type: 'danger',
                     autohide: false,
                     delay: 0,
@@ -871,7 +870,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const togglePasteButton = (isLoading) => {
             if (isLoading) {
                 pasteCustomListButtonEl.disabled = true;
-                pasteCustomListButtonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Procesando...';
+                pasteCustomListButtonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> İşleniyor...';
             } else {
                 pasteCustomListButtonEl.disabled = false;
                 pasteCustomListButtonEl.innerHTML = originalPasteButtonText;
@@ -882,7 +881,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const listContent = customListTextareaEl.value.trim();
             if (!listContent) {
                 showToast({
-                    body: 'Pega el contenido completo de tu archivo .m3u antes de continuar.',
+                    body: 'Devam etmeden önce .m3u dosyanızın tüm içeriğini yapıştırın.',
                     type: 'warning'
                 });
                 customListTextareaEl.focus();
@@ -891,7 +890,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             togglePasteButton(true);
             try {
-                const manualLabel = `Lista manual ${new Date().toLocaleString('es-CL', { dateStyle: 'short', timeStyle: 'short' })}`;
+                const manualLabel = `Manuel liste ${new Date().toLocaleString('tr-TR', { dateStyle: 'short', timeStyle: 'short' })}`;
                 await loadPersonalizedListFromText(listContent, { etiqueta: manualLabel });
                 customListTextareaEl.value = '';
                 clearChannelListContainers();
@@ -902,15 +901,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 renderPersonalizedListsUI();
                 showToast({
-                    title: 'Lista manual cargada correctamente.',
-                    body: 'Se añadieron los nuevos canales a su lista.',
+                    title: 'Manuel liste başarıyla yüklendi.',
+                    body: 'Yeni kanallar listenize eklendi.',
                     type: 'success'
                 });
             } catch (error) {
-                console.error('[teles] Error processing manually pasted list:', error);
+                console.error('[teles] Elle yapıştırılan liste işlenirken hata:', error);
                 showToast({
-                    title: 'No fue posible procesar el texto pegado.',
-                    body: `Revisa el formato del archivo .m3u. Error: ${error.message}`,
+                    title: 'Yapıştırılan metin işlenemedi.',
+                    body: `.m3u dosyasının biçimini kontrol edin. Hata: ${error.message}`,
                     type: 'danger',
                     autohide: false,
                     delay: 0,
@@ -923,7 +922,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // MARK: Background card
+    // MARK: Arka plan kartı
     const logoCardBackgroundCheckbox = document.querySelector('#checkbox-tarjeta-logo-background');
     const logoCardBackgroundValueSpan = document.querySelector('#span-valor-visualizacion-tarjeta-logo-background');
     const logoCardBackgroundIcon = document.querySelector('#icono-personalizar-visualizacion-tarjeta-logo-background');
@@ -967,14 +966,14 @@ window.addEventListener('DOMContentLoaded', () => {
         logoCardBackgroundIcon.classList.replace('bi-eye', 'bi-eye-slash');
     }
 
-    // MARK: Ambient music
+    // MARK: Ortam müziği
     const toggleButton = document.querySelector('#ambient-music-toggle');
     const volumeSlider = document.querySelector('#ambient-music-volume');
     musicIcon = document.querySelector('#music-icon');
 
     toggleButton.addEventListener('click', () => {
         if (AMBIENT_MUSIC.paused) {
-            AMBIENT_MUSIC.play().catch(e => console.error('[teles] Error playing audio:', e));
+            AMBIENT_MUSIC.play().catch(e => console.error('[teles] Ses çalınırken hata:', e));
             AMBIENT_MUSIC.loop = true;
             AMBIENT_MUSIC.volume = volumeSlider.value / 100;
             musicIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
@@ -984,15 +983,14 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Control de volumen
+    // Ses kontrolü
     volumeSlider.addEventListener('input', (e) => {
         AMBIENT_MUSIC.volume = e.target.value / 100;
     });
 
-    // MARK: 🟢 Initial load
+    // MARK: 🟢 İlk Yükleme
     /**
-     * Performs initial channel load and restores personalized lists.
-     * Keeps user-facing strings in Spanish to avoid UX changes.
+     * İlk kanal yüklemesini gerçekleştirir ve kişiselleştirilmiş listeleri geri yükler.
      */
     async function initialLoad() {
         try {
@@ -1000,9 +998,9 @@ window.addEventListener('DOMContentLoaded', () => {
             if (channelsList) {
                 const restoredLists = restorePersonalizedLists();
 
-                // Lazy load: Initial load OR Single View.
-                // Grid view active channels are handled by tele.add() individually.
-                // Selection lists in modals/offcanvas will be loaded on-demand.
+                // Tembel yükleme (Lazy load): İlk yükleme VEYA Tekli Görünüm.
+                // Izgara görünümündeki aktif kanallar bireysel olarak tele.add() tarafından işlenir.
+                // Modallar ve yan panellerdeki (offcanvas) seçim listeleri isteğe bağlı yüklenecektir.
 
                 if (localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) === 'single-view') {
                     createChannelButtons('single-view');
@@ -1032,7 +1030,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         singleViewActivateButtonEl.classList.replace(CSS_CLASS_BUTTON_PRIMARY, 'btn-light-subtle');
                         localStorage.setItem(LS_KEY_ACTIVE_VIEW_MODE, 'grid-view');
                     } else if (localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) === 'free-view') {
-                        // Ensure containers are correctly toggled before loading channels from URL
+                        // URL'den kanal yüklemeden önce konteynerlerin doğru şekilde değiştirildiğinden emin ol
                         gridViewContainer.classList.add('d-none');
                         freeViewContainer.classList.remove('d-none');
                     }
@@ -1042,14 +1040,14 @@ window.addEventListener('DOMContentLoaded', () => {
                     if (totalRequestedChannels > sharedChannels.length) {
                         const difference = totalRequestedChannels - sharedChannels.length;
                         showToast({
-                            title: 'Canales omitidos al cargar desde URL',
-                            body: `No todos los canales compartidos se pudieron cargar 
-                                (se cargaron ${sharedChannels.length} de ${totalRequestedChannels}). 
-                                Es posible que algunos provengan de listas personalizadas o modos 
-                                que no están disponibles en este navegador.`,
+                            title: 'URL\'den yüklenirken atlanan kanallar',
+                            body: `Paylaşılan tüm kanallar yüklenemedi 
+                                (${totalRequestedChannels} kanaldan ${sharedChannels.length} tanesi yüklendi). 
+                                Bazıları özel listelerden veya bu tarayıcıda 
+                                bulunmayan modlardan geliyor olabilir.`,
                             type: 'info'
                         });
-                        console.info('[teles] Omited channels from URL', {
+                        console.info('[teles] URL\'den atlanan kanallar', {
                             totalSolicitados: totalRequestedChannels,
                             totalCargados: sharedChannels.length,
                             faltantes: difference
@@ -1062,7 +1060,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         singleViewActivateButtonEl.classList.replace('btn-light-subtle', CSS_CLASS_BUTTON_PRIMARY);
                         gridViewActivateButtonEl.classList.replace(CSS_CLASS_BUTTON_PRIMARY, 'btn-light-subtle');
                     } else if (localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) === 'free-view') {
-                        // Free View: restore saved channel IDs the same way Grid View does
+                        // Serbest Görünüm: kaydedilmiş kanal kimliklerini (ID) Izgara Görünümüyle aynı şekilde geri yükle
                         gridViewContainer.classList.add('d-none');
                         freeViewContainer.classList.remove('d-none');
                         toggleGridViewControls(true);
@@ -1080,7 +1078,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 updateGridColumnConfiguration(lsBootstrapColNumber);
                 hideOverlayButtonText()
 
-                // Defer non-critical tooltips
+                // Kritik olmayan ipuçlarını (tooltips) ertele
                 requestAnimationFrame(() => {
                     initializeBootstrapTooltips();
                 });
@@ -1090,19 +1088,19 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (error) {
-            console.error('[teles] Error during initial load', error);
+            console.error('[teles] İlk yükleme sırasında hata', error);
             showToast({
-                title: 'Error durante carga inicial',
-                body: `Error: ${error}`,
+                title: 'İlk yükleme sırasında hata',
+                body: `Hata: ${error}`,
                 type: 'danger',
                 showReloadOnError: true
             });
             return
         }
     }
-    // initialLoad() moved down after Gridstack initialization
+    // initialLoad() Gridstack başlatıldıktan sonra aşağıya taşındı
 
-    // Glow effect on background logo hover
+    // Arka plan logosunun üzerine gelindiğinde parlama efekti
     const TARJETA_LOGO_BACKGROUND = document.querySelector('.tarjeta-logo-background');
     TARJETA_LOGO_BACKGROUND.onmousemove = e => {
         let rect = TARJETA_LOGO_BACKGROUND.getBoundingClientRect(),
@@ -1120,16 +1118,16 @@ window.addEventListener('DOMContentLoaded', () => {
         event.target.remove()
     });
 
-    // MARK: others
-    // plugin to move channels in grid using GridStack
+    // MARK: diğerleri
+    // GridStack kullanarak ızgaradaki kanalları taşımak için eklenti
     gridStackInstance = GridStack.init({
         margin: 0,
         cellHeight: '10rem',
         animate: true,
         handle: '.clase-para-mover',
-        cancel: 'input, textarea, select, option', // overrides default blocking on .btn
-        float: true,  // Permite que los elementos “floten” y se reorganicen libremente. Si está en false, los widgets se ajustan rígidamente a la grilla sin dejar huecos.
-        column: 12,   // Número de columnas de la grilla. Es similar a sistemas como Bootstrap (12 columnas).
+        cancel: 'input, textarea, select, option', // .btn üzerindeki varsayılan engellemeyi geçersiz kılar
+        float: true,  // Öğelerin "yüzmesine" ve serbestçe yeniden düzenlenmesine izin verir. False ise, widget'lar boşluk bırakmadan ızgaraya sıkıca oturur.
+        column: 12,   // Izgaranın sütun sayısı. Bootstrap (12 sütun) gibi sistemlere benzer.
 
         resizable: {
             handles: 'all',
@@ -1156,9 +1154,9 @@ window.addEventListener('DOMContentLoaded', () => {
         items.forEach(item => {
             const channelId = item.el?.getAttribute('data-canal');
             if (channelId) {
-                // Limpieza de recursos (videojs, iframes, etc)
+                // Kaynak temizliği (videojs, iframe'ler, vb.)
                 cleanTransmissionResources(item.el);
-                // tele.remove se encarga de actualizar el localStorage y el estado de los botones
+                // tele.remove, localStorage'ı ve buton durumlarını güncellemeyi üstlenir
                 tele.remove(channelId);
             }
         });
@@ -1182,14 +1180,14 @@ window.addEventListener('DOMContentLoaded', () => {
             try {
                 disposeBootstrapTooltips();
             } catch (e) {
-                console.error('[teles] Error in Sortable onStart:', e);
+                console.error('[teles] Sortable onStart\'ta hata:', e);
             }
         },
         onChange: () => {
             try {
                 toggleOrderedClass();
             } catch (e) {
-                console.error('[teles] Error in Sortable onChange:', e);
+                console.error('[teles] Sortable onChange\'de hata:', e);
             }
         },
         onEnd: () => {
@@ -1199,7 +1197,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 toggleOrderedClass();
                 registerManualChannelChange();
             } catch (e) {
-                console.error('[teles] Error in Sortable onEnd:', e);
+                console.error('[teles] Sortable onEnd\'de hata:', e);
             }
         }
     });
@@ -1216,7 +1214,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 adjustBootstrapColumnClasses?.();
                 adjustVisibilityButtonsRemoveAllActiveChannels?.();
             } catch (e) {
-                console.error('[teles] Error in mutation observer', e);
+                console.error('[teles] Mutation observer içinde hata', e);
             }
         });
     });
@@ -1235,10 +1233,10 @@ window.addEventListener('DOMContentLoaded', () => {
         OBSERVER.observe(freeViewContainer, OBSERVER_CONFIG);
     }
 
-    // MARK: 🚀 Lazy Loading Triggers
+    // MARK: 🚀 Tembel Yükleme (Lazy Loading) Tetikleyicileri
     /**
-     * Set up lazy loading for modals and offcanvas elements.
-     * This avoids rendering hundreds of buttons on initial load.
+     * Modallar ve yan paneller (offcanvas) için tembel yüklemeyi ayarlar.
+     * Bu, ilk yükleme sırasında yüzlerce düğmenin oluşturulmasını önler.
      */
     ID_PREFIX_CONTAINERS_CHANNELS.filter(containerId => containerId !== 'single-view').forEach(containerId => {
         const element = document.getElementById(containerId);
@@ -1254,18 +1252,18 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// MARK: 📺 Channel management
+// MARK: 📺 Kanal yönetimi
 /**
- * Public channel controller used across UI modules.
+ * Arayüz (UI) modülleri arasında kullanılan genel kanal denetleyicisi.
  */
 export let tele = {
     /**
-     * Adds a channel to the current view (grid or single view).
-     * @param {string} channelId - Channel identifier key in channelsList.
+     * Geçerli görünüme (ızgara veya tekli görünüm) bir kanal ekler.
+     * @param {string} channelId - channelsList'teki kanal tanımlayıcı anahtarı.
      */
     add: (channelId) => {
         try {
-            if (!channelId || !channelsList?.[channelId]) return console.error(`[teles] The channel "${channelId}" provided is not valid to be added.`);
+            if (!channelId || !channelsList?.[channelId]) return console.error(`[teles] Eklenmek üzere sağlanan "${channelId}" kanalı geçerli değil.`);
 
             const viewMode = localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) || 'grid-view';
             const isSingleView = viewMode === 'single-view';
@@ -1279,7 +1277,7 @@ export let tele = {
             channelContainer.setAttribute('data-canal', channelId);
 
             if (isSingleView) {
-                // Single view must have at most one active channel.
+                // Tekli görünümde en fazla bir aktif kanal olmalıdır.
                 const channelInUse = singleViewVideoContainer?.querySelector('div[data-canal]');
                 if (channelInUse && channelInUse.dataset.canal && channelInUse.dataset.canal !== channelId) {
                     tele.remove(channelInUse.dataset.canal);
@@ -1312,8 +1310,8 @@ export let tele = {
                     minH: 1
                 });
                 saveChannelsToLocalStorage();
-                // Note: saveGridStackLayout() is triggered automatically via the 'change' event
-                // Calling it here again would reset partially-loaded layouts during batch initialization
+                // Not: saveGridStackLayout() 'change' (değişiklik) olayı aracılığıyla otomatik olarak tetiklenir
+                // Bunu burada tekrar çağırmak, toplu başlatma sırasında kısmen yüklenen düzenleri sıfırlar
             } else {
                 channelContainer.classList.add('position-relative', 'shadow');
                 channelContainer.append(crearFragmentCanal(channelId, viewMode));
@@ -1327,10 +1325,10 @@ export let tele = {
             adjustVisibilityButtonsRemoveAllActiveChannels?.();
             if (!isSingleView) adjustBootstrapColumnClasses();
         } catch (error) {
-            console.error(`[teles] Error while creating channel container id: ${channelId}. Error: ${error}`);
+            console.error(`[teles] Eklenecek kanal oluşturulurken hata - Kimlik (ID): ${channelId}. Hata: ${error}`);
             showToast({
-                title: `Ha ocurrido un error durante la creación canal para ser insertado - ID: ${channelId}.`,
-                body: `Error: ${error}`,
+                title: `Eklenecek kanal oluşturulurken bir hata meydana geldi - Kimlik (ID): ${channelId}.`,
+                body: `Hata: ${error}`,
                 type: 'danger',
                 autohide: false,
                 delay: 0,
@@ -1340,12 +1338,12 @@ export let tele = {
         }
     },
     /**
-     * Removes a channel from the current view.
-     * @param {string} channelId - Channel identifier key in channelsList.
+     * Geçerli görünümden bir kanalı kaldırır.
+     * @param {string} channelId - channelsList'teki kanal tanımlayıcı anahtarı.
      */
     remove: (channelId) => {
         try {
-            if (!channelId) return console.error(`[teles] The channel "${channelId}" provided is not valid for removal.`);
+            if (!channelId) return console.error(`[teles] Sağlanan "${channelId}" kanalı kaldırılmak için geçerli değil.`);
 
             const currentMode = localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE);
             const isSingleView = currentMode === 'single-view';
@@ -1359,7 +1357,7 @@ export let tele = {
             let transmissionToRemove = activeContainer.querySelector(`div[data-canal="${channelId}"]`);
 
             if (!transmissionToRemove) {
-                // Secondary check for ghost nodes in case of unexpected state
+                // Beklenmedik bir durum halinde hayalet düğümler için ikincil kontrol
                 transmissionToRemove = document.querySelector(`div[data-canal="${channelId}"]`);
                 if (!transmissionToRemove) {
                     adjustChannelButtonClass(channelId, false);
@@ -1367,9 +1365,9 @@ export let tele = {
                 }
             }
 
-            // Clean resources before removing the container; iframe, videojs, clappr, oplayer
+            // Konteyneri kaldırmadan önce kaynakları temizle; iframe, videojs, clappr, oplayer
             cleanTransmissionResources(transmissionToRemove);
-            // Remove tooltips; floating overlay buttons
+            // İpuçlarını (tooltips) kaldır; kayan üst menü butonları
             disposeBootstrapTooltips();
 
             const viewMode = localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) || 'grid-view';
@@ -1391,10 +1389,10 @@ export let tele = {
             registerManualChannelChange();
             adjustVisibilityButtonsRemoveAllActiveChannels?.();
         } catch (error) {
-            console.error(`[teles] Error while removing channel container id: ${channelId}. Error: ${error}`);
+            console.error(`[teles] Kanal silinirken hata - Kimlik (ID): ${channelId}. Hata: ${error}`);
             showToast({
-                title: `Ha ocurrido un error durante la eliminación canal - ID: ${channelId}.`,
-                body: `Error: ${error}`,
+                title: `Kanal silinirken bir hata meydana geldi - Kimlik (ID): ${channelId}.`,
+                body: `Hata: ${error}`,
                 type: 'danger',
                 autohide: false,
                 delay: 0,
@@ -1404,11 +1402,11 @@ export let tele = {
         }
     },
     /**
-     * Loads default channels either from stored state or the predefined list.
+     * Kaydedilmiş durumdan veya önceden tanımlanmış listeden varsayılan kanalları yükler.
      */
     loadDefaultChannels: () => {
         let savedChannels = JSON.parse(localStorage.getItem(LS_KEY_SAVED_CHANNELS_GRID_VIEW)) || {};
-        // Default
+        // Varsayılan
         if (Object.keys(savedChannels).length === 0) {
             getDefaultChannels(isMobile.any).forEach(channelId => tele.add(channelId));
         } else {
@@ -1419,8 +1417,8 @@ export let tele = {
                             buttonEl.classList.add('d-none');
                         });
                         showToast({
-                            title: `Canal ${channelId} sin señales activas.`,
-                            body: 'Se eliminará del listado.',
+                            title: `'${channelId}' kanalının aktif sinyali yok.`,
+                            body: 'Listeden silinecek.',
                             type: 'warning'
                         });
                     } else {
@@ -1428,10 +1426,10 @@ export let tele = {
                     }
                 });
             } catch (error) {
-                console.error(`[teles] Error while loading default channels. Error: ${error}`);
+                console.error(`[teles] Varsayılan kanallar yüklenirken hata oluştu. Hata: ${error}`);
                 showToast({
-                    title: `Ha ocurrido un error durante la carga de canales predeterminados.`,
-                    body: `Error: ${error}`,
+                    title: `Varsayılan kanallar yüklenirken bir hata oluştu.`,
+                    body: `Hata: ${error}`,
                     type: 'danger',
                     autohide: false,
                     delay: 0,
