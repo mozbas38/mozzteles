@@ -40,7 +40,7 @@ export const clearChannelListContainers = () => {
                 createCountryButtons('single-view');
                 createCategoryButtons('single-view');
             } catch (error) {
-                console.error('[teles] Error recreating Single View buttons after updating list', error);
+                console.error('[teles] Hata recreating Single View buttons after updating list', error);
             }
         }
     }
@@ -57,7 +57,7 @@ export const resyncActiveChannelsVisualState = () => {
             if (channelId) adjustChannelButtonClass(channelId, true);
         });
     } catch (error) {
-        console.error('[teles] Error resyncing active channels visual state', error);
+        console.error('[teles] Hata resyncing active channels visual state', error);
     }
 }
 
@@ -70,7 +70,7 @@ export const renderPersonalizedListsUI = () => {
     const lists = getPersonalizedLists();
     const urls = Object.keys(lists);
     if (!urls.length) {
-        customListsContainerEl.innerHTML = '<p class="text-secondary fs-smaller mb-0">No hay listas guardadas.</p>';
+        customListsContainerEl.innerHTML = '<p class="text-secondary fs-smaller mb-0">Kaydedilmiş liste yok.</p>';
         return;
     }
     const fragment = document.createDocumentFragment();
@@ -107,24 +107,24 @@ const createPersonalizedListCard = (url, data = {}) => {
     const botonPin = document.createElement('button');
     botonPin.type = 'button';
     botonPin.className = `btn btn-sm ${pinned ? 'btn-success' : 'btn-outline-secondary'}`;
-    botonPin.innerHTML = pinned ? '<i class="bi bi-pin-angle-fill"></i> Fijada' : '<i class="bi bi-pin-angle"></i> No fijada';
+    botonPin.innerHTML = pinned ? '<i class="bi bi-pin-angle-fill"></i> Sabitlendi' : '<i class="bi bi-pin-angle"></i> Sabitlenmedi';
     botonPin.addEventListener('click', () => {
         const currentState = (getPersonalizedLists()[url]?.pinned !== false);
         const newState = !currentState;
         updatePersonalizedList(url, { pinned: newState });
         renderPersonalizedListsUI();
         showToast({
-            title: 'Lista personalizada',
-            body: newState ? `La lista "${etiqueta}" se restaurará al recargar.` : `La lista "${etiqueta}" ya no se restaurará automáticamente.`,
+            title: 'Özel Liste',
+            body: newState ? `La lista "${etiqueta}" se restaurará al recargar.` : `La lista "${etiqueta}" ya no se restaurará arabamáticamente.`,
             type: newState ? 'success' : 'info'
         })
     });
 
-    const botonAplicar = document.createElement('button');
-    botonAplicar.type = 'button';
-    botonAplicar.className = 'btn btn-sm btn-outline-primary';
-    botonAplicar.innerHTML = '<i class="bi bi-arrow-repeat"></i> Aplicar';
-    botonAplicar.addEventListener('click', () => {
+    const botonUygula = document.createElement('button');
+    botonUygula.type = 'button';
+    botonUygula.className = 'btn btn-sm btn-outline-primary';
+    botonUygula.innerHTML = '<i class="bi bi-arrow-repeat"></i> Uygula';
+    botonUygula.addEventListener('click', () => {
         const success = applySavedPersonalizedList(url);
         if (success) {
             clearChannelListContainers();
@@ -133,18 +133,18 @@ const createPersonalizedListCard = (url, data = {}) => {
             createCategoryButtons();
             resyncActiveChannelsVisualState();
             showToast({
-                title: 'Lista personalizada',
+                title: 'Özel Liste',
                 body: `Lista "${etiqueta}" aplicada correctamente.`,
                 type: 'success'
             })
         } else {
             showToast({
-                title: 'Lista personalizada',
+                title: 'Özel Liste',
                 body: 'No fue posible aplicar la lista seleccionada.',
                 type: 'danger',
-                autohide: false,
+                arabahide: false,
                 delay: 0,
-                showReloadOnError: true
+                showReloadOnHata: true
             })
         }
     });
@@ -152,13 +152,13 @@ const createPersonalizedListCard = (url, data = {}) => {
     const botonEliminar = document.createElement('button');
     botonEliminar.type = 'button';
     botonEliminar.className = 'btn btn-sm btn-outline-danger';
-    botonEliminar.innerHTML = '<i class="bi bi-trash"></i> Quitar';
+    botonEliminar.innerHTML = '<i class="bi bi-trash"></i> Kaldır';
     botonEliminar.addEventListener('click', () => {
         if (!window.confirm(`¿Eliminar la lista "${etiqueta}" y sus canales asociados?`)) return;
         const deleted = deletePersonalizedList(url);
         if (!deleted) {
             showToast({
-                title: 'Error',
+                title: 'Hata',
                 body: 'No se pudo eliminar la lista personalizada.',
                 type: 'danger'
             });
@@ -173,13 +173,13 @@ const createPersonalizedListCard = (url, data = {}) => {
 
         renderPersonalizedListsUI();
         showToast({
-            title: 'Lista personalizada',
+            title: 'Özel Liste',
             body: `Lista eliminada. ${eliminados} canal(es) removidos.`,
             type: 'info'
         })
     });
 
-    bloqueAcciones.append(botonPin, botonAplicar, botonEliminar);
+    bloqueAcciones.append(botonPin, botonUygula, botonEliminar);
     encabezado.append(bloqueInfo, bloqueAcciones);
     card.append(encabezado);
     return card;

@@ -175,7 +175,7 @@ const buildChannelsFragment = (groups, { baseId = 'grupo-canales' } = {}, active
         header.innerHTML = `
             <p class="badge rounded-pill text-bg-secondary text-wrap mb-0 w-100">${origin}</p>
             <small class="text-secondary">${channels.length} canales</small>
-            <i class="bi bi-chevron-up ms-auto icono-estado-colapso"></i>
+            <i class="bi bi-chevron-up ms-araba icono-estado-colapso"></i>
         `;
 
         const list = document.createElement('div');
@@ -235,7 +235,7 @@ const createChannelButton = (channelId, channelData, activeChannelIds = []) => {
         : 'fuentes múltiples';
 
     const combinedBadge = isCombinedSignal
-        ? `<span class="badge badge-señal-combinada" data-bs-toggle="tooltip" data-bs-title="Señales desde: ${sourcesDescription}"><i class="bi bi-shuffle"></i> Mix</span>`
+        ? `<span class="badge badge-señal-combinada" data-bs-toggle="tooltip" data-bs-title="Sinyal kaynakları: ${sourcesDescription}"><i class="bi bi-shuffle"></i> Mix</span>`
         : '';
 
     const button = document.createElement('button');
@@ -258,8 +258,8 @@ const createChannelButton = (channelId, channelData, activeChannelIds = []) => {
     }
 
     const flagHtml = país && COUNTRY_CODES[país.toLowerCase()]
-        ? `<img src="https://flagcdn.com/${país.toLowerCase()}.svg" alt="bandera ${countryName}" title="${countryName}" class="svg-bandera rounded-1">`
-        : `<span class="svg-bandera rounded-1 h-100" title="Sin bandera para país [${countryName}]">${SVG_UNKNOWN_COUNTRY}</span>`;
+        ? `<img src="https://flagcdn.com/${país.toLowerCase()}.svg" alt="bayrak ${countryName}" title="${countryName}" class="svg-bayrak rounded-1">`
+        : `<span class="svg-bayrak rounded-1 h-100" title="Sin bayrak para país [${countryName}]">${SVG_UNKNOWN_COUNTRY}</span>`;
 
     const showLogos = localStorage.getItem(LS_KEY_SHOW_CHANNELS_LOGO) === 'show';
     const logoHtml = showLogos && channelData.logo
@@ -425,25 +425,25 @@ export const createChannelButtons = (specificPrefix) => {
 
         assignButtonEvents();
     } catch (error) {
-        console.error(`[teles] Error creating channel buttons. Error: ${error}`);
+        console.error(`[teles] Hata creating channel buttons. Hata: ${error}`);
         showToast({
-            title: 'Ha ocurrido un error durante la creación de botones para los canales.',
-            body: `Error: ${error}`,
+            title: 'Kanal butonlarını oluştururken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
 
         const targets = specificPrefix ? [specificPrefix] : ID_PREFIX_CONTAINERS_CHANNELS;
         for (const PREFIX of targets) {
             document.querySelector(`#${PREFIX}-channels-buttons-container`)
-                ?.insertAdjacentElement('afterend', insertarDivError(error, 'Ha ocurrido un error durante la creación de botones para los canales'));
+                ?.insertAdjacentElement('afterend', insertarDivHata(error, 'Ha ocurrido un error durante la creación de botones para los canales'));
         }
     }
 };
 
-const insertarDivError = (error, message) => {
+const insertarDivHata = (error, message) => {
     const div = document.createElement('div');
     div.className = 'alert alert-danger';
     div.textContent = `${message}: ${error}`;

@@ -111,15 +111,15 @@ export function filterChannelsByInput(inputValue, channelButtonsContainer) {
             }
         }
     } catch (error) {
-        console.error(`[teles] Error filtering channels. Error: ${error}`);
+        console.error(`[teles] Hata filtering channels. Hata: ${error}`);
 
         showToast({
-            title: 'Ha ocurrido un error al intentar filtrar canales.',
-            body: `Error: ${error}`,
+            title: 'Kanalları filtrelemeye çalışırken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
     }
 }

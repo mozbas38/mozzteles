@@ -109,7 +109,7 @@ export const saveGridStackLayout = () => {
         try {
             layout = JSON.parse(savedPayload);
         } catch (e) {
-            console.error('[teles] Error loading prior gridstack layout:', e);
+            console.error('[teles] Hata loading prior gridstack layout:', e);
         }
     }
 
@@ -306,7 +306,7 @@ window.addEventListener('DOMContentLoaded', () => {
             activateSingleView();
             updateViewButtonsState('single-view');
         } else {
-            showToast({ title: 'Ya estas en modo visión única', type: 'info' });
+            showToast({ title: 'Zaten tekli görünüm modundasınız', type: 'info' });
         }
     });
 
@@ -320,7 +320,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             updateViewButtonsState('grid-view');
         } else {
-            showToast({ title: 'Ya estas en modo visión cuadrícula', type: 'info' });
+            showToast({ title: 'Zaten ızgara görünümü modundasınız', type: 'info' });
         }
     });
 
@@ -335,7 +335,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             updateViewButtonsState('free-view');
         } else {
-            showToast({ title: 'Ya estas en modo visión libre', type: 'info' });
+            showToast({ title: 'Zaten serbest görünüm modundasınız', type: 'info' });
         }
     });
 
@@ -394,10 +394,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
             hideOverlayButtonText();
         } catch (error) {
-            console.error(`[teles] Error while updating overlay customization buttons. Error: ${error}`);
+            console.error(`[teles] Hata while updating overlay customization buttons. Hata: ${error}`);
             showToast({
-                title: 'Ha ocurrido un error durante la actualización del estado botones personalizar overlay.',
-                body: `Error: ${error}`,
+                title: 'Özelleştirme butonlarının durumunu güncellerken bir hata oluştu.',
+                body: `Hata: ${error}`,
                 type: 'danger',
             });
         }
@@ -501,7 +501,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 });
 
             } catch (error) {
-                console.error('[teles] Error reloading channels after changing m3u8 player:', error);
+                console.error('[teles] Hata reloading channels after changing m3u8 player:', error);
             }
         });
     });
@@ -531,7 +531,7 @@ window.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem(LS_KEY_HORIZONTAL_WIDTH_VALUE, widthValue);
         }
 
-        // Aplicar los cambios
+        // Uygula los cambios
         const widthPercentage = `${widthValue}%`;
         widthRangeInput.value = widthValue;
         widthRangeValue.textContent = widthPercentage;
@@ -577,7 +577,7 @@ window.addEventListener('DOMContentLoaded', () => {
             initializeBootstrapTooltips();
 
             showToast({
-                body: `Logos en botones ${isEnabled ? 'habilitados' : 'deshabilitados'}`,
+                body: `Butonlardaki logolar ${isEnabled ? 'etkin' : 'desetkin'}`,
                 type: 'info',
                 duration: 2000
             });
@@ -732,7 +732,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             try {
                 showToast({
-                    body: 'Actualizando listado de canales...',
+                    body: 'Kanal listesi güncelleniyor...',
                     type: 'dark',
                     duration: 2000
                 });
@@ -782,14 +782,14 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
 
                 showToast({
-                    body: 'Listado y canales activos actualizados correctamente',
+                    body: 'Liste ve aktif kanallar başarıyla güncellendi',
                     type: 'success'
                 });
 
             } catch (error) {
-                console.error('[teles] Error updating list after preference change', error);
+                console.error('[teles] Hata updating list after preference change', error);
                 showToast({
-                    title: 'Error',
+                    title: 'Hata',
                     body: 'No se pudo actualizar el listado inmediatamente. Recarga la página.',
                     type: 'danger'
                 });
@@ -810,7 +810,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const toggleLoadingStateButton = (isLoading) => {
             if (isLoading) {
                 loadCustomListButtonEl.disabled = true;
-                loadCustomListButtonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Cargando...';
+                loadCustomListButtonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Yükleniyor...';
             } else {
                 loadCustomListButtonEl.disabled = false;
                 loadCustomListButtonEl.innerHTML = originalButtonText;
@@ -821,7 +821,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const listUrl = customListUrlInputEl.value.trim();
             if (!listUrl) {
                 showToast({
-                    body: 'Ingresa la URL a tu archivo .m3u antes de cargarla.',
+                    body: 'Yüklemeden önce .m3u dosyanızın URL'sini girin.',
                     type: 'warning'
                 });
                 customListUrlInputEl.focus();
@@ -832,7 +832,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 new URL(listUrl);
             } catch {
                 showToast({
-                    title: 'La URL ingresada no es válida.',
+                    title: 'Girilen URL geçerli değil.',
                     body: 'Verifica que comience con https://',
                     type: 'danger'
                 });
@@ -852,17 +852,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 renderPersonalizedListsUI();
                 showToast({
-                    title: 'Lista personalizada cargada correctamente.',
+                    title: 'Özel liste başarıyla yüklendi.',
                     body: 'Los nuevos canales se añadieron a su lista.',
                     type: 'success'
                 });
             } catch (error) {
-                console.error('[teles] Error loading personalized M3U list:', error);
+                console.error('[teles] Hata loading personalized M3U list:', error);
                 showToast({
-                    title: 'No fue posible cargar la lista personalizada.',
-                    body: `Verifica la URL o si el servidor permite descargas (CORS). <br> Error: ${error}`,
+                    title: 'Özel liste yüklenemedi.',
+                    body: `Verifica la URL o si el servidor permite descargas (CORS). <br> Hata: ${error}`,
                     type: 'danger',
-                    autohide: false,
+                    arabahide: false,
                     delay: 0,
                     allowHtml: true
                 });
@@ -880,7 +880,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const togglePasteButton = (isLoading) => {
             if (isLoading) {
                 pasteCustomListButtonEl.disabled = true;
-                pasteCustomListButtonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Procesando...';
+                pasteCustomListButtonEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> İşleniyor...';
             } else {
                 pasteCustomListButtonEl.disabled = false;
                 pasteCustomListButtonEl.innerHTML = originalPasteButtonText;
@@ -891,7 +891,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const listContent = customListTextareaEl.value.trim();
             if (!listContent) {
                 showToast({
-                    body: 'Pega el contenido completo de tu archivo .m3u antes de continuar.',
+                    body: 'Devam etmeden önce .m3u dosyanızın tüm içeriğini yapıştırın.',
                     type: 'warning'
                 });
                 customListTextareaEl.focus();
@@ -911,19 +911,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 renderPersonalizedListsUI();
                 showToast({
-                    title: 'Lista manual cargada correctamente.',
+                    title: 'Manuel liste başarıyla yüklendi.',
                     body: 'Se añadieron los nuevos canales a su lista.',
                     type: 'success'
                 });
             } catch (error) {
-                console.error('[teles] Error processing manually pasted list:', error);
+                console.error('[teles] Hata processing manually pasted list:', error);
                 showToast({
-                    title: 'No fue posible procesar el texto pegado.',
-                    body: `Revisa el formato del archivo .m3u. Error: ${error.message}`,
+                    title: 'Yapıştırılan metin işlenemedi.',
+                    body: `Revisa el formato del archivo .m3u. Hata: ${error.message}`,
                     type: 'danger',
-                    autohide: false,
+                    arabahide: false,
                     delay: 0,
-                    showReloadOnError: true,
+                    showReloadOnHata: true,
                     allowHtml: true
                 });
             } finally {
@@ -983,7 +983,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     toggleButton.addEventListener('click', () => {
         if (AMBIENT_MUSIC.paused) {
-            AMBIENT_MUSIC.play().catch(e => console.error('[teles] Error playing audio:', e));
+            AMBIENT_MUSIC.play().catch(e => console.error('[teles] Hata playing audio:', e));
             AMBIENT_MUSIC.loop = true;
             AMBIENT_MUSIC.volume = volumeSlider.value / 100;
             musicIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
@@ -1051,7 +1051,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     if (totalRequestedChannels > sharedChannels.length) {
                         const difference = totalRequestedChannels - sharedChannels.length;
                         showToast({
-                            title: 'Canales omitidos al cargar desde URL',
+                            title: 'URL'den yüklenirken atlanan kanallar',
                             body: `No todos los canales compartidos se pudieron cargar 
                                 (se cargaron ${sharedChannels.length} de ${totalRequestedChannels}). 
                                 Es posible que algunos provengan de listas personalizadas o modos 
@@ -1099,12 +1099,12 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (error) {
-            console.error('[teles] Error during initial load', error);
+            console.error('[teles] Hata during initial load', error);
             showToast({
-                title: 'Error durante carga inicial',
-                body: `Error: ${error}`,
+                title: 'Hata durante carga inicial',
+                body: `Hata: ${error}`,
                 type: 'danger',
-                showReloadOnError: true
+                showReloadOnHata: true
             });
             return
         }
@@ -1142,7 +1142,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         resizable: {
             handles: 'all',
-            autoHide: true
+            arabaHide: true
         }
     }, freeViewContainer);
 
@@ -1191,14 +1191,14 @@ window.addEventListener('DOMContentLoaded', () => {
             try {
                 disposeBootstrapTooltips();
             } catch (e) {
-                console.error('[teles] Error in Sortable onStart:', e);
+                console.error('[teles] Hata in Sortable onStart:', e);
             }
         },
         onChange: () => {
             try {
                 toggleOrderedClass();
             } catch (e) {
-                console.error('[teles] Error in Sortable onChange:', e);
+                console.error('[teles] Hata in Sortable onChange:', e);
             }
         },
         onEnd: () => {
@@ -1208,7 +1208,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 toggleOrderedClass();
                 registerManualChannelChange();
             } catch (e) {
-                console.error('[teles] Error in Sortable onEnd:', e);
+                console.error('[teles] Hata in Sortable onEnd:', e);
             }
         }
     });
@@ -1225,7 +1225,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 adjustBootstrapColumnClasses?.();
                 adjustVisibilityButtonsRemoveAllActiveChannels?.();
             } catch (e) {
-                console.error('[teles] Error in mutation observer', e);
+                console.error('[teles] Hata in mutation observer', e);
             }
         });
     });
@@ -1321,7 +1321,7 @@ export let tele = {
                     minH: 1
                 });
                 saveChannelsToLocalStorage();
-                // Note: saveGridStackLayout() is triggered automatically via the 'change' event
+                // Note: saveGridStackLayout() is triggered arabamatically via the 'change' event
                 // Calling it here again would reset partially-loaded layouts during batch initialization
             } else {
                 channelContainer.classList.add('position-relative', 'shadow');
@@ -1336,14 +1336,14 @@ export let tele = {
             adjustVisibilityButtonsRemoveAllActiveChannels?.();
             if (!isSingleView) adjustBootstrapColumnClasses();
         } catch (error) {
-            console.error(`[teles] Error while creating channel container id: ${channelId}. Error: ${error}`);
+            console.error(`[teles] Hata while creating channel container id: ${channelId}. Hata: ${error}`);
             showToast({
-                title: `Ha ocurrido un error durante la creación canal para ser insertado - ID: ${channelId}.`,
-                body: `Error: ${error}`,
+                title: `Eklenecek kanal oluşturulurken bir hata oluştu - ID: ${channelId}.`,
+                body: `Hata: ${error}`,
                 type: 'danger',
-                autohide: false,
+                arabahide: false,
                 delay: 0,
-                showReloadOnError: true
+                showReloadOnHata: true
             })
             return
         }
@@ -1400,14 +1400,14 @@ export let tele = {
             registerManualChannelChange();
             adjustVisibilityButtonsRemoveAllActiveChannels?.();
         } catch (error) {
-            console.error(`[teles] Error while removing channel container id: ${channelId}. Error: ${error}`);
+            console.error(`[teles] Hata while removing channel container id: ${channelId}. Hata: ${error}`);
             showToast({
-                title: `Ha ocurrido un error durante la eliminación canal - ID: ${channelId}.`,
-                body: `Error: ${error}`,
+                title: `Kanal kaldırılırken bir hata oluştu - ID: ${channelId}.`,
+                body: `Hata: ${error}`,
                 type: 'danger',
-                autohide: false,
+                arabahide: false,
                 delay: 0,
-                showReloadOnError: true
+                showReloadOnHata: true
             })
             return
         }
@@ -1430,7 +1430,7 @@ export let tele = {
                             buttonEl.classList.add('d-none');
                         });
                         showToast({
-                            title: `Canal ${channelId} sin señales activas.`,
+                            title: `Canal ${channelId} aktif sinyal yok.`,
                             body: 'Se eliminará del listado.',
                             type: 'warning'
                         });
@@ -1439,14 +1439,14 @@ export let tele = {
                     }
                 });
             } catch (error) {
-                console.error(`[teles] Error while loading default channels. Error: ${error}`);
+                console.error(`[teles] Hata while loading default channels. Hata: ${error}`);
                 showToast({
-                    title: `Ha ocurrido un error durante la carga de canales predeterminados.`,
-                    body: `Error: ${error}`,
+                    title: `Varsayılan kanallar yüklenirken bir hata oluştu.`,
+                    body: `Hata: ${error}`,
                     type: 'danger',
-                    autohide: false,
+                    arabahide: false,
                     delay: 0,
-                    showReloadOnError: true
+                    showReloadOnHata: true
                 })
                 return
             }

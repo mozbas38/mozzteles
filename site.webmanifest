@@ -1,8 +1,8 @@
 {
-    "name": "teles - Transmisiones de noticias de Chile y el mundo",
-    "short_name": "teles",
-    "description": "PWA Código Abierto para ver/comparar preseleccionadas transmisiones de noticias provenientes de Chile (y el mundo).",
-    "lang": "es",
+    "name": "Reji Masası",
+    "short_name": "Reji",
+    "description": "Çoklu IPTV ve M3U8 izleme kontrol merkezi",
+    "lang": "tr",
     "categories": [
         "television",
         "productivity",
@@ -10,15 +10,12 @@
         "video",
         "news"
     ],
-    
     "theme_color": "#4b01c3",
     "background_color": "#212529",
     "display": "standalone",
     "orientation": "any",
-
     "start_url": "/teles/",
     "id": "/teles/",
-    
     "icons": [
         {
             "src": "./assets/favicon/PWA/maskable-icon-x192.png",
@@ -67,19 +64,20 @@
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
-        }, {
+        },
+        {
             "src": "./assets/favicon/PWA/maskable_icon_x384.png",
             "sizes": "384x384",
             "type": "image/png",
             "purpose": "maskable"
-        }, {
+        },
+        {
             "src": "./assets/favicon/PWA/maskable_icon_x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
         }
     ],
-
     "screenshots": [
         {
             "src": "./assets/img/PWA/1.jpg",

@@ -31,9 +31,9 @@ export const OVERLAY_BUTTONS_CONFIG = {
         classSuffix: 'overlay-boton-pagina-oficial',
         id: 'btnFuente'
     },
-    btnQuitar: {
+    btnKaldır: {
         storageKey: LS_KEY_OVERLAY_BUTTON_REMOVE,
         classSuffix: 'overlay-boton-quitar',
-        id: 'btnQuitar'
+        id: 'btnKaldır'
     }
 };

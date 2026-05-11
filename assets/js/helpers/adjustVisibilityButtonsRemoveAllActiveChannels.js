@@ -21,7 +21,7 @@ export const adjustVisibilityButtonsRemoveAllActiveChannels = () => {
     });
 
     BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.disabled = !hasActiveChannels;
-    BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = hasActiveChannels ? 'Copiar setup <i class="bi bi-clipboard"></i>' : 'Activa primero canales';
+    BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = hasActiveChannels ? 'Kurulumu kopyala <i class="bi bi-clipboard"></i>' : 'Önce kanalları aktif et';
 
     // si es vision cuadrícula
     if (localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) !== 'single-view' && localStorage.getItem(LS_KEY_LOGO_CARD_BACKGROUND_VISIBILITY) !== 'hide') {

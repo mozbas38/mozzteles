@@ -15,9 +15,9 @@ const DEFAULT_TOAST_OPTIONS = {
     title: '',
     body: '',
     type: 'secondary',
-    autohide: true,
+    arabahide: true,
     delay: 6500,
-    showReloadOnError: false,
+    showReloadOnHata: false,
     allowHtml: false
 };
 
@@ -27,9 +27,9 @@ const DEFAULT_TOAST_OPTIONS = {
  * @param {string} options.title - Título del toast.
  * @param {string} options.body - Cuerpo del toast.
  * @param {string} options.type - Variante del toast.
- * @param {boolean} options.autohide - Autocierre del toast.
+ * @param {boolean} options.arabahide - Autocierre del toast.
  * @param {number} options.delay - Delay en ms.
- * @param {boolean} options.showReloadOnError - Mostrar bloque de ayuda en caso de error.
+ * @param {boolean} options.showReloadOnHata - Mostrar bloque de ayuda en caso de error.
  * @param {boolean} options.allowHtml - Permitir HTML en el cuerpo del toast.
  * @returns {void}
  * 
@@ -38,9 +38,9 @@ const DEFAULT_TOAST_OPTIONS = {
  *     title: 'Título',
  *     body: 'Cuerpo',
  *     type: 'success',
- *     autohide: true,
+ *     arabahide: true,
  *     delay: 3500,
- *     showReloadOnError: true,
+ *     showReloadOnHata: true,
  *     allowHtml: false
  * });
  * 
@@ -48,9 +48,9 @@ const DEFAULT_TOAST_OPTIONS = {
  * title: ''
  * body: ''
  * type: 'secondary'
- * autohide: true
+ * arabahide: true
  * delay: 3500
- * showReloadOnError: false
+ * showReloadOnHata: false
  * allowHtml: false
  */
 export function showToast(options = {}) {
@@ -101,7 +101,7 @@ export function showToast(options = {}) {
         CONTENT_STACK.append(BODY_ELEMENT);
     }
 
-    if (TOAST_OPTIONS.showReloadOnError) {
+    if (TOAST_OPTIONS.showReloadOnHata) {
         CONTENT_STACK.append(createBlockHelp());
     }
 
@@ -111,7 +111,7 @@ export function showToast(options = {}) {
     TOAST_BOTON_CERRAR.setAttribute('type', 'button');
     TOAST_BOTON_CERRAR.setAttribute('data-bs-dismiss', 'toast');
     TOAST_BOTON_CERRAR.setAttribute('aria-label', 'Close');
-    TOAST_BOTON_CERRAR.classList.add('btn-close', 'text-white', 'me-2', 'm-auto');
+    TOAST_BOTON_CERRAR.classList.add('btn-close', 'text-white', 'me-2', 'm-araba');
     TOAST_BOTON_CERRAR.addEventListener('click', () => {
         TOAST_DIV.remove();
     });
@@ -125,7 +125,7 @@ export function showToast(options = {}) {
         return;
     }
 
-    const BOOTSTRAP_TOAST = new bootstrap.Toast(TOAST_DIV, { delay: Number(TOAST_OPTIONS.delay), autohide: TOAST_OPTIONS.autohide });
+    const BOOTSTRAP_TOAST = new bootstrap.Toast(TOAST_DIV, { delay: Number(TOAST_OPTIONS.delay), arabahide: TOAST_OPTIONS.arabahide });
     BOOTSTRAP_TOAST.show();
     if (TOAST_VARIANT === 'success') playAudio(AUDIO_SUCCESS);
     if (TOAST_VARIANT === 'danger') playAudio(AUDIO_FAIL);
@@ -143,7 +143,7 @@ const createBlockHelp = () => {
     const BUTTON_RELOAD = document.createElement('button');
     BUTTON_RELOAD.setAttribute('type', 'button');
     BUTTON_RELOAD.classList.add('btn', 'btn-light', 'rounded-pill', 'btn-sm', 'w-100', 'border-light', 'mt-2');
-    BUTTON_RELOAD.innerHTML = 'Pulsa para recargar <i class="bi bi-arrow-clockwise"></i>';
+    BUTTON_RELOAD.innerHTML = 'Yenilemek için tıkla <i class="bi bi-arrow-clockwise"></i>';
     BUTTON_RELOAD.addEventListener('click', () => {
         window.location.reload();
     });

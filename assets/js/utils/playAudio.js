@@ -6,6 +6,6 @@ export const playAudio = (audio, loop = false) => {
         audio.loop = loop;
         audio.play();
     } catch (error) {
-        console.error('[teles] Error while playing audio:', error);
+        console.error('[teles] Hata while playing audio:', error);
     }
 }

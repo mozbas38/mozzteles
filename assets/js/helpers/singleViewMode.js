@@ -95,12 +95,12 @@ const disableGridAndFreeViewControls = () => {
     }
     if (dynamicUrlValueSpan) {
         dynamicUrlValueSpan.dataset.textoPrevio = dynamicUrlValueSpan.textContent || '';
-        dynamicUrlValueSpan.textContent = '[solo en visión cuadrícula/libre]';
+        dynamicUrlValueSpan.textContent = '[sadece ızgara/serbest görünümde]';
     }
 
     // Disable share setup controls
     COPY_SHARE_LINK_BUTTON?.setAttribute('disabled', 'disabled');
-    COPY_SHARE_LINK_BUTTON.innerHTML = '[solo en visión cuadrícula/libre]';
+    COPY_SHARE_LINK_BUTTON.innerHTML = '[sadece ızgara/serbest görünümde]';
 
     SHARE_LINK_INPUT?.setAttribute('disabled', 'disabled');
 
@@ -128,7 +128,7 @@ const enableGridViewControls = () => {
 
     // Enable share setup controls
     COPY_SHARE_LINK_BUTTON?.removeAttribute('disabled');
-    COPY_SHARE_LINK_BUTTON.innerHTML = 'Copiar setup <i class="bi bi-clipboard"></i>';
+    COPY_SHARE_LINK_BUTTON.innerHTML = 'Kurulumu kopyala <i class="bi bi-clipboard"></i>';
     SHARE_LINK_INPUT?.removeAttribute('disabled');
 
     // Enable width range controls
@@ -253,7 +253,7 @@ const loadFirstSavedChannel = () => {
                 tele.add(firstChannelId);
             }
         } catch (error) {
-            console.error(`[teles] Error loading channels for single view mode. Error: ${error}`);
+            console.error(`[teles] Hata loading channels for single view mode. Hata: ${error}`);
         }
     }
 };
@@ -303,14 +303,14 @@ export function activateSingleView() {
         document.querySelector('#boton-personalizar-boton-mover-overlay')?.classList.add('clase-vacia');
 
     } catch (error) {
-        console.error(`[teles] Error activating "Single View" mode. Error: ${error}`);
+        console.error(`[teles] Hata activating "Single View" mode. Hata: ${error}`);
         showToast({
-            title: 'Ha ocurrido un error al intentar activar el modo "Visión Única".',
-            body: `Error: ${error}`,
+            title: '"Tekli Görünüm" modunu etkinleştirmeye çalışırken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
     }
 }
@@ -344,14 +344,14 @@ export function deactivateSingleView({ skipDefaultChannelsLoad = false } = {}) {
             initializeBootstrapTooltips();
             registerManualChannelChange();
         } catch (error) {
-            console.error(`[teles] Error removing active channel in "Single View" mode. Error: ${error}`);
+            console.error(`[teles] Hata removing active channel in "Single View" mode. Hata: ${error}`);
             showToast({
-                title: 'Ha ocurrido un error durante eliminación de canal activo en modo "Visión Única".',
-                body: `Error: ${error}`,
+                title: '"Tekli Görünüm" modunda aktif kanalı kaldırırken bir hata oluştu.',
+                body: `Hata: ${error}`,
                 type: 'danger',
-                autohide: false,
+                arabahide: false,
                 delay: 0,
-                showReloadOnError: true
+                showReloadOnHata: true
             });
             return;
         }
@@ -384,14 +384,14 @@ export function deactivateSingleView({ skipDefaultChannelsLoad = false } = {}) {
         registerManualChannelChange({ force: true });
 
     } catch (error) {
-        console.error(`[teles] Error deactivating "Single View" mode. Error: ${error}`);
+        console.error(`[teles] Hata deactivating "Single View" mode. Hata: ${error}`);
         showToast({
-            title: 'Ha ocurrido un error al intentar desactivar el modo "Visión Única".',
-            body: `Error: ${error}`,
+            title: '"Tekli Görünüm" modunu devre dışı bırakmaya çalışırken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
     }
 }

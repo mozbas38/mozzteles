@@ -95,10 +95,10 @@ export const adjustBootstrapColumnClasses = () => {
         }
 
     } catch (error) {
-        console.error('[teles] Error adjusting "col" classes for active channels: ', error);
+        console.error('[teles] Hata adjusting "col" classes for active channels: ', error);
         showToast({
-            title: 'Ha ocurrido un error al intentar ajustar el numero de canales por fila.',
-            body: `Error: ${error}`,
+            title: 'Satır başına kanal sayısını ayarlamaya çalışırken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger'
         });
     }

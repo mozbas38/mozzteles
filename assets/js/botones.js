@@ -40,7 +40,7 @@ if (navigator.userAgent.toLowerCase().includes('firefox')) {
         try {
             containerInstallPwa?.showDialog?.(true); // "true" value to forced
         } catch (error) {
-            console.error('[teles] Error at attempt to show PWA install dialog:', error);
+            console.error('[teles] Hata at attempt to show PWA install dialog:', error);
         }
     });
 }
@@ -50,7 +50,7 @@ if (navigator.userAgent.toLowerCase().includes('firefox')) {
 // MARK: Botón compartir
 const DATOS_NAVIGATOR_SHARE = {
     title: 'teles',
-    text: 'PWA Código Abierto para ver/comparar preseleccionadas transmisiones de noticias provenientes de Chile (y el mundo).',
+    text: 'PWA Código Abierto para ver/comparar preseleccionadas transmisiones de haberler provenientes de Chile (y el mundo).',
     url: 'https://alplox.github.io/teles/'
 };
 
@@ -105,7 +105,7 @@ function obtenerUrlCompartirConCanalesActivos() {
 
         return urlFinal;
     } catch (error) {
-        console.error('[teles] Error at attempt to generate share URL with active channels:', error);
+        console.error('[teles] Hata at attempt to generate share URL with active channels:', error);
         return DATOS_NAVIGATOR_SHARE.url;
     }
 }
@@ -119,7 +119,7 @@ if (navigator.share && BOTON_COMPARTIR) {
         try {
             await navigator.share(DATOS_NAVIGATOR_SHARE);
         } catch (err) {
-            console.error(`[teles] Error at attempt to share using navigator.share: ${err}`);
+            console.error(`[teles] Hata at attempt to share using navigator.share: ${err}`);
         }
     });
 } else {
@@ -135,12 +135,12 @@ const cargarCanalesPredeterminados = () => {
         getDefaultChannels(isMobile?.any).forEach(canal => tele.add(canal));
     } catch (error) {
         showToast({
-            title: 'Error al cargar canales predeterminados',
-            body: `Error: ${error}`,
+            title: 'Hata al cargar canales predeterminados',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
         return
     }
@@ -160,14 +160,14 @@ const removeAllChannels = (withAudio = true) => {
             if (channelId) tele.remove(channelId);
         });
     } catch (error) {
-        console.error(`[teles] Error at attempt to remove all channels: ${error}`);
+        console.error(`[teles] Hata at attempt to remove all channels: ${error}`);
         showToast({
-            title: 'Ha ocurrido un error al intentar quitar todos los canales.',
-            body: `Error: ${error}`,
+            title: 'Tüm kanalları kaldırmaya çalışırken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
         return
     }
@@ -211,14 +211,14 @@ BOTON_BORRAR_LOCALSTORAGE?.addEventListener('click', () => {
 
         document.querySelector('#alerta-borrado-localstorage')?.classList.remove('d-none');
     } catch (error) {
-        console.error('[teles] Error at attempt to clear local storage: ', error);
+        console.error('[teles] Hata at attempt to clear local storage: ', error);
         showToast({
-            title: 'Error al intentar eliminar almacenamiento local',
-            body: `Error: ${error}`,
+            title: 'Hata al intentar eliminar almacenamiento local',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
         return
     }
@@ -238,14 +238,14 @@ function enterFullscreen() {
             element.msRequestFullscreen();
         }
     } catch (error) {
-        console.error('[teles] Error at attempt to enter fullscreen: ', error);
+        console.error('[teles] Hata at attempt to enter fullscreen: ', error);
         showToast({
-            title: 'Error al solicitar entrar a pantalla completa',
-            body: `Error: ${error}`,
+            title: 'Hata al solicitar entrar a pantalla completa',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
         return
     }
@@ -264,14 +264,14 @@ function exitFullscreen() {
             document.msExitFullscreen();
         }
     } catch (error) {
-        console.error('[teles] Error at attempt to exit fullscreen: ', error);
+        console.error('[teles] Hata at attempt to exit fullscreen: ', error);
         showToast({
-            title: 'Error al solicitar salir de pantalla completa',
-            body: `Error: ${error}`,
+            title: 'Hata al solicitar salir de pantalla completa',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
         return
     }
@@ -308,8 +308,8 @@ if (!isFullscreenSupported() && BOTON_FULLSCREEN?.parentElement?.parentElement) 
 function handleFullscreenChange() {
     if (!BOTON_FULLSCREEN) return;
     isFullscreen()
-        ? (BOTON_FULLSCREEN.innerHTML = 'Salir pantalla completa <i class="bi bi-fullscreen-exit ms-auto"></i>', BOTON_FULLSCREEN.classList.replace('btn-light-subtle', CSS_CLASS_BUTTON_PRIMARY))
-        : (BOTON_FULLSCREEN.innerHTML = 'Entrar pantalla completa <i class="bi bi-arrows-fullscreen ms-auto"></i>', BOTON_FULLSCREEN.classList.replace(CSS_CLASS_BUTTON_PRIMARY, 'btn-light-subtle'));
+        ? (BOTON_FULLSCREEN.innerHTML = 'Tam ekrandan çık <i class="bi bi-fullscreen-exit ms-araba"></i>', BOTON_FULLSCREEN.classList.replace('btn-light-subtle', CSS_CLASS_BUTTON_PRIMARY))
+        : (BOTON_FULLSCREEN.innerHTML = 'Tam ekrana geç <i class="bi bi-arrows-fullscreen ms-araba"></i>', BOTON_FULLSCREEN.classList.replace(CSS_CLASS_BUTTON_PRIMARY, 'btn-light-subtle'));
 }
 
 /* window.addEventListener('resize', handleFullscreenChange); */
@@ -338,29 +338,29 @@ BOTON_COPIAR_ENLACE_COMPARTIR?.addEventListener('click', async () => {
         if (navigator.clipboard && INPUT_ENLACE_COMPARTIR) {
             await navigator.clipboard.writeText(INPUT_ENLACE_COMPARTIR.value);
             playAudio(AUDIO_SUCCESS);
-            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Copiado exitoso! <i class="bi bi-clipboard-check"></i>';
+            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Kopyalama başarılı! <i class="bi bi-clipboard-check"></i>';
             BOTON_COPIAR_ENLACE_COMPARTIR.classList.add('bg-success');
         } else {
-            throw new Error('Clipboard API no soportada o input no encontrado');
+            throw new Hata('Clipboard API no soportada o input no encontrado');
         }
     } catch (error) {
-        console.error('[teles] Error at attempt to copy link using navigator.clipboard: ', error);
+        console.error('[teles] Hata at attempt to copy link using navigator.clipboard: ', error);
         try {
             document.execCommand('copy', false, INPUT_ENLACE_COMPARTIR?.value ?? DATOS_NAVIGATOR_SHARE.url);
             playAudio(AUDIO_SUCCESS);
-            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Copiado exitoso! <i class="bi bi-clipboard-check"></i>';
+            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Kopyalama başarılı! <i class="bi bi-clipboard-check"></i>';
             BOTON_COPIAR_ENLACE_COMPARTIR.classList.add('bg-success');
-        } catch (execError) {
-            console.error('[teles] Error at attempt to copy link using execCommand: ', execError);
+        } catch (execHata) {
+            console.error('[teles] Hata at attempt to copy link using execCommand: ', execHata);
             playAudio(AUDIO_FAIL);
-            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Copiado fallido! <i class="bi bi-clipboard-x"></i>';
+            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Kopyalama başarısız! <i class="bi bi-clipboard-x"></i>';
             BOTON_COPIAR_ENLACE_COMPARTIR.classList.add('bg-danger');
             return;
         }
     } finally {
         setTimeout(() => {
             if (BOTON_COPIAR_ENLACE_COMPARTIR) {
-                BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Copiar enlace <i class="bi bi-clipboard"></i>';
+                BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Bağlantıyı kopyala <i class="bi bi-clipboard"></i>';
                 BOTON_COPIAR_ENLACE_COMPARTIR.classList.remove('bg-success', 'bg-danger');
             }
         }, 2000);
@@ -395,30 +395,30 @@ BOTON_COPIAR_ENLACE_COMPARTIR_SETUP?.addEventListener('click', async () => {
         if (navigator.clipboard && INPUT_ENLACE_COMPARTIR_SETUP) {
             await navigator.clipboard.writeText(INPUT_ENLACE_COMPARTIR_SETUP.value);
             playAudio(AUDIO_SUCCESS);
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Copiado exitoso! <i class="bi bi-clipboard-check"></i>';
+            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Kopyalama başarılı! <i class="bi bi-clipboard-check"></i>';
             BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.classList.add('bg-success');
         } else {
-            throw new Error('Clipboard API no soportada o input no encontrado');
+            throw new Hata('Clipboard API no soportada o input no encontrado');
         }
     } catch (error) {
-        console.error('[teles] Error at attempt to copy link using navigator.clipboard: ', error);
+        console.error('[teles] Hata at attempt to copy link using navigator.clipboard: ', error);
         try {
             const textoFallback = INPUT_ENLACE_COMPARTIR_SETUP?.value ?? obtenerUrlCompartirConCanalesActivos();
             document.execCommand('copy', false, textoFallback);
             playAudio(AUDIO_SUCCESS);
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Copiado exitoso! <i class="bi bi-clipboard-check"></i>';
+            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Kopyalama başarılı! <i class="bi bi-clipboard-check"></i>';
             BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.classList.add('bg-success');
-        } catch (execError) {
-            console.error('[teles] Error at attempt to copy link using execCommand: ', execError);
+        } catch (execHata) {
+            console.error('[teles] Hata at attempt to copy link using execCommand: ', execHata);
             playAudio(AUDIO_FAIL);
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Copiado fallido! <i class="bi bi-clipboard-x"></i>';
+            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Kopyalama başarısız! <i class="bi bi-clipboard-x"></i>';
             BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.classList.add('bg-danger');
             return;
         }
     } finally {
         setTimeout(() => {
             if (BOTON_COPIAR_ENLACE_COMPARTIR_SETUP) {
-                BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Copiar setup <i class="bi bi-clipboard"></i>';
+                BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Kurulumu kopyala <i class="bi bi-clipboard"></i>';
                 BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.classList.remove('bg-success', 'bg-danger');
             }
         }, 2000);
