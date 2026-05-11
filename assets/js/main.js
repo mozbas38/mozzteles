@@ -1,5 +1,4 @@
-/* 
-  main v0.26
+/* main v0.26
   by Alplox 
   https://github.com/Alplox/teles
 */
@@ -184,9 +183,6 @@ export let fullHeightCheckbox;
 export let fullHeightSpan;
 
 
-
-
-
 // MARK: 📫 DOMContentLoaded
 window.addEventListener('DOMContentLoaded', () => {
     registerVideojsTranslation();
@@ -259,11 +255,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Initialize UI on load
     updateViewButtonsState(localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) || 'grid-view');
-
-
-
-
-
 
     const switchGridToFreeViewAndBack = (targetMode) => {
         if (targetMode === 'single-view') return;
@@ -1418,10 +1409,8 @@ export let tele = {
     loadDefaultChannels: () => {
         let savedChannels = JSON.parse(localStorage.getItem(LS_KEY_SAVED_CHANNELS_GRID_VIEW)) || {};
         // Default
-        if (Object.keys(savedChannels).length === 0 && localStorage.getItem(LS_KEY_WELCOME_MODAL_VISIBILITY) !== 'hide') {
+        if (Object.keys(savedChannels).length === 0) {
             getDefaultChannels(isMobile.any).forEach(channelId => tele.add(channelId));
-            new bootstrap.Modal(document.querySelector('#modal-bienvenida')).show();
-            // Check saved    
         } else {
             try {
                 Object.keys(savedChannels).forEach(channelId => {
