@@ -24,7 +24,7 @@ export function loadSingleViewOrder() {
                     orderToUse = parsedOrder;
                 }
             } catch (e) {
-                console.error(`[teles] Error parsing ${LS_KEY_ORDER_SINGLE_VIEW_MAIN_CONTAINERS}:`, e);
+                console.error(`[teles] Hata parsing ${LS_KEY_ORDER_SINGLE_VIEW_MAIN_CONTAINERS}:`, e);
                 localStorage.removeItem(LS_KEY_ORDER_SINGLE_VIEW_MAIN_CONTAINERS);
             }
         }
@@ -37,14 +37,14 @@ export function loadSingleViewOrder() {
         const isOriginalOrder = JSON.stringify(ORIGINAL_ORDER_IDS) === JSON.stringify(getCurrentOrder());
         singleViewGrid.classList.toggle('single-view-grid-reordenado', !isOriginalOrder);
     } catch (error) {
-        console.error(`[teles] Error loading panel order for "Single View" mode. Error: ${error}`);
+        console.error(`[teles] Hata loading panel order for "Single View" mode. Hata: ${error}`);
         showToast({
-            title: 'Ha ocurrido un error durante la carga de orden de paneles para modo "Visión Única".',
-            body: `Error: ${error}`,
+            title: '"Tekli Görünüm" modu için panel sırasını yüklerken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
     }
 }

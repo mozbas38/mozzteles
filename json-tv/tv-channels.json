@@ -1,0 +1,35 @@
+{
+  "trt-haber": {
+    "nombre": "TRT Haber",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/4/4b/TRT_Haber_2021.png",
+    "señales": {
+      "m3u8_url": [
+        "https://tv-trthaber.medya.trt.com.tr/master.m3u8"
+      ]
+    },
+    "país": "tr",
+    "categoría": "news"
+  },
+  "trt-spor": {
+    "nombre": "TRT Spor",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/ec/TRT_Spor_logo_2021.png",
+    "señales": {
+      "m3u8_url": [
+        "https://tv-trtspor1.medya.trt.com.tr/master.m3u8"
+      ]
+    },
+    "país": "tr",
+    "categoría": "sports"
+  },
+  "trt-belgesel": {
+    "nombre": "TRT Belgesel",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/7/7b/TRT_Belgesel_logo_2021.png",
+    "señales": {
+      "m3u8_url": [
+        "https://tv-trtbelgesel.medya.trt.com.tr/master.m3u8"
+      ]
+    },
+    "país": "tr",
+    "categoría": "entertainment"
+  }
+}

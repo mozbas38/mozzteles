@@ -49,14 +49,14 @@ export const saveChannelsToLocalStorage = () => {
             }, 420);
         }
     } catch (error) {
-        console.error('[teles] Error attempting to save channels to local storage:', error);
+        console.error('[teles] Hata attempting to save channels to local storage:', error);
         showToast({
-            title: 'Error al intentar guardar canales en el almacenamiento local.',
-            body: `Error: ${error}`,
+            title: 'Hata al intentar guardar canales en el almacenamiento local.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
     }
 }

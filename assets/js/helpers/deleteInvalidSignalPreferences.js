@@ -14,7 +14,7 @@ export const deleteInvalidSignalPreferences = () => {
                     if (channelsList?.[SAVED_CHANNEL_ID]?.señales?.[signalType][signalIndex] === undefined) {
                         console.error(`[teles] Prefer signal for ${SAVED_CHANNEL_ID} (${signalType}[${signalIndex}]) not available.`);
                         showToast({
-                            title: `Señal preferida para ${SAVED_CHANNEL_ID} (${signalType}[${signalIndex}]) no disponible.`,
+                            title: `Tercih edilen sinyal: ${SAVED_CHANNEL_ID} (${signalType}[${signalIndex}]) kullanılamıyor.`,
                             body: 'Utilizará siguiente señal disponible.',
                             type: 'warning'
                         });
@@ -25,7 +25,7 @@ export const deleteInvalidSignalPreferences = () => {
                     if (channelsList?.[SAVED_CHANNEL_ID]?.señales?.[signalType] === '') {
                         console.error(`[teles] Prefer signal for ${SAVED_CHANNEL_ID} (${signalType}) not available.`);
                         showToast({
-                            title: `Señal preferida para ${SAVED_CHANNEL_ID} (${signalType}) no disponible.`,
+                            title: `Tercih edilen sinyal: ${SAVED_CHANNEL_ID} (${signalType}) kullanılamıyor.`,
                             body: 'Utilizará siguiente señal disponible.',
                             type: 'warning'
                         });

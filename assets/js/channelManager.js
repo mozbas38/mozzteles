@@ -3,8 +3,8 @@ import { LS_KEY_CHANNELS_BACKUP, LS_KEY_CHANNELS_BACKUP_DATE, LS_KEY_COMBINE_PER
 import { m3uToJson, validateM3UContent } from "./helpers/index.js";
 
 // Backup and channel fetch management
-export const DEFAULT_CHANNELS_ARRAY = ['24-horas', 'meganoticias', 't13'];
-export const EXTRA_DEFAULT_CHANNELS_ARRAY = ['chv-noticias', 'cnn-cl', 'lofi-girl'];
+export const DEFAULT_CHANNELS_ARRAY = ['trt-haber', 'trt-spor', 'trt-belgesel'];
+export const EXTRA_DEFAULT_CHANNELS_ARRAY = [];
 
 export let channelsList;
 
@@ -73,8 +73,8 @@ export async function fetchLoadChannels() {
 
             // Save in-memory copy
             initialChannelsListBackup = JSON.parse(JSON.stringify(channelsList));
-        } catch (parseError) {
-            console.error('[teles] Error parsing main JSON', parseError);
+        } catch (parseHata) {
+            console.error('[teles] Hata parsing main JSON', parseHata);
             // Try loading backup if exists
             if (isBackupValid()) {
                 console.warn('[teles] Using channel list backup from localStorage due to parsing error');
@@ -84,7 +84,7 @@ export async function fetchLoadChannels() {
                     return;
                 }
             }
-            throw parseError;
+            throw parseHata;
         }
     } catch (error) {
         throw error;
@@ -244,17 +244,17 @@ function combineChannelsWithList(parseM3u = {}, { origin = 'unknown-list', sourc
  * Loads a personalized M3U list from a URL.
  * @async
  * @param {string} url 
- * @throws {Error} If URL is invalid or fetch fails.
+ * @throws {Hata} If URL is invalid or fetch fails.
  */
 export async function loadPersonalizedM3UList(url) {
     if (!url || typeof url !== 'string') {
-        throw new Error('Debes proporcionar una URL válida a un archivo .m3u');
+        throw new Hata('Debes proporcionar una URL válida a un archivo .m3u');
     }
 
     console.info(`[teles] Loading personalized list from: ${url}`);
     const response = await fetch(url);
     if (!response.ok) {
-        throw new Error(`No se pudo cargar la lista personalizada (estado ${response.status})`);
+        throw new Hata(`No se pudo cargar la lista personalizada (estado ${response.status})`);
     }
 
     const m3uData = await response.text();
@@ -276,16 +276,16 @@ export async function loadPersonalizedM3UList(url) {
  * @param {Object} options 
  * @param {string} [options.etiqueta]
  * @param {string} [options.clave]
- * @throws {Error} If content is invalid.
+ * @throws {Hata} If content is invalid.
  */
 export async function loadPersonalizedListFromText(content, options = {}) {
     if (!content || typeof content !== 'string') {
-        throw new Error('Debes proporcionar el contenido de un archivo .m3u en texto');
+        throw new Hata('Debes proporcionar el contenido de un archivo .m3u en texto');
     }
 
     const { isValid, errors: errores } = validateM3UContent(content);
     if (!isValid) {
-        throw new Error(errores.join(' '));
+        throw new Hata(errores.join(' '));
     }
 
     const { etiqueta, clave } = options;

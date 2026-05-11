@@ -21,7 +21,7 @@ export const clearSharedUrlParameter = (force = false) => {
         sharedParameterCleaned = true;
 
     } catch (error) {
-        console.error('[teles] Error clearing shared URL parameter:', error);
+        console.error('[teles] Hata clearing shared URL parameter:', error);
     }
 };
 
@@ -54,7 +54,7 @@ export const getActiveChannelIds = () => {
 
         return activeChannels;
     } catch (error) {
-        console.error('[teles] Error getting active channels:', error);
+        console.error('[teles] Hata getting active channels:', error);
         return [];
     }
 };
@@ -76,7 +76,7 @@ export const syncActiveChannelsParameter = () => {
         window.history.replaceState({}, document.title, currentUrl.toString());
         sharedParameterCleaned = true;
     } catch (error) {
-        console.error('[teles] Error syncing dynamic URL:', error);
+        console.error('[teles] Hata syncing dynamic URL:', error);
     }
 };
 
@@ -100,7 +100,7 @@ export const registerManualChannelChange = ({ force = false } = {}) => {
 
 /**
    * Retrieves the list of channel IDs shared via the `c` parameter in the URL.
-   * Expected format is a comma-separated list, e.g.: ?c=24-horas,meganoticias,t13
+   * Expected format is a comma-separated list, e.g.: ?c=trt-haber,trt-spor,trt-belgesel
    * @returns {string[]} Array of valid channel IDs.
    */
 export const getChannelsFromUrl = () => {
@@ -114,7 +114,7 @@ export const getChannelsFromUrl = () => {
             .map(id => id.trim())
             .filter(id => id.length > 0 && channelsList?.[id]);
     } catch (error) {
-        console.error('[teles] Error reading shared channels from URL:', error);
+        console.error('[teles] Hata reading shared channels from URL:', error);
         return [];
     }
 }

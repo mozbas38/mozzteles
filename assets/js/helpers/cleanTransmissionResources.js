@@ -16,7 +16,7 @@ export const cleanTransmissionResources = (transmissionContainer) => {
                 player.dispose();
             }
         } catch (errorVideojs) {
-            console.error(`[teles] Error destroying Video.js for channel "${channelId}":`, errorVideojs);
+            console.error(`[teles] Hata destroying Video.js for channel "${channelId}":`, errorVideojs);
         }
     }
 
@@ -24,7 +24,7 @@ export const cleanTransmissionResources = (transmissionContainer) => {
         try {
             changeContainer._clapprPlayer.destroy();
         } catch (errorClappr) {
-            console.error(`[teles] Error destroying Clappr for channel"${channelId}":`, errorClappr);
+            console.error(`[teles] Hata destroying Clappr for channel"${channelId}":`, errorClappr);
         }
     }
 
@@ -32,7 +32,7 @@ export const cleanTransmissionResources = (transmissionContainer) => {
         try {
             changeContainer._oplayerPlayer.destroy();
         } catch (errorOplayer) {
-            console.error(`[teles] Error destroying OPlayer for channel"${channelId}":`, errorOplayer);
+            console.error(`[teles] Hata destroying OPlayer for channel"${channelId}":`, errorOplayer);
         }
     }
 
@@ -43,7 +43,7 @@ export const cleanTransmissionResources = (transmissionContainer) => {
             }
             changeContainer._shakaPlayer.destroy();
         } catch (errorShaka) {
-            console.error(`[teles] Error destroying Shaka Player/UI for channel"${channelId}":`, errorShaka);
+            console.error(`[teles] Hata destroying Shaka Player/UI for channel"${channelId}":`, errorShaka);
         }
     }
 
@@ -53,7 +53,7 @@ export const cleanTransmissionResources = (transmissionContainer) => {
             changeContainer._iframeElement.removeAttribute('srcdoc');
             changeContainer._iframeElement.remove();
         } catch (error) {
-            console.error(`[teles] Error destroying iframe for channel"${channelId}":`, error);
+            console.error(`[teles] Hata destroying iframe for channel"${channelId}":`, error);
         }
     }
 };

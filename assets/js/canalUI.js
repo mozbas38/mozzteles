@@ -44,22 +44,22 @@ export function crearIframe(canalId, tipoSeñalParaIframe, valorIndex = 0, viewM
 
     const URL_POR_TIPO_SEÑAL = {
         'iframe_url': señales.iframe_url && señales.iframe_url[valorIndex],
-        'yt_id': señales.yt_id && `https://www.youtube-nocookie.com/embed/live_stream?channel=${señales.yt_id}&autoplay=1&mute=1&modestbranding=1&vq=medium&showinfo=0`,
-        'yt_embed': señales.yt_embed && `https://www.youtube-nocookie.com/embed/${señales.yt_embed}?autoplay=1&mute=1&modestbranding=1&showinfo=0`,
-        'yt_playlist': señales.yt_playlist && `https://www.youtube-nocookie.com/embed/videoseries?list=${señales.yt_playlist}&autoplay=0&mute=0&modestbranding=1&showinfo=0`,
+        'yt_id': señales.yt_id && `https://www.youtube-nocookie.com/embed/live_stream?channel=${señales.yt_id}&arabaplay=1&mute=1&modestbranding=1&vq=medium&showinfo=0`,
+        'yt_embed': señales.yt_embed && `https://www.youtube-nocookie.com/embed/${señales.yt_embed}?arabaplay=1&mute=1&modestbranding=1&showinfo=0`,
+        'yt_playlist': señales.yt_playlist && `https://www.youtube-nocookie.com/embed/videodizi?list=${señales.yt_playlist}&arabaplay=0&mute=0&modestbranding=1&showinfo=0`,
         'twitch_id': señales.twitch_id && `https://player.twitch.tv/?channel=${señales.twitch_id}&parent=${TWITCH_PARENT}`
     };
 
     const IFRAME_ELEMENT = document.createElement('iframe');
     IFRAME_ELEMENT.src = URL_POR_TIPO_SEÑAL[tipoSeñalParaIframe];
-    IFRAME_ELEMENT.classList.add('pe-auto');
+    IFRAME_ELEMENT.classList.add('pe-araba');
     IFRAME_ELEMENT.setAttribute('contenedor-canal-cambio', canalId);
     IFRAME_ELEMENT.allowFullscreen = true;
-    IFRAME_ELEMENT.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+    IFRAME_ELEMENT.allow = 'accelerometer; arabaplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
     IFRAME_ELEMENT.title = nombre;
     if (tipoSeñalParaIframe === 'yt_id' || tipoSeñalParaIframe === 'yt_embed' || tipoSeñalParaIframe === 'yt_playlist'
         || (tipoSeñalParaIframe === 'iframe_url' && URL_POR_TIPO_SEÑAL[tipoSeñalParaIframe]?.includes('youtube', 'youtu.be', 'youtube-nocookie'))) {
-        IFRAME_ELEMENT.referrerPolicy = 'strict-origin-when-cross-origin';  // Debido a Error 153 con Youtube. Rompe otras señales iframe_url por eso lo filtramos antes.
+        IFRAME_ELEMENT.referrerPolicy = 'strict-origin-when-cross-origin';  // Debido a Hata 153 con Youtube. Rompe otras señales iframe_url por eso lo filtramos antes.
     } else {
         IFRAME_ELEMENT.referrerPolicy = 'no-referrer';
     }
@@ -94,7 +94,7 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
                 const clapprPlayer = new Clappr.Player({
                     source: urlCarga,
                     parent: playerContainer,
-                    autoPlay: true,
+                    arabaPlay: true,
                     mute: true,
                     width: '100%',
                     height: '100%'
@@ -102,14 +102,14 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
                 // Almacenamos la instancia del reproductor para usarla en el futuro para limpiar recursos
                 DIV_ELEMENT._clapprPlayer = clapprPlayer;
             } catch (error) {
-                console.error(`[teles] Error at attempt to initialize Clappr for channel with id: ${canalId}. Error: ${error}`);
+                console.error(`[teles] Hata at attempt to initialize Clappr for channel with id: ${canalId}. Hata: ${error}`);
                 showToast({
-                    title: `Error al inicializar Clappr para canal ${canalId}. Se usará Video.js.`,
-                    body: `Error: ${error}`,
+                    title: `Hata al inicializar Clappr para canal ${canalId}. Video.js kullanılacak.`,
+                    body: `Hata: ${error}`,
                     type: 'danger',
-                    autohide: false,
+                    arabahide: false,
                     delay: 0,
-                    showReloadOnError: true
+                    showReloadOnHata: true
                 });
             }
         }, 0);
@@ -128,7 +128,7 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
         const videoElement = document.createElement('video');
         videoElement.setAttribute('contenedor-canal-cambio', canalId);
         videoElement.classList.add('position-absolute', 'p-0', 'w-100', 'h-100');
-        videoElement.autoplay = true;
+        videoElement.arabaplay = true;
         videoElement.muted = true;
         // La interfaz de Shaka manejará los controles
         videoElement.controls = false;
@@ -160,23 +160,23 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
                     DIV_ELEMENT._shakaPlayer = player;
                     DIV_ELEMENT._shakaUi = ui; // Guardamos la UI también por si es necesaria
                 } else {
-                    throw new Error('Browser not supported by Shaka Player');
+                    throw new Hata('Browser not supported by Shaka Player');
                 }
             } catch (error) {
                 // Si el error es REQUEST_FAILED (1002), fallar silenciosamente en consola.
-                const isShakaError1002 = error && (error.code === 1002 || (error.detail && error.detail.code === 1002));
+                const isShakaHata1002 = error && (error.code === 1002 || (error.detail && error.detail.code === 1002));
 
-                // Shaka Error 1001: No se puede reproducir el contenido.
-                const isShakaError1001 = error && (error.code === 1001 || (error.detail && error.detail.code === 1001));
+                // Shaka Hata 1001: No se puede reproducir el contenido.
+                const isShakaHata1001 = error && (error.code === 1001 || (error.detail && error.detail.code === 1001));
 
-                console.error(`[teles] Error at attempt to initialize Shaka Player for channel with id: ${canalId}. Error:`, error);
+                console.error(`[teles] Hata at attempt to initialize Shaka Player for channel with id: ${canalId}. Hata:`, error);
 
                 if (error) {
                     showToast({
-                        title: `Error al inicializar Shaka Player para canal ${canalId}. 
-                        ${isShakaError1001 ? 'No se puede reproducir el contenido, por favor intente con otro reproductor. (Posible señal inactiva)' : ''}
-                        ${isShakaError1002 ? 'Error al solicitar el contenido, por favor intente de nuevo. (Posible señal inactiva)' : ''}`,
-                        body: `Error: ${error.message || error}`,
+                        title: `Hata al inicializar Shaka Player para canal ${canalId}. 
+                        ${isShakaHata1001 ? 'No se puede reproducir el contenido, por favor intente con otro reproductor. (Posible señal inactiva)' : ''}
+                        ${isShakaHata1002 ? 'Hata al solicitar el contenido, por favor intente de nuevo. (Posible señal inactiva)' : ''}`,
+                        body: `Hata: ${error.message || error}`,
                         type: 'warning',
                         delay: 10000,
 
@@ -211,7 +211,7 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
                         src: urlCarga,
                         title: canalId
                     },
-                    autoplay: true,
+                    arabaplay: true,
                     muted: true
                 });
                 if (typeof OHls !== 'undefined') {
@@ -229,14 +229,14 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
                 // Almacenamos la instancia del reproductor para usarla en el futuro para limpiar recursos
                 DIV_ELEMENT._oplayerPlayer = instancia;
             } catch (error) {
-                console.error(`[teles] Error at attempt to initialize OPlayer for channel with id: ${canalId}. Error: ${error}`);
+                console.error(`[teles] Hata at attempt to initialize OPlayer for channel with id: ${canalId}. Hata: ${error}`);
                 showToast({
-                    title: `Error al inicializar OPlayer para canal ${canalId}. Se usará Video.js.`,
-                    body: `Error: ${error}`,
+                    title: `Hata al inicializar OPlayer para canal ${canalId}. Video.js kullanılacak.`,
+                    body: `Hata: ${error}`,
                     type: 'danger',
-                    autohide: false,
+                    arabahide: false,
                     delay: 0,
-                    showReloadOnError: true
+                    showReloadOnHata: true
                 });
             }
         }, 0);
@@ -256,19 +256,19 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
         videojs(videoElement).src({
             src: urlCarga,
         });
-        videojs(videoElement).autoplay(true);
+        videojs(videoElement).arabaplay(true);
         videojs(videoElement).muted(true);
         // Almacenamos la instancia del reproductor para usarla en el futuro para limpiar recursos
         DIV_ELEMENT._videojsPlayer = videojs(videoElement);
     } catch (error) {
-        console.error(`[teles] Error at attempt to initialize Video.js for channel with id: ${canalId}. Error: ${error}`);
+        console.error(`[teles] Hata at attempt to initialize Video.js for channel with id: ${canalId}. Hata: ${error}`);
         showToast({
-            title: `Error al inicializar Video.js para canal ${canalId}. Se procesará el siguiente canal.`,
-            body: `Error: ${error}`,
+            title: `Hata al inicializar Video.js para canal ${canalId}. Sonraki kanal işlenecek.`,
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
     }
     return DIV_ELEMENT;
@@ -301,12 +301,12 @@ export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
         const BOTON_SELECCIONAR_SEÑAL_CANAL = document.createElement("button");
         BOTON_SELECCIONAR_SEÑAL_CANAL.id = 'overlay-boton-selecionar-señal'
         BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('type', 'button');
-        BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('title', 'Seleccionar diferente señal');
+        BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('title', 'Farklı sinyal seç');
         BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('data-bs-toggle', 'dropdown');
         BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('aria-expanded', 'false');
 
-        BOTON_SELECCIONAR_SEÑAL_CANAL.innerHTML = '<span>Seleccionar señal</span><i class="bi bi-collection" data-bs-toggle="tooltip" data-bs-title="Seleccionar diferente señal"></i>';
-        BOTON_SELECCIONAR_SEÑAL_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'dropdown-toggle', 'd-flex', 'justify-content-center', 'align-items-center', 'gap-1', 'p-0', 'px-1', 'pe-auto', 'mt-1', 'rounded-3');
+        BOTON_SELECCIONAR_SEÑAL_CANAL.innerHTML = '<span>Sinyal Seç</span><i class="bi bi-collection" data-bs-toggle="tooltip" data-bs-title="Farklı sinyal seç"></i>';
+        BOTON_SELECCIONAR_SEÑAL_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'dropdown-toggle', 'd-flex', 'justify-content-center', 'align-items-center', 'gap-1', 'p-0', 'px-1', 'pe-araba', 'mt-1', 'rounded-3');
 
         const DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL = document.createElement("ul");
         DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL.classList.add('dropdown-menu');
@@ -327,7 +327,7 @@ export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
             if (Array.isArray(value) && value.length > 0) {
                 value.forEach((url, index) => {
                     const listItem = document.createElement("li");
-                    listItem.classList.add('dropdown-item', 'pe-auto', 'py-2', 'user-select-none');
+                    listItem.classList.add('dropdown-item', 'pe-araba', 'py-2', 'user-select-none');
                     if (tipoSeñalCargada === key && valorIndex === index) listItem.classList.add('bg-indigo', 'fw-bold');
                     listItem.innerHTML = value.length === 1 ? `${iconoSeñal} ${key.split('_')[0]}` : `${iconoSeñal} ${key.split('_')[0]} <span class="fst-italic">${index}</span>`;
                     listItem.addEventListener("click", () => {
@@ -342,7 +342,7 @@ export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
                 });
             } else if (typeof value === "string" && value !== "") {
                 const listItem = document.createElement("li");
-                listItem.classList.add('dropdown-item', 'pe-auto', 'py-2', 'user-select-none');
+                listItem.classList.add('dropdown-item', 'pe-araba', 'py-2', 'user-select-none');
                 if (tipoSeñalCargada === key) listItem.classList.add('bg-indigo', 'fw-bold');
                 listItem.innerHTML = `${iconoSeñal} ${key.replace('_', ' ')}`;
                 listItem.addEventListener("click", () => {
@@ -363,8 +363,8 @@ export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
         BOTON_MOVER_CANAL.setAttribute('title', 'Arrastrar y mover este canal');
         BOTON_MOVER_CANAL.setAttribute('data-bs-toggle', 'tooltip');
         BOTON_MOVER_CANAL.setAttribute('data-bs-title', 'Arrastrar y mover este canal');
-        BOTON_MOVER_CANAL.innerHTML = '<span>Mover</span><i class="bi bi-arrows-move"></i>';
-        BOTON_MOVER_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-auto', 'mt-1', 'rounded-3', 'clase-para-mover');
+        BOTON_MOVER_CANAL.innerHTML = '<span>Taşı</span><i class="bi bi-arrows-move"></i>';
+        BOTON_MOVER_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-araba', 'mt-1', 'rounded-3', 'clase-para-mover');
 
         const BOTON_CAMBIAR_CANAL = document.createElement('button');
         BOTON_CAMBIAR_CANAL.id = 'overlay-boton-cambiar';
@@ -373,8 +373,8 @@ export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
         BOTON_CAMBIAR_CANAL.setAttribute('data-bs-toggle', 'tooltip');
         BOTON_CAMBIAR_CANAL.setAttribute('data-bs-title', 'Cambiar este canal');
         BOTON_CAMBIAR_CANAL.setAttribute('data-button-cambio', canalId);
-        BOTON_CAMBIAR_CANAL.innerHTML = '<span>Cambiar</span><i class="bi bi-arrow-repeat"></i>';
-        BOTON_CAMBIAR_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-auto', 'mt-1', 'rounded-3');
+        BOTON_CAMBIAR_CANAL.innerHTML = '<span>Değiştir</span><i class="bi bi-arrow-repeat"></i>';
+        BOTON_CAMBIAR_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-araba', 'mt-1', 'rounded-3');
         BOTON_CAMBIAR_CANAL.addEventListener('click', () => {
             changeChannelModalLabelEl.textContent = nombre;
             changeChannelModalEl.dataset.channelSource = canalId;
@@ -390,34 +390,34 @@ export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
 
         const BOTON_SITIO_OFICIAL_CANAL = document.createElement('a');
         BOTON_SITIO_OFICIAL_CANAL.id = 'overlay-boton-pagina-oficial';
-        BOTON_SITIO_OFICIAL_CANAL.title = 'Ir a la página oficial de esta transmisión';
+        BOTON_SITIO_OFICIAL_CANAL.title = 'Bu yayının resmi sayfasına git';
         if (tipoSeñalCargada === 'yt_id') sitio_oficial = `https://www.youtube.com/channel/${señales.yt_id}`;
         if (tipoSeñalCargada === 'twitch_id') sitio_oficial = `https://www.twitch.tv/${señales.twitch_id}`;
         BOTON_SITIO_OFICIAL_CANAL.href = sitio_oficial !== '' ? sitio_oficial : `https://www.duckduckgo.com/?q=${nombre}+en+vivo`;
         BOTON_SITIO_OFICIAL_CANAL.setAttribute('role', 'button');
         BOTON_SITIO_OFICIAL_CANAL.setAttribute('data-bs-toggle', 'tooltip');
-        BOTON_SITIO_OFICIAL_CANAL.setAttribute('data-bs-title', 'Ir a la página oficial de esta transmisión');
+        BOTON_SITIO_OFICIAL_CANAL.setAttribute('data-bs-title', 'Bu yayının resmi sayfasına git');
         BOTON_SITIO_OFICIAL_CANAL.rel = 'noopener nofollow noreferrer';
         BOTON_SITIO_OFICIAL_CANAL.innerHTML = `<span>
                 ${nombre}
                 ${país
-                ? ` <img src="https://flagcdn.com/${país.toLowerCase()}.svg" alt="bandera ${COUNTRY_CODES[país]}" title="${COUNTRY_CODES[país]}" class="svg-bandera">`
+                ? ` <img src="https://flagcdn.com/${país.toLowerCase()}.svg" alt="bayrak ${COUNTRY_CODES[país]}" title="${COUNTRY_CODES[país]}" class="svg-bayrak">`
                 : ''}
                 ${iconoCategoria
                 ? ` ${iconoCategoria}`
                 : ''}
                 </span> <i class="bi bi-box-arrow-up-right"></i>`;
-        BOTON_SITIO_OFICIAL_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-auto', 'mt-1', 'rounded-3', 'text-nowrap');
+        BOTON_SITIO_OFICIAL_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-araba', 'mt-1', 'rounded-3', 'text-nowrap');
 
         const BOTON_QUITAR_CANAL = document.createElement('button');
         BOTON_QUITAR_CANAL.id = 'overlay-boton-quitar';
         BOTON_QUITAR_CANAL.setAttribute('aria-label', 'Close');
         BOTON_QUITAR_CANAL.setAttribute('type', 'button');
-        BOTON_QUITAR_CANAL.setAttribute('title', 'Quitar canal');
+        BOTON_QUITAR_CANAL.setAttribute('title', 'Kaldır canal');
         BOTON_QUITAR_CANAL.setAttribute('data-bs-toggle', 'tooltip');
-        BOTON_QUITAR_CANAL.setAttribute('data-bs-title', 'Quitar canal');
-        BOTON_QUITAR_CANAL.innerHTML = '<span>Quitar</span><i class="bi bi-x-circle"></i>';
-        BOTON_QUITAR_CANAL.classList.add('btn', 'btn-sm', 'btn-danger', 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-auto', 'mt-1', 'rounded-3');
+        BOTON_QUITAR_CANAL.setAttribute('data-bs-title', 'Kaldır canal');
+        BOTON_QUITAR_CANAL.innerHTML = '<span>Kaldır</span><i class="bi bi-x-circle"></i>';
+        BOTON_QUITAR_CANAL.classList.add('btn', 'btn-sm', 'btn-danger', 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-araba', 'mt-1', 'rounded-3');
         BOTON_QUITAR_CANAL.addEventListener('click', () => {
             tele.remove(canalId);
             playAudio(AUDIO_POP);
@@ -432,14 +432,14 @@ export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
         FRAGMENT_OVERLAY.append(DIV_ELEMENT);
         return FRAGMENT_OVERLAY;
     } catch (error) {
-        console.error(`[teles] Error at attempt to create overlay for channel with id: ${canalId}. Error: ${error}`);
+        console.error(`[teles] Hata at attempt to create overlay for channel with id: ${canalId}. Hata: ${error}`);
         showToast({
-            title: `Error al crear overlay para canal ${canalId}.`,
-            body: `Error: ${error}`,
+            title: `Hata al crear overlay para canal ${canalId}.`,
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
         return;
     }
@@ -505,21 +505,21 @@ export function crearFragmentCanal(canalId, viewMode = 'grid-view') {
             return FRAGMENT_CANAL;
         }
     } else {
-        console.error(`[teles] Error at attempt to create fragment for channel with id: ${canalId}. Error: ${error}`);
+        console.error(`[teles] Hata at attempt to create fragment for channel with id: ${canalId}. Hata: ${error}`);
         showToast({
-            title: `Canal ${canalId} no tiene señales definidas. Se procesará el siguiente canal.`,
-            body: `Error: ${error}`,
+            title: `Canal ${canalId} no tiene señales definidas. Sonraki kanal işlenecek.`,
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
     }
 }
 
 export function cambiarSoloSeñalActiva(canalId) {
     try {
-        if (!canalId) return console.error(`[teles] Error at attempt to change signal: canalId is missing.`);
+        if (!canalId) return console.error(`[teles] Hata at attempt to change signal: canalId is missing.`);
 
         let divPadreACambiar = document.querySelector(`div[data-canal="${canalId}"]`);
         if (!divPadreACambiar) {
@@ -550,14 +550,14 @@ export function cambiarSoloSeñalActiva(canalId) {
         if (typeof registerManualChannelChange === 'function') registerManualChannelChange();
 
     } catch (error) {
-        console.error(`[teles] Error at attempt to change signal for channel with id: ${canalId}. Error: ${error}`);
+        console.error(`[teles] Hata at attempt to change signal for channel with id: ${canalId}. Hata: ${error}`);
         showToast({
-            title: `Error al intentar cambiar señal para canal ${canalId}.`,
-            body: `Error: ${error}`,
+            title: `Hata al intentar cambiar señal para canal ${canalId}.`,
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
         return;
     }

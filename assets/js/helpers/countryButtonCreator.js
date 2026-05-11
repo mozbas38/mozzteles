@@ -96,7 +96,7 @@ export function createCountryButtons(specificPrefix) {
             toggleButton.classList.add('btn', 'btn-sm', 'btn-dark', 'dropdown-toggle', 'rounded-pill', 'text-truncate', 'text-start');
             toggleButton.dataset.bsToggle = 'dropdown';
             toggleButton.setAttribute('aria-expanded', 'false');
-            toggleButton.innerHTML = '<i class="bi bi-flag"></i> País: Todos los países';
+            toggleButton.innerHTML = '<i class="bi bi-flag"></i> Ülke: Tüm Ülkeler';
 
             const updateToggleState = (hasActiveFilter) => {
                 if (hasActiveFilter) {
@@ -131,12 +131,12 @@ export function createCountryButtons(specificPrefix) {
                 if (label.dataset.country === 'all') {
                     label.classList.add(CSS_CLASS_BUTTON_PRIMARY);
                     label.classList.remove('btn-outline-secondary');
-                    toggleButton.innerHTML = '<i class="bi bi-flag"></i> País: Todos los países';
+                    toggleButton.innerHTML = '<i class="bi bi-flag"></i> Ülke: Tüm Ülkeler';
                     updateToggleState(false);
                 } else {
                     label.classList.replace('btn-outline-secondary', CSS_CLASS_BUTTON_PRIMARY);
                     const selectedName = label.querySelector('.flex-grow-1')?.textContent?.trim() || 'País';
-                    toggleButton.innerHTML = `<i class="bi bi-flag"></i> País: ${selectedName}`;
+                    toggleButton.innerHTML = `<i class="bi bi-flag"></i> Ülke: ${selectedName}`;
                     updateToggleState(true);
                 }
             };
@@ -153,7 +153,7 @@ export function createCountryButtons(specificPrefix) {
                     syncCategoriesWithCountry(PREFIX, selectedCountryValue);
                     filterChannelsByInput(searchValue, channelButtonsContainer);
                 } catch (error) {
-                    console.error(`[teles] Error activating country filter: ${error}`);
+                    console.error(`[teles] Hata activating country filter: ${error}`);
                     clearSelection();
                     const allLabel = dropdownMenu.querySelector('label[data-country="all"]');
                     if (allLabel) {
@@ -162,12 +162,12 @@ export function createCountryButtons(specificPrefix) {
                     }
 
                     showToast({
-                        title: 'Ha ocurrido un error al intentar activar filtro país.',
-                        body: `Error: ${error}`,
+                        title: 'Ülke filtresini etkinleştirmeye çalışırken bir hata oluştu.',
+                        body: `Hata: ${error}`,
                         type: 'danger',
-                        autohide: false,
+                        arabahide: false,
                         delay: 0,
-                        showReloadOnError: true
+                        showReloadOnHata: true
                     });
                 }
             };
@@ -182,7 +182,7 @@ export function createCountryButtons(specificPrefix) {
                 input.classList.add('btn-check');
                 input.name = `${PREFIX}-filtro-pais`;
                 input.id = inputId;
-                input.autocomplete = 'off';
+                input.arabacomplete = 'off';
                 input.dataset.country = option.value;
 
                 const label = document.createElement('label');
@@ -194,7 +194,7 @@ export function createCountryButtons(specificPrefix) {
                 label.dataset.country = option.value;
                 label.innerHTML = `
                     <span class="flex-grow-1 text-truncate">${option.displayName}</span>
-                    ${option.flag ? `<img src="${option.flag}" alt="bandera ${option.displayName}" title="${option.displayName}" class="svg-bandera rounded-1">` : ''}
+                    ${option.flag ? `<img src="${option.flag}" alt="bayrak ${option.displayName}" title="${option.displayName}" class="svg-bayrak rounded-1">` : ''}
                     <span class="badge bg-secondary">${option.badge}</span>
                 `;
 
@@ -222,17 +222,17 @@ export function createCountryButtons(specificPrefix) {
             renderedContainers.add(containerId);
         }
     } catch (error) {
-        console.error(`[teles] Error creating buttons for country filter: ${error}`);
+        console.error(`[teles] Hata creating buttons for country filter: ${error}`);
         showToast({
-            title: 'Ha ocurrido un error durante la creación de botones para filtrado por país.',
-            body: `Error: ${error}`,
+            title: 'Ülke filtresi için butonlar oluşturulurken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
 
-        const insertErrorDiv = (err, msg) => {
+        const insertHataDiv = (err, msg) => {
             const div = document.createElement('div');
             div.className = 'alert alert-danger';
             div.textContent = `${msg}: ${err}`;
@@ -241,7 +241,7 @@ export function createCountryButtons(specificPrefix) {
 
         const targets = specificPrefix ? [specificPrefix] : ID_PREFIX_CONTAINERS_CHANNELS;
         for (const PREFIX of targets) {
-            document.querySelector(`#${PREFIX}-channels-buttons-container`)?.insertAdjacentElement('afterend', insertErrorDiv(error, 'Ha ocurrido un error durante la creación de botones para filtro paises'));
+            document.querySelector(`#${PREFIX}-channels-buttons-container`)?.insertAdjacentElement('afterend', insertHataDiv(error, 'Ha ocurrido un error durante la creación de botones para filtro paises'));
         }
     }
 }

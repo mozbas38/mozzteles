@@ -5,7 +5,7 @@ import {
 } from "./filterRelations.js";
 
 /** @type {string} Message shown when an option is unavailable for the current filter combination */
-const UNAVAILABLE_MESSAGE = "No disponible para la combinación seleccionada";
+const UNAVAILABLE_MESSAGE = "Seçilen kombinasyon için mevcut değil";
 
 /** @type {Object.<string, function(string): string>} Menu selectors by filter type */
 const MENU_SELECTORS = {

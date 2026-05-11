@@ -55,14 +55,14 @@ export const replaceActiveChannel = (replacementChannelId, existingChannelId) =>
             registerManualChannelChange();
         }
     } catch (error) {
-        console.error(`Error at attempt to replace ${existingChannelId} with ${replacementChannelId}. Error: ${error}`);
+        console.error(`Hata at attempt to replace ${existingChannelId} with ${replacementChannelId}. Hata: ${error}`);
         showToast({
-            title: `Ha ocurrido un error al intentar cambiar canal: ${existingChannelId} por canal: ${replacementChannelId}.`,
-            body: `Error: ${error}`,
+            title: `Kanalı değiştirmeye çalışırken bir hata oluştu: ${existingChannelId} yeni kanal: ${replacementChannelId}.`,
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
     }
 };

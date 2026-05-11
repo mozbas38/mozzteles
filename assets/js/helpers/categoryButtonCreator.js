@@ -44,7 +44,7 @@ export function createCategoryButtons(specificPrefix) {
 
         const CATEGORY_OPTIONS = [];
 
-        const allIcon = CATEGORIES_ICONS.general ?? CATEGORIES_ICONS.undefined;
+        const allIcon = CATEGORIES_ICONS.genel ?? CATEGORIES_ICONS.undefined;
         CATEGORY_OPTIONS.push({
             value: "all",
             displayName: "Todas",
@@ -90,7 +90,7 @@ export function createCategoryButtons(specificPrefix) {
             toggleButton.classList.add("btn", "btn-sm", "btn-dark", "dropdown-toggle", "rounded-pill", "text-truncate", "text-start");
             toggleButton.dataset.bsToggle = "dropdown";
             toggleButton.setAttribute("aria-expanded", "false");
-            toggleButton.innerHTML = `<i class="bi bi-grid-3x3-gap"></i> Categoría: Todas`;
+            toggleButton.innerHTML = `<i class="bi bi-grid-3x3-gap"></i> Kategori: Tümü`;
 
             const updateToggleState = (hasActiveFilter) => {
                 if (hasActiveFilter) {
@@ -125,12 +125,12 @@ export function createCategoryButtons(specificPrefix) {
                 if (label.dataset.category === "all") {
                     label.classList.add(CSS_CLASS_BUTTON_PRIMARY);
                     label.classList.remove("btn-outline-secondary");
-                    toggleButton.innerHTML = `<i class="bi bi-grid-3x3-gap"></i> Categoría: Todas`;
+                    toggleButton.innerHTML = `<i class="bi bi-grid-3x3-gap"></i> Kategori: Tümü`;
                     updateToggleState(false);
                 } else {
                     label.classList.replace("btn-outline-secondary", CSS_CLASS_BUTTON_PRIMARY);
                     const selectedName = label.querySelector(".flex-grow-1")?.textContent?.trim() || "Categoría";
-                    toggleButton.innerHTML = `<i class="bi bi-grid-3x3-gap"></i> Categoría: ${selectedName}`;
+                    toggleButton.innerHTML = `<i class="bi bi-grid-3x3-gap"></i> Kategori: ${selectedName}`;
                     updateToggleState(true);
                 }
             };
@@ -149,7 +149,7 @@ export function createCategoryButtons(specificPrefix) {
                     syncCountriesWithCategory(PREFIX, selectedCategory);
                     filterChannelsByInput(searchValue, channelButtonsContainer);
                 } catch (error) {
-                    console.error(`[teles] Error activating category filter. ${error}`);
+                    console.error(`[teles] Hata activating category filter. ${error}`);
                     clearSelection();
                     const allLabel = dropdownMenu.querySelector('label[data-category="all"]');
                     if (allLabel) {
@@ -158,8 +158,8 @@ export function createCategoryButtons(specificPrefix) {
                         syncCountriesWithCategory(PREFIX, "all");
                     }
                     showToast({
-                        title: 'Ha ocurrido un error al intentar activar filtro categoría.',
-                        body: `Error: ${error}`,
+                        title: 'Kategori filtresini etkinleştirmeye çalışırken bir hata oluştu.',
+                        body: `Hata: ${error}`,
                         type: 'danger'
                     });
                 }
@@ -175,7 +175,7 @@ export function createCategoryButtons(specificPrefix) {
                 input.classList.add("btn-check");
                 input.name = `${PREFIX}-filtro-categoria`;
                 input.id = inputId;
-                input.autocomplete = "off";
+                input.arabacomplete = "off";
                 input.dataset.category = option.value;
 
                 const label = document.createElement("label");
@@ -223,18 +223,18 @@ export function createCategoryButtons(specificPrefix) {
             renderedContainers.add(containerId);
         }
     } catch (error) {
-        console.error(`[teles] Error creating category filter buttons. ${error}`);
+        console.error(`[teles] Hata creating category filter buttons. ${error}`);
         showToast({
-            title: 'Ha ocurrido un error durante la creación de botones para filtrado por categoría.',
-            body: `Error: ${error}`,
+            title: 'Kategori filtresi için butonlar oluşturulurken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
-            autohide: false,
+            arabahide: false,
             delay: 0,
-            showReloadOnError: true
+            showReloadOnHata: true
         });
 
         // Helper to insert error div
-        const insertErrorDiv = (err, msg) => {
+        const insertHataDiv = (err, msg) => {
             const div = document.createElement('div');
             div.className = 'alert alert-danger';
             div.textContent = `${msg}: ${err}`;
@@ -247,7 +247,7 @@ export function createCategoryButtons(specificPrefix) {
             if (channelButtonsContainer) {
                 channelButtonsContainer.insertAdjacentElement(
                     "afterend",
-                    insertErrorDiv(
+                    insertHataDiv(
                         error,
                         "Ha ocurrido un error durante la creación de botones para filtro categorías"
                     )
