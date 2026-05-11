@@ -1,17 +1,11 @@
 <!doctype html>
 <html lang="tr">
-<!--     
-    teles v0.26
-    by Alplox 
-    https://github.com/Alplox/teles
--->
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base target="_blank">
     <title>Mozbasport</title>
-    <!-- flash of light theme  -->
     <script id="theme-loader">
         (function () {
             const savedTheme = localStorage.getItem('theme');
@@ -22,29 +16,22 @@
     </script>
     <meta name="description"
         content="IPTV yayınlarını izlemek, karşılaştırmak ve kişisel reji ekranı oluşturmak için açık kaynak Türkçe PWA." />
-    <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <!-- bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- video-js -->
     <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
     <script src="https://unpkg.com/video.js/dist/video.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@oplayer/core@latest/dist/index.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@oplayer/hls@latest/dist/index.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@oplayer/ui@latest/dist/index.min.js" defer></script>
-    <!-- Clappr -->
     <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js" defer></script>
-    <!-- teles -->
     <link href="./assets/css/style.css" rel="stylesheet">
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Mozbasport">
     <meta property="og:url" content="./">
     <meta property="og:description"
         content="IPTV yayınlarını izlemek, karşılaştırmak ve kişisel reji ekranı oluşturmak için açık kaynak Türkçe PWA.">
     <meta property="og:image" content="./assets/img/previews/shots_teles_v0-18_dark_canales.webp">
-    <!-- Twitter Card-->
     <meta name="twitter:card"
         content="IPTV yayınlarını izlemek, karşılaştırmak ve kişisel reji ekranı oluşturmak için açık kaynak Türkçe PWA.">
     <meta property="twitter:domain" content="">
@@ -53,13 +40,10 @@
     <meta name="twitter:description"
         content="IPTV yayınlarını izlemek, karşılaştırmak ve kişisel reji ekranı oluşturmak için açık kaynak Türkçe PWA.">
     <meta name="twitter:image" content="./assets/img/previews/shots_teles_v0-18_dark_canales.webp">
-    <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">
-    <!-- isMobile -->
     <script src="https://cdn.jsdelivr.net/npm/ismobilejs@1.1.1/dist/isMobile.min.js" defer></script>
-    <!-- Service worker -->
     <meta name="theme-color" content="#212529" />
     <link rel="manifest" href="./site.webmanifest">
     <script type="module">
@@ -70,28 +54,22 @@
         el.offlineToastDuration = 2000;
         document.body.appendChild(el);
     </script>
-    <!-- reloj -->
     <script src="https://widget.time.is/t.js"></script>
     <script>
         time_is_widget.init({
             Santiago_z179: {}
         });
     </script>
-    <!-- Gridstack -->
     <link href="https://cdn.jsdelivr.net/npm/gridstack@12.4.2/dist/gridstack.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gridstack@12.4.2/dist/gridstack-all.js" defer></script>
-    <!-- Sortable -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js" defer></script>
-    <!-- pwa-install -->
     <script src="https://unpkg.com/@khmyznikov/pwa-install@0.3.5/dist/pwa-install.bundle.js" defer></script>
 </head>
 
 <body>
-    <!-- Toast container -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container">
     </div>
 
-    <!-- Alerta error carga canales -->
     <div class="position-fixed overflow-hidden vw-100 vh-100 bg-dark-subtle d-flex flex-column align-items-center justify-content-center p-5 d-none gap-3"
         id="alerta-error-carga-canales">
         <h1>(╥﹏╥)</h1>
@@ -107,9 +85,8 @@
         <span class="text-secondary fs-6 mt-5" id="span-contenedor-error"></span>
     </div>
 
-    <!-- Imagen y logo del fondo -->
     <div class="fondo-global">
-        <section id="container-tarjeta-logo-background"> <!-- tarjeta logo -->
+        <section id="container-tarjeta-logo-background">
             <div
                 class="position-absolute top-50 start-50 translate-middle border border-light-subtle rounded-5 shadow cursor-default-en-hover user-select-none overflow-hidden">
                 <div
@@ -122,13 +99,11 @@
                     </div>
                     <p class="display-1 gradient-text">Reji Masası</p>
 
-                    <!-- Controles de audio para música ambiente -->
                     <div id="audio-controls" class="z-3 d-flex flex-column gap-2 align-items-center p-2 rounded-4">
                         <button id="ambient-music-toggle"
                             class="btn btn-sm rounded-pill d-flex align-items-center gap-2"
                             title="Ortam müziğini oynat">
                             <i class="bi bi-play-fill text-flicker fs-4" id="music-icon"></i>
-                            <!--  <span>Música Ambiente</span> -->
                             <a id="ambient-music-track"
                                 class="fs-smaller bg-light-subtle p-2 rounded-pill user-select-auto"
                                 href="https://freesound.org/people/YellowTree/sounds/693384/">Weather
@@ -147,7 +122,6 @@
         </section>
     </div>
 
-    <!-- Alerta noscript -->
     <noscript>
         <div
             class="bg-noscript z-9999 position-fixed overflow-hidden d-flex flex-column align-items-center justify-content-center vw-100 vh-100 p-5">
@@ -157,10 +131,8 @@
         </div>
     </noscript>
 
-    <!-- pwa-install -->
     <pwa-install id="pwa-install" manifest-url="./site.webmanifest"></pwa-install>
 
-    <!-- Alerta tras borrado localstorage -->
     <div id="alerta-borrado-localstorage" class="z-9999 position-fixed overflow-hidden vw-100 vh-100 bg-flicker d-none">
         <div class="d-flex flex-column align-items-center justify-content-center bg-dark-subtle p-5 vw-100 vh-100">
             <h1 class="user-select-none">
@@ -175,22 +147,21 @@
         </div>
     </div>
 
-    <!-- Gezinti çubuğu -->
     <nav class='navbar navbar-expand-lg bg-dark-subtle shadow-sm p-1' id="navbar">
         <div class="container-fluid">
             <a href="./" target="_self" class="gradient-text me-2 fs-4 d-none">teles</a>
-            <div class="btn-group" role="group" aria-label="grupo de botones para abrir selector canales">
+            <div class="btn-group" role="group" aria-label="Kanallar seçici düğme grubu">
                 <button type="button" class="btn btn-sm btn-indigo rounded-start-pill" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvas-canales" aria-controls="offcanvas-canales"><i class="bi bi-chevron-right"
-                        title="Sidepanel Kanallar"></i>
+                        title="Yan panel Kanallar"></i>
                 </button>
                 <button type="button" class="btn btn-sm btn-outline-indigo rounded-end-pill" data-bs-toggle="modal"
                     data-bs-target="#modal-canales">
                     <i class="bi bi-collection-play"></i> Kanallar
                 </button>
             </div>
-            <span class="reloj px-2 px-md-4" title="Hora Santiago, Chile" data-bs-toggle="tooltip"
-                data-bs-title="Hora Santiago, Chile">
+            <span class="reloj px-2 px-md-4" title="Santiago, Şili saati" data-bs-toggle="tooltip"
+                data-bs-title="Santiago, Şili saati">
                 <time id="Santiago_z179" tabindex="-1">
                     <span onclick="location='http://time.is/'" title="http://time.is/" tabindex="-1"></span>
                 </time>
@@ -200,7 +171,7 @@
                 </a>
             </span>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-toggler"
-                aria-controls="navbar-toggler" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbar-toggler" aria-expanded="false" aria-label="Gezinti çubuğunu aç/kapat">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar-toggler">
@@ -218,13 +189,12 @@
                             </li>
                             <li>
                                 <a class='dropdown-item' href="#" data-bs-toggle="modal"
-                                    data-bs-target="#modal-creditos"><i class="bi bi-c-circle"></i> Créditos
+                                    data-bs-target="#modal-creditos"><i class="bi bi-c-circle"></i> Emeğe Saygı
                                 </a>
                             </li>
                             <li>
                                 <a class='dropdown-item' href='#' data-bs-toggle="modal"
-                                    data-bs-target="#modal-bienvenida"><i class="bi bi-info-circle"></i> Descargo de
-                                    responsabilidad</a>
+                                    data-bs-target="#modal-bienvenida"><i class="bi bi-info-circle"></i> Sorumluluk Reddi</a>
                             </li>
                             <li>
                                 <a class='dropdown-item' href="https://github.com/Alplox/teles"
@@ -236,38 +206,38 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li class="navbar-text dropdown-item user-select-none text-wrap">
-                                Variaciones de código abierto:
+                                Açık kaynak varyasyonları:
                             </li>
                             <li>
                                 <a class='dropdown-item' href='https://monitortv.vercel.app/Monitores/Home'
                                     rel="nofollow noreferrer">
-                                    <img src="https://flagcdn.com/cl.svg" alt="bandera Chile" title="Chile"
+                                    <img src="https://flagcdn.com/cl.svg" alt="Şili bayrağı" title="Şili"
                                         class="svg-bandera" />
-                                    Variación por AINMcl <i class="bi bi-box-arrow-up-right"></i>
+                                    Varyasyon: AINMcl <i class="bi bi-box-arrow-up-right"></i>
                                 </a>
                             </li>
                             <li>
                                 <a class='dropdown-item' href='https://ver-tele.vercel.app/monitor'
                                     rel="nofollow noreferrer">
-                                    <img src="https://flagcdn.com/cl.svg" alt="bandera Chile" title="Chile"
+                                    <img src="https://flagcdn.com/cl.svg" alt="Şili bayrağı" title="Şili"
                                         class="svg-bandera" />
-                                    Variación por martinsantibanez <i class="bi bi-box-arrow-up-right"></i>
+                                    Varyasyon: martinsantibanez <i class="bi bi-box-arrow-up-right"></i>
                                 </a>
                             </li>
                             <li>
                                 <a class='dropdown-item' href='https://interneto.github.io/tv-multiview/'
                                     rel="nofollow noreferrer">
-                                    <img src="https://flagcdn.com/es.svg" alt="bandera España" title="España"
+                                    <img src="https://flagcdn.com/es.svg" alt="İspanya bayrağı" title="İspanya"
                                         class="svg-bandera" />
-                                    Variación por David7ce <i class="bi bi-box-arrow-up-right"></i>
+                                    Varyasyon: David7ce <i class="bi bi-box-arrow-up-right"></i>
                                 </a>
                             </li>
                             <li>
                                 <a class='dropdown-item' href='https://alplox.github.io/la-tele/'
                                     rel="nofollow noreferrer">
-                                    <img src="https://flagcdn.com/cl.svg" alt="bandera Chile" title="Chile"
+                                    <img src="https://flagcdn.com/cl.svg" alt="Şili bayrağı" title="Şili"
                                         class="svg-bandera" />
-                                    Variación por Alplox <i class="bi bi-box-arrow-up-right"></i>
+                                    Varyasyon: Alplox <i class="bi bi-box-arrow-up-right"></i>
                                 </a>
                             </li>
                         </ul>
@@ -277,61 +247,53 @@
         </div>
     </nav>
 
-    <!-- Grid canales -->
     <main class='vh-100'>
-        <!-- version vision libre (gridstack) -->
         <div class="grid-stack grid-stack-background d-none h-100" id="container-vision-libre">
         </div>
 
-        <!-- version vision cuadricula (bootstrap grid) -->
         <div class="row g-0 h-100" id="container-vision-cuadricula">
         </div>
 
-        <!-- version single view -->
         <div class='vh-100 w-100 position-absolute overflow-hidden d-none' id="container-single-view">
             <div class='single-view-grid bg-dark-subtle h-100'>
                 <div class="h-100 overflow-hidden p-2 d-flex flex-column shadow rounded-3 border border-light-subtle"
                     id="panel-canales-single-view">
 
                     <button type="button" data-bs-toggle="tooltip"
-                        data-bs-title="Arrastrar y mover este panel [izquierda-derecha]"
+                        data-bs-title="Bu paneli sürükle ve taşı [sol-sağ]"
                         id="boton-mover-panel-canales-single-view"
                         class="btn btn-sm btn-dark-subtle p-0 px-1 rounded-3 mb-2">
                         <div class="d-flex gap-1 pe-auto w-100 clase-para-mover">
-                            <span>Mover</span><i class="bi bi-arrows-move ms-auto"></i>
+                            <span>Taşı</span><i class="bi bi-arrows-move ms-auto"></i>
                         </div>
                     </button>
 
                     <div class="h-100 pt-0 bg-transparent scrollbar-thin-gray overflow-auto overflow-x-hidden ">
                         <div class="one-column-grid" id="single-view-channels-buttons-container">
                         </div>
-                        <!-- Mensaje alerta sin resultados offcanvas -->
                         <div class="single-view-mensaje-alerta d-none shadow" tabindex="0"
                             id="single-view-mensaje-alerta">
                             <div
                                 class="d-flex flex-column rounded-3 justify-content-center align-items-center text-wrap h-100 bg-danger-subtle p-3">
                                 <p class="fs-4 bg-danger p-3 rounded-3 overflow-auto" style="max-height: 150px;">
-                                    <i class="bi bi-backspace-reverse"></i> No se han encontrado resultados para tu
-                                    búsqueda
+                                    <i class="bi bi-backspace-reverse"></i> Aramanız için sonuç bulunamadı
                                     (<span class="text-break fst-italic"></span>).
                                 </p>
                                 <div class="bg-danger bg-opacity-10 p-3 rounded-3">
                                     <p>Öneriler:</p>
                                     <ul>
-                                        <li>Asegúrate de que todas las palabras estén escritas correctamente.</li>
+                                        <li>Tüm kelimelerin doğru yazıldığından emin ol.</li>
                                         <li>Farklı anahtar kelimeler dene.</li>
-                                        <li>Prueba palabras en español.</li>
-                                        <li>Desactiva los filtros por país y/o categorías.</li>
+                                        <li>İspanyolca kelimeler deneyebilirsin.</li>
+                                        <li>Ülke ve/veya kategori filtrelerini devre dışı bırak.</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <!-- /Mensaje alerta sin resultados -->
                     </div>
 
                     <div class="d-flex flex-column gap-2">
                         <div class="w-100 bg-light-subtle p-2 rounded-4 mb-2">
-                            <!-- Header con buscador siempre visible -->
                             <div class="d-flex align-items-center gap-2">
                                 <button
                                     class="btn btn-sm d-flex align-items-center gap-1 p-0 border-0 bg-transparent flex-shrink-0"
@@ -345,25 +307,23 @@
                                     <i class="bi bi-chevron-down icono-filtros-estado"></i>
                                 </button>
 
-                                <!-- Buscador siempre visible -->
                                 <div class="flex-grow-1">
                                     <input type="search" class="form-control form-control-sm rounded-4"
-                                        id="single-view-input-filtro" placeholder="Buscar por país o canal">
+                                        id="single-view-input-filtro" placeholder="Ülke veya kanal ara">
                                 </div>
                             </div>
 
-                            <!-- Contenido colapsable (solo filtros) -->
                             <div class="collapse mt-2" id="single-view-filtros-collapse">
                                 <div class="d-flex flex-row flex-wrap gap-2">
                                     <div class="d-flex flex-column">
                                         <div class="btn-group btn-group-sm container-btn-group scrollbar-thin-gray"
-                                            role="group" aria-label="Toggle radio para grupo botones"
+                                            role="group" aria-label="Ülke filtresi düğme grubu"
                                             id='single-view-collapse-botones-listado-filtro-paises'>
                                         </div>
                                     </div>
                                     <div class="d-flex flex-column">
                                         <div class="btn-group btn-group-sm container-btn-group scrollbar-thin-gray"
-                                            role="group" aria-label="Toggle radio para grupo botones por categoría"
+                                            role="group" aria-label="Kategori filtresi düğme grubu"
                                             id='single-view-collapse-botones-listado-filtro-categorias'>
                                         </div>
                                     </div>
@@ -424,17 +384,14 @@
                 </div>
             </div>
         </div>
-        </div>
     </main>
 
-    <!-- Alerta tras guardado orden canales -->
     <div class="position-fixed bottom-0 end-0 m-5 shadow d-none" id="alerta-guardado-canales">
         <div class="d-flex bg-info-subtle gap-2 align-items-center justify-content-between p-2 rounded-4 fs-smaller">
             <i class="bi bi-floppy"></i> Kanallar kaydediliyor
         </div>
     </div>
 
-    <!-- Modal solo cambio canal activo -->
     <div class="modal fade" id="modal-cambiar-canal" tabindex="-1" aria-labelledby="modal exclusivo cambio"
         aria-hidden="true">
         <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-scrollable">
@@ -452,15 +409,15 @@
                                 class="d-flex flex-column rounded-3 justify-content-center align-items-center text-wrap h-100 bg-danger-subtle p-3">
                                 <p class="fs-4 bg-danger p-3 rounded-3 overflow-auto" style="max-height: 150px;">
                                     <i class="bi bi-backspace-reverse"></i>
-                                    No se han encontrado resultados para tu búsqueda
+                                    Aramanız için sonuç bulunamadı
                                     (<span class="text-break fst-italic"></span>).
                                 </p>
                                 <div class="bg-danger bg-opacity-10 p-3 rounded-3 text-start">
                                     <ul>
-                                        <li>Asegúrate de que todas las palabras estén escritas correctamente.</li>
+                                        <li>Tüm kelimelerin doğru yazıldığından emin ol.</li>
                                         <li>Farklı anahtar kelimeler dene.</li>
-                                        <li>Prueba palabras en español.</li>
-                                        <li>Desactiva los filtros por país y/o categorías.</li>
+                                        <li>İspanyolca kelimeler deneyebilirsin.</li>
+                                        <li>Ülke ve/veya kategori filtrelerini devre dışı bırak.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -472,7 +429,6 @@
 
                 <div class="modal-footer bg-transparent border-0 d-flex align-items-center justify-content-center">
                     <div class="w-100 bg-light-subtle p-2 rounded-3 mt-2 rounded-4">
-                        <!-- Header con buscador siempre visible -->
                         <div class="d-flex align-items-center gap-2">
                             <button
                                 class="btn btn-sm d-flex align-items-center gap-1 p-0 border-0 bg-transparent flex-shrink-0"
@@ -486,25 +442,23 @@
                                 <i class="bi bi-chevron-down icono-filtros-estado"></i>
                             </button>
 
-                            <!-- Buscador siempre visible -->
                             <div class="flex-grow-1">
                                 <input class="form-control form-control-sm rounded-4" type="search"
                                     id="modal-cambiar-canal-input-filtro" placeholder="Aramak için yaz...">
                             </div>
                         </div>
 
-                        <!-- Contenido colapsable (solo filtros) -->
                         <div class="collapse mt-2" id="modal-cambiar-canal-filtros-collapse">
                             <div class="d-flex gap-1 flex-wrap">
                                 <div class="d-flex flex-column">
                                     <div class="btn-group btn-group-sm container-btn-group" role="group"
-                                        aria-label="Toggle radio para grupo botones"
+                                        aria-label="Ülke filtresi düğme grubu"
                                         id="modal-cambiar-canal-collapse-botones-listado-filtro-paises">
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <div class="btn-group btn-group-sm container-btn-group" role="group"
-                                        aria-label="Toggle radio para grupo botones por categoría"
+                                        aria-label="Kategori filtresi düğme grubu"
                                         id="modal-cambiar-canal-collapse-botones-listado-filtro-categorias">
                                     </div>
                                 </div>
@@ -559,10 +513,8 @@
             </div>
         </div>
     </div>
-    </div>
 
-    <!-- Modal listado canales -->
-    <div class="modal fade" id="modal-canales" tabindex="-1" aria-labelledby="Modal con Listado de Kanallar"
+    <div class="modal fade" id="modal-canales" tabindex="-1" aria-labelledby="Kanallar Listesi Modalı"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content text-center bg-transparent bg-blur border-0 shadow">
@@ -574,28 +526,25 @@
 
                 <div class="modal-body vh-100 py-0 scrollbar-thin-gray ">
                     <div>
-                        <!-- Mensaje alerta sin resultados modal -->
                         <div class="modal-canales-mensaje-alerta d-none shadow" tabindex="0"
                             id="modal-canales-mensaje-alerta">
                             <div
                                 class="d-flex flex-column rounded-3 justify-content-center align-items-center text-wrap h-100 bg-danger-subtle p-3">
                                 <p class="fs-4 bg-danger p-3 rounded-3 overflow-auto" style="max-height: 150px;">
-                                    <i class="bi bi-backspace-reverse"></i> No se han encontrado resultados para tu
-                                    búsqueda
+                                    <i class="bi bi-backspace-reverse"></i> Aramanız için sonuç bulunamadı
                                     (<span class="text-break fst-italic"></span>).
                                 </p>
                                 <div class="bg-danger bg-opacity-10 p-3 rounded-3 text-start">
                                     <p>Öneriler:</p>
                                     <ul>
-                                        <li>Asegúrate de que todas las palabras estén escritas correctamente.</li>
+                                        <li>Tüm kelimelerin doğru yazıldığından emin ol.</li>
                                         <li>Farklı anahtar kelimeler dene.</li>
-                                        <li>Prueba palabras en español.</li>
-                                        <li>Desactiva los filtros por país y/o categorías.</li>
+                                        <li>İspanyolca kelimeler deneyebilirsin.</li>
+                                        <li>Ülke ve/veya kategori filtrelerini devre dışı bırak.</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <!-- /Mensaje alerta sin resultados -->
                         <div class="collapse-canales" id="modal-canales-channels-buttons-container">
                         </div>
                     </div>
@@ -603,7 +552,6 @@
 
                 <div class="modal-footer border-0">
                     <div class="w-100 bg-light-subtle p-2 rounded-4 mb-2">
-                        <!-- Header con buscador siempre visible -->
                         <div class="d-flex align-items-center gap-2">
                             <button
                                 class="btn btn-sm d-flex align-items-center gap-1 p-0 border-0 bg-transparent flex-shrink-0"
@@ -616,41 +564,27 @@
                                 <i class="bi bi-chevron-down icono-filtros-estado"></i>
                             </button>
 
-                            <!-- Buscador siempre visible -->
                             <div class="flex-grow-1">
                                 <input type="search" class="form-control form-control-sm rounded-4"
-                                    id="modal-canales-input-filtro" placeholder="Buscar por país o canal">
+                                    id="modal-canales-input-filtro" placeholder="Ülke veya kanal ara">
                             </div>
                         </div>
 
-                        <!-- Contenido colapsable (solo filtros) -->
                         <div class="collapse mt-2" id="modal-canales-filtros-collapse">
                             <div class="d-flex gap-1 flex-wrap">
                                 <div class="d-flex flex-column">
-                                    <!--  <span class="small text-secondary mb-1 d-inline-flex align-items-center gap-1">
-                                        <i class="bi bi-flag"></i>
-                                        <span>País</span>
-                                    </span> -->
                                     <div class="btn-group btn-group-sm container-btn-group" role="group"
-                                        aria-label="Toggle radio para grupo botones"
+                                        aria-label="Ülke filtresi düğme grubu"
                                         id='modal-canales-collapse-botones-listado-filtro-paises'>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <!--  <span class="small text-secondary mb-1 d-inline-flex align-items-center gap-1">
-                                        <i class="bi bi-grid-3x3-gap"></i>
-                                        <span>Categoría</span>
-                                    </span> -->
                                     <div class="btn-group btn-group-sm container-btn-group" role="group"
-                                        aria-label="Toggle radio para grupo botones por categoría"
+                                        aria-label="Kategori filtresi düğme grubu"
                                         id="modal-canales-collapse-botones-listado-filtro-categorias">
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <!--  <span class="small text-secondary mb-1 d-inline-flex align-items-center gap-1">
-                                        <i class="bi bi-funnel"></i>
-                                        <span>Sıralama</span>
-                                    </span> -->
                                     <div class="btn-group" role="group">
                                         <button type="button"
                                             class="btn btn-sm btn-dark dropdown-toggle h-100 rounded-pill"
@@ -711,9 +645,8 @@
         </div>
     </div>
 
-    <!-- offcanvas canales -->
     <div class="offcanvas offcanvas-start bg-transparent bg-blur border border-start-0 border-2 border-light-subtle rounded-end-5"
-        id="offcanvas-canales" tabindex="-1" data-bs-scroll="true" aria-labelledby="offcanvas canales">
+        id="offcanvas-canales" tabindex="-1" data-bs-scroll="true" aria-labelledby="offcanvas kanallar">
         <header class="offcanvas-header bg-transparent">
             <h5 class="offcanvas-title text-light">Kanallarını seç</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Kapat"></button>
@@ -721,27 +654,25 @@
 
         <div class="offcanvas-body scrollbar-thin-gray bg-transparent px-3 py-0">
             <div class="h-100">
-                <!-- Mensaje alerta sin resultados offcanvas -->
                 <div class="offcanvas-canales-mensaje-alerta d-none shadow" tabindex="0"
                     id="offcanvas-canales-mensaje-alerta">
                     <div
                         class="d-flex flex-column rounded-3 justify-content-center align-items-center text-wrap h-100 bg-danger-subtle p-3">
                         <p class="fs-4 bg-danger p-3 rounded-3 overflow-auto" style="max-height: 150px;">
-                            <i class="bi bi-backspace-reverse"></i> No se han encontrado resultados para tu búsqueda
+                            <i class="bi bi-backspace-reverse"></i> Aramanız için sonuç bulunamadı
                             (<span class="text-break fst-italic"></span>).
                         </p>
                         <div class="bg-danger bg-opacity-10 p-3 rounded-3">
                             <p>Öneriler:</p>
                             <ul>
-                                <li>Asegúrate de que todas las palabras estén escritas correctamente.</li>
+                                <li>Tüm kelimelerin doğru yazıldığından emin ol.</li>
                                 <li>Farklı anahtar kelimeler dene.</li>
-                                <li>Prueba palabras en español.</li>
-                                <li>Desactiva los filtros por país y/o categorías.</li>
+                                <li>İspanyolca kelimeler deneyebilirsin.</li>
+                                <li>Ülke ve/veya kategori filtrelerini devre dışı bırak.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <!-- /Mensaje alerta sin resultados -->
                 <div class="one-column-grid" id="offcanvas-canales-channels-buttons-container">
                 </div>
             </div>
@@ -750,7 +681,6 @@
         <footer class="p-2 d-flex flex-column bg-transparent">
             <div class="d-flex flex-column bg-transparent">
                 <div class="bg-light-subtle p-2 mb-2 rounded-4">
-                    <!-- Header con buscador siempre visible -->
                     <div class="d-flex align-items-center gap-2">
                         <button
                             class="btn btn-sm d-flex align-items-center gap-1 p-0 border-0 bg-transparent flex-shrink-0"
@@ -763,42 +693,27 @@
                             <i class="bi bi-chevron-down icono-filtros-estado"></i>
                         </button>
 
-                        <!-- Buscador siempre visible -->
                         <div class="flex-grow-1">
                             <input type="search" class="form-control form-control-sm rounded-4"
-                                id="offcanvas-canales-input-filtro" placeholder="Buscar por país o canal">
+                                id="offcanvas-canales-input-filtro" placeholder="Ülke veya kanal ara">
                         </div>
                     </div>
 
-                    <!-- Contenido colapsable (solo filtros) -->
                     <div class="collapse mt-2" id="offcanvas-canales-filtros-collapse">
                         <div class="d-flex gap-1 flex-wrap">
                             <div class="d-flex flex-column">
-                                <!--   <span class="small text-secondary mb-1 d-inline-flex align-items-center gap-1">
-                                        <i class="bi bi-flag"></i>
-                                        <span>País</span>
-                                    </span> -->
                                 <div class="btn-group btn-group-sm container-btn-group scrollbar-thin-gray" role="group"
-                                    aria-label="Toggle radio para grupo botones"
+                                    aria-label="Ülke filtresi düğme grubu"
                                     id='offcanvas-canales-collapse-botones-listado-filtro-paises'>
-
                                 </div>
                             </div>
                             <div class="d-flex flex-column">
-                                <!--  <span class="small text-secondary mb-1 d-inline-flex align-items-center gap-1">
-                                        <i class="bi bi-grid-3x3-gap"></i>
-                                        <span>Categoría</span>
-                                    </span> -->
                                 <div class="btn-group btn-group-sm container-btn-group scrollbar-thin-gray" role="group"
-                                    aria-label="Toggle radio para grupo botones por categoría"
+                                    aria-label="Kategori filtresi düğme grubu"
                                     id='offcanvas-canales-collapse-botones-listado-filtro-categorias'>
                                 </div>
                             </div>
                             <div class="d-flex flex-column">
-                                <!-- <span class="small text-secondary mb-1 d-inline-flex align-items-center gap-1">
-                                        <i class="bi bi-funnel"></i>
-                                        <span>Sıralama</span>
-                                    </span> -->
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-sm btn-dark dropdown-toggle h-100 rounded-pill"
                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -847,9 +762,8 @@
         </footer>
     </div>
 
-    <!-- Modal bienvenida/Sorumluluk Reddi -->
     <div class="modal fade" id="modal-bienvenida" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="Modal de Bienvenida" aria-hidden="true">
+        aria-labelledby="Hoş Geldin Modalı" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-fullscreen-md-down">
             <div class="modal-content bg-transparent border-0 shadow">
                 <div class="modal-header bg-body">
@@ -887,12 +801,11 @@
         </div>
     </div>
 
-    <!-- Modal Créditos -->
-    <div class="modal fade" id="modal-creditos" tabindex="-1" aria-labelledby="Modal Créditos" aria-hidden="true">
+    <div class="modal fade" id="modal-creditos" tabindex="-1" aria-labelledby="Emeğe Saygı Modalı" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-transparent border-0 shadow">
                 <div class="modal-header bg-body">
-                    <h5 class="modal-title">Créditos</h5>
+                    <h5 class="modal-title">Emeğe Saygı</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
                 </div>
                 <div class="modal-body bg-body">
@@ -904,7 +817,7 @@
                         <a href="https://github.com/Alplox/teles/blob/master/LICENSE" rel="nofollow noreferrer">
                             MIT Lisansı <i class="bi bi-box-arrow-up-right"></i></a> — <a
                             href="https://github.com/Alplox/teles/blob/master/NOTICE.md"
-                            rel="nofollow noreferrer">Notice <i class="bi bi-box-arrow-up-right"></i></a>
+                            rel="nofollow noreferrer">Bildirim <i class="bi bi-box-arrow-up-right"></i></a>
                     </p>
                     <hr>
                     <h5>Katkılar</h5>
@@ -922,9 +835,8 @@
         </div>
     </div>
 
-    <!-- botones flotantes -->
     <div class="btn-group position-fixed bottom-0 start-50 translate-middle-x z-2 z-1040 mb-3" role="group"
-        aria-label="grupo botones flotantes" id="grupo-botones-flotantes">
+        aria-label="Kayan düğme grubu" id="grupo-botones-flotantes">
         <button type="button"
             class="focus-outline-blue btn btn-sm btn-indigo rounded-start-5 shadow-sm d-flex gap-1 border-0 fw-normal"
             data-bs-toggle="offcanvas" data-bs-target="#offcanvas-canales" aria-controls="offcanvas-canales">
@@ -933,19 +845,18 @@
         <div class="bg-light-subtle">
             <button type="button"
                 class="focus-outline-blue btn btn-sm btn-outline-indigo rounded-0 shadow-sm border-0 h-100"
-                data-bs-toggle="modal" data-bs-target="#modal-canales" title="boton modal canales flotante">
+                data-bs-toggle="modal" data-bs-target="#modal-canales" title="Kanallar modal düğmesi">
                 <i class="bi bi-collection-play"></i>
             </button>
         </div>
         <button type="button"
             class="focus-outline-blue btn btn-sm btn-dark rounded-end-5 shadow-sm d-flex gap-1 border-0"
-            aria-label="Acceso a personalizaciones" data-bs-toggle="offcanvas" data-bs-target="#sidepanel"
+            aria-label="Kişiselleştirmelere erişim" data-bs-toggle="offcanvas" data-bs-target="#sidepanel"
             aria-controls="sidepanel" tabindex="0">
             <i class="bi bi-gear"></i> <span>Kişiselleştirme</span>
         </button>
     </div>
 
-    <!-- sidepanel/personalizaciones -->
     <div class="offcanvas offcanvas-end bg-transparent bg-blur border border-end-0 border-2 border-light-subtle rounded-start-5"
         data-bs-scroll="true" tabindex="-1" id="sidepanel" aria-labelledby="sidepanel">
         <div class="offcanvas-header d-flex justify-content-center p-0">
@@ -957,7 +868,7 @@
             <ul class="d-flex flex-column justify-content-start align-items-center w-100 gap-3 list-unstyled">
                 <li class="w-100">
                     <div class="py-2 px-3 bg-dark-subtle rounded-pill border border-light-subtle shadow">
-                        <div class="form-check form-switch d-flex align-items-center gap-2" title="ocultar navbar">
+                        <div class="form-check form-switch d-flex align-items-center gap-2" title="Gezinti çubuğunu gizle">
                             <input class="form-check-input" type="checkbox" role="switch"
                                 id="checkbox-personalizar-visualizacion-navbar">
                             <label class="form-check-label w-100 d-flex justify-content-between align-items-center"
@@ -976,17 +887,17 @@
                         <div class="d-flex gap-2 justify-content-evenly align-items-center">
                             <button type="button" id="boton-activar-diseño-vision-grid"
                                 class="focus-outline-blue btn btn-sm btn-indigo rounded-start-5 shadow-sm d-flex gap-1 border-0 w-100 h-100 justify-content-center align-items-center"
-                                tabindex="0" title="Visión cuadrícula (Sortable)">
-                                <span class="w-100 h-100"><i class="bi bi-grid-3x2"></i> Cuadrícula</span>
+                                tabindex="0" title="Izgara görünümü (Sortable)">
+                                <span class="w-100 h-100"><i class="bi bi-grid-3x2"></i> Izgara</span>
                             </button>
                             <button type="button" id="boton-activar-diseño-single-view"
                                 class="focus-outline-blue btn btn-sm btn-light-subtle rounded-0 shadow-sm d-flex gap-1 border-0 w-100 h-100 justify-content-center align-items-center"
-                                tabindex="0" title="Visión única">
-                                <span class="w-100 h-100"><i class="bi bi-layout-sidebar"></i> Única</span>
+                                tabindex="0" title="Tekli görünüm">
+                                <span class="w-100 h-100"><i class="bi bi-layout-sidebar"></i> Tekli</span>
                             </button>
                             <button type="button" id="boton-activar-diseño-free-view"
                                 class="focus-outline-blue btn btn-sm btn-light-subtle rounded-end-5 shadow-sm d-flex gap-1 border-0 w-100 h-100 justify-content-center align-items-center"
-                                tabindex="0" title="Visión libre (Gridstack)">
+                                tabindex="0" title="Serbest görünüm (Gridstack)">
                                 <span class="w-100 h-100"><i class="bi bi-aspect-ratio"></i> Serbest</span>
                             </button>
                         </div>
@@ -994,7 +905,7 @@
                 </li>
                 <li class="w-100">
                     <div class="py-2 px-3 bg-dark-subtle rounded-4 border border-light-subtle shadow">
-                        <div class="form-check form-switch d-flex align-items-center gap-2" title="ocultar overlay">
+                        <div class="form-check form-switch d-flex align-items-center gap-2" title="Katmanı gizle">
                             <input class="form-check-input" type="checkbox" role="switch"
                                 id="checkbox-personalizar-visualizacion-overlay">
                             <label class="form-check-label w-100 d-flex justify-content-start align-items-center"
@@ -1007,7 +918,7 @@
                             </label>
                         </div>
                         <div class="w-100 btn-group d-flex flex-column justify-content-center align-items-center py-2 px-3 bg-dark-subtle border border-light-subtle rounded-4 shadow mt-2"
-                            role="group" aria-label="button group botones dentro overlay"
+                            role="group" aria-label="Üst menü düğme grubu"
                             id="grupo-botones-personalizar-botones-dentro-overlay">
                             <p class="align-self-start">Üst menü düğmeleri</p>
                             <div class="d-flex justify-content-between w-100">
@@ -1058,8 +969,8 @@
                 </li>
                 <li class="w-100">
                     <div class="py-2 px-3 bg-dark-subtle rounded-4 border border-light-subtle shadow">
-                        <p class="mb-1"><i class="bi bi-play-btn"></i> Reproductor para señales m3u8</p>
-                        <div class="btn-group w-100 gap-1" role="group" aria-label="Selector reproductor m3u8">
+                        <p class="mb-1"><i class="bi bi-play-btn"></i> m3u8 sinyalleri için oynatıcı</p>
+                        <div class="btn-group w-100 gap-1" role="group" aria-label="m3u8 oynatıcı seçici">
                             <input type="radio" class="btn-check" name="btnradio-reproductor-m3u8"
                                 id="reproductor-m3u8-videojs" value="videojs" autocomplete="off"
                                 data-descripcion="Video.js">
@@ -1104,7 +1015,7 @@
                 <li class="w-100">
                     <div class="w-100 py-2 px-3 bg-dark-subtle rounded-pill border border-light-subtle shadow">
                         <div class="form-check form-switch d-flex align-items-center gap-2"
-                            title="mostrar logos en botones de canales">
+                            title="Kanal düğmelerinde logoları göster">
                             <input class="form-check-input" type="checkbox" role="switch"
                                 id="checkbox-mostrar-logos-botones">
                             <label class="form-check-label w-100 d-flex justify-content-start align-items-center gap-1"
@@ -1122,7 +1033,7 @@
                 <li class="w-100">
                     <div class="py-2 px-3 bg-dark-subtle rounded-4 border border-light-subtle shadow">
                         <label for="input-range-tamaño-container-vision-cuadricula"
-                            class="slider-label form-label d-flex align-items-center gap-1">Tamaño
+                            class="slider-label form-label d-flex align-items-center gap-1">Boyut
                             <div class="fs-smaller text-secondary">
                                 [<span id="span-valor-input-range">100%</span>]
                             </div>
@@ -1132,7 +1043,7 @@
 
                         <div class="w-100 py-2 px-3 bg-dark-subtle rounded-pill border border-light-subtle shadow mt-2">
                             <div class="form-check form-switch d-flex align-items-center gap-2"
-                                title="alternar uso %100 yükseklik disponible">
+                                title="%100 kullanılabilir yüksekliği aç/kapat">
                                 <input class="form-check-input" type="checkbox" role="switch"
                                     id="checkbox-personalizar-altura-canales">
                                 <label
@@ -1152,20 +1063,20 @@
                 </li>
                 <li class="w-100">
                     <div class="py-2 px-3 bg-dark-subtle rounded-4 border border-light-subtle shadow">
-                        Número de canales por fila
+                        Satır başına kanal sayısı
                         <div class="fs-smaller text-secondary d-inline">
                             [<span id="span-valor-transmisiones-por-fila">3</span>]
                         </div>
 
                         <div id="container-botones-personalizar-transmisiones-por-fila" class="btn-group w-100 gap-1"
-                            role="group" aria-label="grupo botones número transmisiones por fila">
+                            role="group" aria-label="Satır başına yayın sayısı düğme grubu">
                             <button value="12" type="button" class="btn btn-light-subtle rounded-4 w-100">1</button>
                             <button value="6" type="button" class="btn btn-light-subtle rounded-4 w-100">2</button>
                             <button value="4" type="button" class="btn btn-indigo rounded-4 w-100">3</button>
                             <button value="3" type="button" class="btn btn-light-subtle rounded-4 w-100">4</button>
                             <button value="2" type="button" class="btn btn-light-subtle rounded-4 w-100">6</button>
                             <button value="1" type="button" class="btn btn-light-subtle rounded-4 w-100"
-                                data-bs-toggle="tooltip" data-bs-title="12 a lo enfermo">12</button>
+                                data-bs-toggle="tooltip" data-bs-title="çığırından">12</button>
                         </div>
                     </div>
                 </li>
@@ -1181,7 +1092,7 @@
                 <li class="w-100">
                     <div class="w-100 btn-group d-flex flex-column justify-content-center align-items-center 
                     py-2 px-3 bg-dark-subtle border border-light-subtle rounded-4 shadow gap-1" role="group"
-                        aria-label="button group posicion botones flotantes"
+                        aria-label="Kayan düğme konumu grubu"
                         id="grupo-botones-posicion-botones-flotantes">
                         <p class="my-2 align-self-start">Kayan düğmeler</p>
                         <div class="d-flex gap-1">
@@ -1234,7 +1145,7 @@
                         </div>
                         <div class="w-100 py-2 px-3 bg-dark-subtle rounded-pill border border-light-subtle shadow mt-2">
                             <div class="form-check form-switch d-flex align-items-center gap-2"
-                                title="ocultar texto botones flotante">
+                                title="Kayan düğme metinlerini gizle">
                                 <input class="form-check-input" type="checkbox" role="switch"
                                     id="checkbox-personalizar-texto-botones-flotantes">
                                 <label class="form-check-label w-100 d-flex justify-content-start align-items-center"
@@ -1258,66 +1169,58 @@
                             <i class="pe-1 bi bi-share-fill"></i> Paylaş
                         </button>
                         <div class="d-none justify-content-evenly flex-wrap gap-1" id="contenedor-botones-compartir">
-                            <!-- Boton Facebook -->
                             <a class="btn btn-light-subtle btn-lg" role="button"
                                 href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Falplox.github.io%2Fteles%2F&quote=teles"
                                 rel="nofollow noreferrer" title="Facebook" data-bs-toggle="tooltip"
                                 data-bs-title="Facebook">
                                 <i class="bi bi-facebook"></i>
                             </a>
-                            <!-- Boton X/Twitter -->
                             <a class="btn btn-light-subtle btn-lg" role="button"
                                 href="https://twitter.com/intent/tweet/?text=PWA%20C%C3%B3digo%20Abierto%20para%20ver%2Fcomparar%20preseleccionadas%20transmisiones%20de%20canales%20de%20noticias%20provenientes%20de%20Chile%20(y%20el%20mundo).&amp;url=https%3A%2F%2Falplox.github.io%2Fteles%2F"
                                 rel="nofollow noreferrer" title="X/Twitter" data-bs-toggle="tooltip"
                                 data-bs-title="X/Twitter">
                                 <i class="bi bi-twitter-x"></i>
                             </a>
-                            <!-- Boton WhatsApp -->
                             <a class="btn btn-light-subtle btn-lg" role="button"
                                 href="https://web.whatsapp.com/send?text=PWA%20C%C3%B3digo%20Abierto%20para%20ver%2Fcomparar%20preseleccionadas%20transmisiones%20de%20canales%20de%20noticias%20provenientes%20de%20Chile%20(y%20el%20mundo).%20https%3A%2F%2Falplox.github.io%2Fteles%2F"
                                 rel="nofollow noreferrer" title="WhatsApp" data-bs-toggle="tooltip"
                                 data-bs-title="WhatsApp">
                                 <i class="bi bi-whatsapp"></i>
                             </a>
-                            <!-- Boton Telegram -->
                             <a class="btn btn-light-subtle btn-lg" role="button"
                                 href="https://telegram.me/share/url?text=PWA%20C%C3%B3digo%20Abierto%20para%20ver%2Fcomparar%20preseleccionadas%20transmisiones%20de%20canales%20de%20noticias%20provenientes%20de%20Chile%20(y%20el%20mundo).&amp;url=https%3A%2F%2Falplox.github.io%2Fteles%2F"
                                 rel="nofollow noreferrer" title="Telegram" data-bs-toggle="tooltip"
                                 data-bs-title="Telegram">
                                 <i class="bi bi-telegram"></i>
                             </a>
-                            <!-- Boton Pinterest -->
                             <a class="btn btn-light-subtle btn-lg" role="button"
                                 href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Falplox.github.io%2Fteles%2F&amp;media=https%3A%2F%2Falplox.github.io%2Fteles%2F&amp;description=PWA%20C%C3%B3digo%20Abierto%20para%20ver%2Fcomparar%20preseleccionadas%20transmisiones%20de%20canales%20de%20noticias%20provenientes%20de%20Chile%20(y%20el%20mundo)."
                                 rel="nofollow noreferrer" title="Pinterest" data-bs-toggle="tooltip"
                                 data-bs-title="Pinterest">
                                 <i class="bi bi-pinterest"></i>
                             </a>
-                            <!-- Boton LinkedIn -->
                             <a class="btn btn-light-subtle btn-lg" role="button"
                                 href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Falplox.github.io%2Fteles%2F&amp;title=PWA%20C%C3%B3digo%20Abierto%20para%20ver%2Fcomparar%20preseleccionadas%20transmisiones%20de%20canales%20de%20noticias%20provenientes%20de%20Chile%20(y%20el%20mundo).&amp;summary=PWA%20C%C3%B3digo%20Abierto%20para%20ver%2Fcomparar%20preseleccionadas%20transmisiones%20de%20canales%20de%20noticias%20provenientes%20de%20Chile%20(y%20el%20mundo).&amp;source=https%3A%2F%2Falplox.github.io%2Fteles%2F"
                                 rel="nofollow noreferrer" title="LinkedIn" data-bs-toggle="tooltip"
                                 data-bs-title="LinkedIn">
                                 <i class="bi bi-linkedin"></i>
                             </a>
-                            <!-- Boton Reddit -->
                             <a class="btn btn-light-subtle btn-lg" role="button"
                                 href="https://reddit.com/submit/?url=https%3A%2F%2Falplox.github.io%2Fteles%2F&amp;resubmit=true&amp;title=PWA%20C%C3%B3digo%20Abierto%20para%20ver%2Fcomparar%20preseleccionadas%20transmisiones%20de%20canales%20de%20noticias%20provenientes%20de%20Chile%20(y%20el%20mundo)."
                                 rel="nofollow noreferrer" title="Reddit" data-bs-toggle="tooltip"
                                 data-bs-title="Reddit">
                                 <i class="bi bi-reddit"></i>
                             </a>
-                            <!-- Boton Correo -->
                             <a class="btn btn-light-subtle btn-lg" role="button"
                                 href="mailto:?subject=PWA%20C%C3%B3digo%20Abierto%20para%20ver%2Fcomparar%20preseleccionadas%20transmisiones%20de%20canales%20de%20noticias%20provenientes%20de%20Chile%20(y%20el%20mundo).&amp;body=https%3A%2F%2Falplox.github.io%2Fteles%2F"
-                                target="_self" rel="nofollow noreferrer noopener" title="Correo"
-                                data-bs-toggle="tooltip" data-bs-title="Correo">
+                                target="_self" rel="nofollow noreferrer noopener" title="E-posta"
+                                data-bs-toggle="tooltip" data-bs-title="E-posta">
                                 <i class="bi bi-envelope-at"></i>
                             </a>
                         </div>
                         <div class="input-group mt-3">
                             <input class="form-control fs-small" type="text" value="./"
-                                aria-label="site ba?lant?s?" readonly id="input-enlace-compartir">
+                                aria-label="Site bağlantısı" readonly id="input-enlace-compartir">
                             <button type="button" class="btn btn-outline-indigo"
                                 id="boton-copiar-enlace-compartir">Bağlantıyı
                                 kopyala <i class="bi bi-clipboard"></i></button>
@@ -1332,7 +1235,7 @@
                         </p>
                         <div class="input-group">
                             <input class="form-control fs-small" type="text"
-                                value="./#setup" aria-label="kanal yapılandırma bağlantısı"
+                                value="./#setup" aria-label="Kanal yapılandırma bağlantısı"
                                 readonly id="input-enlace-compartir-setup">
                             <button type="button" class="btn btn-outline-indigo text-light"
                                 id="boton-copiar-enlace-compartir-setup">Kurulumu kopyala <i
@@ -1364,7 +1267,7 @@
                         <p>
                             <i class="bi bi-clock-history rounded-3 p-1 me-1"></i><a
                                 href="https://github.com/Alplox/teles/blob/main/changelog.md"
-                                rel="noopener noreferrer">Changelog <i class="bi bi-box-arrow-up-right"></i></a>
+                                rel="noopener noreferrer">Değişiklik günlüğü <i class="bi bi-box-arrow-up-right"></i></a>
                         </p>
                         <p>
                             <i class="bi bi-github rounded-3 p-1 me-1"></i><a href="https://github.com/Alplox/teles"
@@ -1380,7 +1283,7 @@
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-globe"></i></span>
                             <input type="url" class="form-control" id="input-url-lista-personalizada"
-                                placeholder="https://ejemplo.com/lista.m3u" spellcheck="false" autocomplete="off">
+                                placeholder="https://ornek.com/liste.m3u" spellcheck="false" autocomplete="off">
                             <button type="button" class="btn btn-warning" id="boton-cargar-lista-personalizada">
                                 Listeyi yükle
                             </button>
@@ -1424,7 +1327,7 @@
                 </li>
                 <li class="w-100">
                     <div class="py-2 px-3 bg-dark-subtle rounded-pill border border-light-subtle shadow">
-                        <div class="form-check form-switch d-flex align-items-center gap-2" title="ocultar fondo">
+                        <div class="form-check form-switch d-flex align-items-center gap-2" title="Arka planı gizle">
                             <input class="form-check-input" type="checkbox" role="switch"
                                 id="checkbox-tarjeta-logo-background">
                             <label class="form-check-label w-100 d-flex justify-content-start align-items-center"
@@ -1462,7 +1365,6 @@
         </div>
     </div>
 
-    <!-- alerta previa borrado localstorage -->
     <div class="modal modal-alert py-5" tabindex="-1" role="dialog" id="modal-reset">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content rounded-4 shadow bg-danger-subtle border-0">
@@ -1501,4 +1403,5 @@
     <script src="./assets/js/main.js" type="module"></script>
     <script src="./assets/js/botones.js" type="module"></script>
 </body>
+
 </html>
