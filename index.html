@@ -106,47 +106,7 @@
 
         <span class="text-secondary fs-6 mt-5" id="span-contenedor-error"></span>
     </div>
-
-    <!-- Imagen y logo del fondo -->
-    <div class="fondo-global">
-        <section id="container-tarjeta-logo-background"> <!-- tarjeta logo -->
-            <div
-                class="position-absolute top-50 start-50 translate-middle border border-light-subtle rounded-5 shadow cursor-default-en-hover user-select-none overflow-hidden">
-                <div
-                    class="tarjeta-logo-background bg-transparent bg-blur px-5 pb-4 pt-5 d-flex flex-column justify-content-center align-items-center">
-                    <div class="position-relative bg-light-subtle p-3 rounded-4 shadow" tabindex="-1">
-                        <img src="./assets/favicon/android-chrome-512x512.png" alt="Mozbasport logosu">
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
-                            <i class="badge bg-secondary">v0.26</i>
-                        </span>
-                    </div>
-                    <p class="display-1 gradient-text">Reji Masası</p>
-
-                    <!-- Controles de audio para música ambiente -->
-                    <div id="audio-controls" class="z-3 d-flex flex-column gap-2 align-items-center p-2 rounded-4">
-                        <button id="ambient-music-toggle"
-                            class="btn btn-sm rounded-pill d-flex align-items-center gap-2"
-                            title="Ortam müziğini oynat">
-                            <i class="bi bi-play-fill text-flicker fs-4" id="music-icon"></i>
-                            <!--  <span>Música Ambiente</span> -->
-                            <a id="ambient-music-track"
-                                class="fs-smaller bg-light-subtle p-2 rounded-pill user-select-auto"
-                                href="https://freesound.org/people/YellowTree/sounds/693384/">Weather
-                                Forecast Type Beat by
-                                YellowTree</a>
-                        </button>
-                        <div class="d-flex align-items-center gap-2 bg-dark-subtle p-2 rounded-4">
-                            <i class="bi bi-volume-down"></i>
-                            <input type="range" id="ambient-music-volume" class="form-range" min="0" max="100"
-                                value="50" style="width: 150px;">
-                            <i class="bi bi-volume-up"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
+    
     <!-- Alerta noscript -->
     <noscript>
         <div
@@ -164,119 +124,16 @@
     <div id="alerta-borrado-localstorage" class="z-9999 position-fixed overflow-hidden vw-100 vh-100 bg-flicker d-none">
         <div class="d-flex flex-column align-items-center justify-content-center bg-dark-subtle p-5 vw-100 vh-100">
             <h1 class="user-select-none">
-                ヾ( ˃ᴗ˂ )◞ • *✰
             </h1>
             <h1 class="text-flicker user-select-none">
-                Yerel depolaman <strong>silindi</strong>; siteyi/PWA uygulamasını yeniden yüklemeyi dene
+                Kişileştirme <strong>Sıfırlandı</strong>!
             </h1>
             <button type="button" class="btn btn-lg btn-light mt-5" onclick="location.reload()">
                 <i class="bi bi-arrow-clockwise"></i> Yeniden yükle
             </button>
         </div>
     </div>
-
-    <!-- Gezinti çubuğu -->
-    <nav class='navbar navbar-expand-lg bg-dark-subtle shadow-sm p-1' id="navbar">
-        <div class="container-fluid">
-            <a href="./" target="_self" class="gradient-text me-2 fs-4 d-none">teles</a>
-            <div class="btn-group" role="group" aria-label="grupo de botones para abrir selector canales">
-                <button type="button" class="btn btn-sm btn-indigo rounded-start-pill" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvas-canales" aria-controls="offcanvas-canales"><i class="bi bi-chevron-right"
-                        title="Sidepanel Kanallar"></i>
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-indigo rounded-end-pill" data-bs-toggle="modal"
-                    data-bs-target="#modal-canales">
-                    <i class="bi bi-collection-play"></i> Kanallar
-                </button>
-            </div>
-            <span class="reloj px-2 px-md-4" title="Hora Santiago, Chile" data-bs-toggle="tooltip"
-                data-bs-title="Hora Santiago, Chile">
-                <time id="Santiago_z179" tabindex="-1">
-                    <span onclick="location='http://time.is/'" title="http://time.is/" tabindex="-1"></span>
-                </time>
-                <a href="https://time.is/Santiago" id="time_is_link" rel="nofollow noreferrer" tabindex="0"
-                    class="fs-x-small">Time.is
-                    <i class="bi bi-box-arrow-up-right"></i>
-                </a>
-            </span>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-toggler"
-                aria-controls="navbar-toggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbar-toggler">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <button type="button" class='nav-link btn dropdown-toggle' data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside" aria-expanded="false" id="dropdown-about">
-                            Hakkında
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-about">
-                            <li>
-                                <a class='dropdown-item' href='#' data-bs-toggle="offcanvas"
-                                    data-bs-target="#sidepanel"><i class="bi bi-gear"></i> Kişiselleştirme
-                                </a>
-                            </li>
-                            <li>
-                                <a class='dropdown-item' href="#" data-bs-toggle="modal"
-                                    data-bs-target="#modal-creditos"><i class="bi bi-c-circle"></i> Créditos
-                                </a>
-                            </li>
-                            <li>
-                                <a class='dropdown-item' href='#' data-bs-toggle="modal"
-                                    data-bs-target="#modal-bienvenida"><i class="bi bi-info-circle"></i> Descargo de
-                                    responsabilidad</a>
-                            </li>
-                            <li>
-                                <a class='dropdown-item' href="https://github.com/Alplox/teles"
-                                    rel="nofollow noreferrer"><i class="bi bi-github"></i> Depo <i
-                                        class="bi bi-box-arrow-up-right"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li class="navbar-text dropdown-item user-select-none text-wrap">
-                                Variaciones de código abierto:
-                            </li>
-                            <li>
-                                <a class='dropdown-item' href='https://monitortv.vercel.app/Monitores/Home'
-                                    rel="nofollow noreferrer">
-                                    <img src="https://flagcdn.com/cl.svg" alt="bandera Chile" title="Chile"
-                                        class="svg-bandera" />
-                                    Variación por AINMcl <i class="bi bi-box-arrow-up-right"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class='dropdown-item' href='https://ver-tele.vercel.app/monitor'
-                                    rel="nofollow noreferrer">
-                                    <img src="https://flagcdn.com/cl.svg" alt="bandera Chile" title="Chile"
-                                        class="svg-bandera" />
-                                    Variación por martinsantibanez <i class="bi bi-box-arrow-up-right"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class='dropdown-item' href='https://interneto.github.io/tv-multiview/'
-                                    rel="nofollow noreferrer">
-                                    <img src="https://flagcdn.com/es.svg" alt="bandera España" title="España"
-                                        class="svg-bandera" />
-                                    Variación por David7ce <i class="bi bi-box-arrow-up-right"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class='dropdown-item' href='https://alplox.github.io/la-tele/'
-                                    rel="nofollow noreferrer">
-                                    <img src="https://flagcdn.com/cl.svg" alt="bandera Chile" title="Chile"
-                                        class="svg-bandera" />
-                                    Variación por Alplox <i class="bi bi-box-arrow-up-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+    
     <!-- Grid canales -->
     <main class='vh-100'>
         <!-- version vision libre (gridstack) -->
@@ -298,7 +155,7 @@
                         id="boton-mover-panel-canales-single-view"
                         class="btn btn-sm btn-dark-subtle p-0 px-1 rounded-3 mb-2">
                         <div class="d-flex gap-1 pe-auto w-100 clase-para-mover">
-                            <span>Mover</span><i class="bi bi-arrows-move ms-auto"></i>
+                            <span>Taşı</span><i class="bi bi-arrows-move ms-auto"></i>
                         </div>
                     </button>
 
@@ -846,47 +703,7 @@
             </div>
         </footer>
     </div>
-
-    <!-- Modal bienvenida/Sorumluluk Reddi -->
-    <div class="modal fade" id="modal-bienvenida" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="Modal de Bienvenida" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-fullscreen-md-down">
-            <div class="modal-content bg-transparent border-0 shadow">
-                <div class="modal-header bg-body">
-                    <h5 class="modal-title text-flicker">Sorumluluk Reddi</h5>
-                </div>
-                <div class="modal-body bg-body scrollbar-thin-gray">
-                    <ul class="ps-3">
-                        <li tabindex="0"><span class="text-flicker">"Mozbasport"</span>, internet üzerinden serbest erişilebilen TV yayınlarını yönetmek için hazırlanmış ücretsiz ve açık kaynak bir projedir.</li>
-                        <li tabindex="0"><span class="text-flicker">"Mozbasport"</span> yayınların şifresini çözmez; bağlantılar açık dağıtım/erişim sunan genel kaynaklardan işlenir.</li>
-                        <li tabindex="0"><span class="text-flicker">"Mozbasport"</span> herhangi bir para kazanma yöntemi içermez ve ticari gelir elde etmez.</li>
-                        <li tabindex="0">Projede bulunan medya oynatıcılar yeniden yayın veya kanal şifresi çözme işlevi görmez.</li>
-                        <li tabindex="0">Her kanal tarafından yayınlanan içeriklerin sahibi ya da sorumlusu bu proje değildir.</li>
-                        <li tabindex="0"><span class="text-flicker">"Mozbasport"</span> hiçbir yöntemle ücretli kanal sunmaz.</li>
-                        <li tabindex="0">Bu projede hiçbir yayın depolanmaz.</li>
-                        <li tabindex="0">Proje ve geliştiricileri, üçüncü kişiler veya kullanıcılar tarafından ihlal edilebilecek fikri mülkiyet haklarından sorumlu değildir.</li>
-                        <li tabindex="0">Kullanıcı her zaman ilgili yayının resmi sitesine gidebilir.</li>
-                        <li tabindex="0">Bir kanalın haklarına sahipsen ve kaldırılmasını istiyorsan <a
-                                href="https://github.com/Alplox/json-teles/issues" rel="nofollow noreferrer"> iletişime geç
-                                <i class="bi bi-box-arrow-up-right"></i></a>.
-                        </li>
-                    </ul>
-                    <hr>
-                    <p>— Her canlı yayının kaynağını görmek için <a
-                            href="https://github.com/Alplox/teles" rel="nofollow noreferrer"><i
-                                class="bi bi-github"></i> GitHub deposunu <i class="bi bi-box-arrow-up-right"></i></a>
-                        ziyaret et.
-                    </p>
-                </div>
-                <div class="modal-footer d-flex align-items-center justify-content-center bg-blur">
-                    <button type="button" class="btn btn-lg btn-success pulsate-3" id="button-welcome-modal"
-                        data-bs-dismiss="modal" data-bs-target="#modal-bienvenida">Anladım <p
-                            class="fs-x-small m-0 p-0">(Bir daha gösterme)</p></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
     <!-- Modal Créditos -->
     <div class="modal fade" id="modal-creditos" tabindex="-1" aria-labelledby="Modal Créditos" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -1501,13 +1318,4 @@
     <script src="./assets/js/main.js" type="module"></script>
     <script src="./assets/js/botones.js" type="module"></script>
 </body>
-<!--
-██╗    ██╗███████╗███╗   ██╗ █████╗     ██╗    ██╗███████╗███╗   ██╗ █████╗ 
-██║    ██║██╔════╝████╗  ██║██╔══██╗    ██║    ██║██╔════╝████╗  ██║██╔══██╗
-██║ █╗ ██║█████╗  ██╔██╗ ██║███████║    ██║ █╗ ██║█████╗  ██╔██╗ ██║███████║
-██║███╗██║██╔══╝  ██║╚██╗██║██╔══██║    ██║███╗██║██╔══╝  ██║╚██╗██║██╔══██║
-╚███╔███╔╝███████╗██║ ╚████║██║  ██║    ╚███╔███╔╝███████╗██║ ╚████║██║  ██║
- ╚══╝╚══╝ ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝
--->
-
 </html>
