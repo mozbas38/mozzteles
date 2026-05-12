@@ -305,6 +305,94 @@ a {
   text-decoration: none;
 }
 
+/* Core Layout Constraints */
+html, body, main {
+  overflow: hidden !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+}
+
+/* Modal and Offcanvas Scroll Fixes */
+.modal-body, .offcanvas-body, #sidepanel {
+  overflow-y: auto !important;
+}
+
+/* CSS Grid layout for Reji MasasÄ± */
+#container-vision-cuadricula {
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  align-content: stretch;
+}
+
+/* Base style for grid cells */
+#container-vision-cuadricula > div[data-canal] {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Full height mode stretch */
+#container-vision-cuadricula.full-height-mode > div[data-canal] > div[data-canal-cambio],
+#container-vision-cuadricula.full-height-mode iframe,
+#container-vision-cuadricula.full-height-mode video,
+#container-vision-cuadricula.full-height-mode .video-js {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: fill !important;
+}
+
+#container-vision-cuadricula.full-height-mode .video-js .vjs-tech {
+  object-fit: fill !important;
+}
+
+/* Normal mode (maintain aspect ratio but fit) */
+#container-vision-cuadricula:not(.full-height-mode) > div[data-canal] > div[data-canal-cambio] {
+  aspect-ratio: 16/9;
+  max-width: 100%;
+  max-height: 100%;
+  height: 100%;
+  display: flex;
+}
+
+#container-vision-cuadricula:not(.full-height-mode) iframe,
+#container-vision-cuadricula:not(.full-height-mode) video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+#container-vision-cuadricula:not(.full-height-mode) .video-js .vjs-tech {
+  object-fit: contain !important;
+}
+
+/* Fix for Single View Mode - Force all elements to fill container */
+#container-video-single-view > div[data-canal],
+#container-video-single-view > div[data-canal] > div[data-canal-cambio],
+#container-video-single-view iframe,
+#container-video-single-view video,
+#container-video-single-view .video-js {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    aspect-ratio: auto !important;
+    padding-bottom: 0 !important;
+}
+
+/* Ensure video inside video.js or raw video tag maintains aspect ratio but fills up constraints */
+#container-video-single-view video,
+#container-video-single-view iframe,
+#container-video-single-view .vjs-tech {
+    object-fit: contain !important;
+}
+
 /* modifica colores a checkbox y slider range de offcanvas personalizar */
 input[type=range] {
   -webkit-appearance: none;
@@ -1093,4 +1181,14 @@ button[aria-expanded="false"] .icono-filtros-estado {
   background-color: transparent;
   padding: 2px;
   flex-shrink: 0;
+}
+
+/* Kanal Overlay Katmaný (Iframe üzerinde görünmesi için) */
+.barra-overlay {
+  z-index: 100 !important;
+  pointer-events: none;
+}
+
+.barra-overlay .btn, .barra-overlay div[role='button'] {
+  pointer-events: auto;
 }

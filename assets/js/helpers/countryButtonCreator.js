@@ -28,7 +28,7 @@ export const clearCountryRenderedContainers = () => {
  */
 export function createCountryButtons(specificPrefix) {
     try {
-        const CHANNELS_WITH_COUNTRY = Object.values(channelsList).map(channel => {
+        const CHANNELS_WITH_COUNTRY = channelsList.map(channel => {
             if (channel?.país !== '') {
                 return channel.país.toLowerCase();
             } else {
@@ -54,7 +54,7 @@ export function createCountryButtons(specificPrefix) {
         COUNTRY_OPTIONS.push({
             value: 'all',
             displayName: 'Todos los países',
-            badge: Object.keys(channelsList).length,
+            badge: channelsList.length,
             flag: null
         });
 

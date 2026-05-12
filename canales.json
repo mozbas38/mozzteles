@@ -1,0 +1,1026 @@
+[
+  {
+    "id": "bein-sports-1",
+    "nombre": "BeIN Sports 1",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/xbeinsports-1/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-1-yedek",
+    "nombre": "BeIN Sports 1 Yedek",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivebs1.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-2",
+    "nombre": "BeIN Sports 2",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/xbeinsports-2/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-2-yedek",
+    "nombre": "BeIN Sports 2 Yedek",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/selcukbeinsports2/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-3",
+    "nombre": "BeIN Sports 3",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/xbeinsports-3/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-3-yedek",
+    "nombre": "BeIN Sports 3 Yedek",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/selcukbeinsports3/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-4",
+    "nombre": "BeIN Sports 4",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivebs4.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-5",
+    "nombre": "BeIN Sports 5",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivebs5.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-1-max",
+    "nombre": "BeIN Sports 1 Max",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/xbeinsportsmax-1/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-2-max",
+    "nombre": "BeIN Sports 2 Max",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/xbeinsportsmax-2/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bein-sports-haber",
+    "nombre": "BeIN Sports Haber",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivebsm2.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "trt-1",
+    "nombre": "TRT 1",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetrt1.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "trt-spor",
+    "nombre": "TRT Spor",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetrts.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "trt-spor-yldz",
+    "nombre": "TRT Spor Yıldız",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetrtsy.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor",
+    "nombre": "Tabi Spor",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/xtabiispor1/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor-yedek",
+    "nombre": "Tabi Spor Yedek",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor1",
+    "nombre": "Tabi Spor1",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb1.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor2",
+    "nombre": "Tabi Spor2",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb2.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor3",
+    "nombre": "Tabi Spor3",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb3.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor4",
+    "nombre": "Tabi Spor4",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb4.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor5",
+    "nombre": "Tabi Spor5",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb5.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor-6",
+    "nombre": "Tabi Spor 6",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb6.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor-7",
+    "nombre": "Tabi Spor 7",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb7.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tabi-spor-8",
+    "nombre": "Tabi Spor 8",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetb8.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tv8",
+    "nombre": "TV8",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetv8.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tv8-5",
+    "nombre": "TV8-5",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivetv85.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-tv",
+    "nombre": "Exxen TV",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-sports-1",
+    "nombre": "Exxen Sports 1",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn1.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-sports-2",
+    "nombre": "Exxen Sports 2",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn2.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-sports-3",
+    "nombre": "Exxen Sports 3",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn3.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-sports-4",
+    "nombre": "Exxen Sports 4",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn4.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-sports-5",
+    "nombre": "Exxen Sports 5",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn5.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-sports-6",
+    "nombre": "Exxen Sports 6",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn6.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-sports-7",
+    "nombre": "Exxen Sports 7",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn7.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "exxen-sports-8",
+    "nombre": "Exxen Sports 8",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveexn8.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tivibu-spor-1",
+    "nombre": "Tivibu Spor 1",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://dga1op10s1u3leo.2ec2f887981228.click/live/xtivibuspor-1/playlist.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tivibu-spor-1-yedek",
+    "nombre": "Tivibu Spor 1 Yedek",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivets1.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tivibu-spor-2",
+    "nombre": "Tivibu Spor 2",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivets2.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tivibu-spor-3",
+    "nombre": "Tivibu Spor 3",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivets3.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "tivibu-spor-4",
+    "nombre": "Tivibu Spor 4",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivets4.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "s-sport",
+    "nombre": "S Sport",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivess1.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "s-sport-2",
+    "nombre": "S Sport 2",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivess2.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "s-sport-plus",
+    "nombre": "S Sport Plus",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivenba.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "smart-sport-1",
+    "nombre": "Smart Sport 1",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivesm1.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "smart-sport-2",
+    "nombre": "Smart Sport 2",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivesm2.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "euro-sport-1",
+    "nombre": "Euro Sport 1",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivees1.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "euro-sport-2",
+    "nombre": "Euro Sport 2",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivees2.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "idman-tv",
+    "nombre": "Idman TV",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveidm.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "cbc-sport",
+    "nombre": "CBC Sport",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivecbcs.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "ht-spor",
+    "nombre": "HT Spor",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveht.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "atv",
+    "nombre": "ATV",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveatv.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "a-spor",
+    "nombre": "A Spor",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamliveas.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "a2",
+    "nombre": "A2",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivea2.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "gs-tv",
+    "nombre": "GS TV",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivegs.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "fb-tv",
+    "nombre": "FB TV",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        "https://andro.evrenesoglu59.lat/checklist/androstreamlivefb.m3u8"
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "haberturk",
+    "nombre": "Habertürk",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [],
+      "yt_id": "CPXn_5nTtao",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  },
+  {
+    "id": "bos",
+    "nombre": "bos",
+    "logo": "",
+    "señales": {
+      "iframe_url": [],
+      "m3u8_url": [
+        ""
+      ],
+      "yt_id": "",
+      "yt_embed": "",
+      "yt_playlist": "",
+      "twitch_id": ""
+    },
+    "sitio_oficial": "",
+    "país": "tr",
+    "categoría": "general"
+  }
+]

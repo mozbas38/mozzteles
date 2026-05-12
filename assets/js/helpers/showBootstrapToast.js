@@ -10,13 +10,13 @@ const VARIANT_CONFIG = {
     secondary: { classes: ['bg-secondary', 'text-white'], icon: 'bi-info-circle' }
 };
 
-const ERROR_HELP_MESSAGE = 'Si el error persiste tras recargar, prueba borrar tu almacenamiento local desde el panel "Personalización" o borrando la caché del navegador.';
+const ERROR_HELP_MESSAGE = 'Hata sayfayı yeniledikten sonra devam ederse, "Kişiselleştirme" panelinden yerel depolama alanını temizlemeyi veya tarayıcı önbelleğini silmeyi deneyin.';
 const DEFAULT_TOAST_OPTIONS = {
     title: '',
     body: '',
     type: 'secondary',
     autohide: true,
-    delay: 6500,
+    delay: 1000,
     showReloadOnError: false,
     allowHtml: false
 };
@@ -143,7 +143,7 @@ const createBlockHelp = () => {
     const BUTTON_RELOAD = document.createElement('button');
     BUTTON_RELOAD.setAttribute('type', 'button');
     BUTTON_RELOAD.classList.add('btn', 'btn-light', 'rounded-pill', 'btn-sm', 'w-100', 'border-light', 'mt-2');
-    BUTTON_RELOAD.innerHTML = 'Pulsa para recargar <i class="bi bi-arrow-clockwise"></i>';
+    BUTTON_RELOAD.innerHTML = 'Yenilemek için tıkla <i class="bi bi-arrow-clockwise"></i>';
     BUTTON_RELOAD.addEventListener('click', () => {
         window.location.reload();
     });

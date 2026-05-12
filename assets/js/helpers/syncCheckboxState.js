@@ -38,8 +38,8 @@ export function syncCheckboxState({
 
     if (checkbox.checked !== isVisible) checkbox.checked = isVisible;
 
-    if (statusElement.textContent !== (isVisible ? '[Visible]' : '[Oculto]')) {
-        statusElement.textContent = isVisible ? '[Visible]' : '[Oculto]';
+    if (statusElement.textContent !== (isVisible ? '[Görünür]' : '[Gizli]')) {
+        statusElement.textContent = isVisible ? '[Görünür]' : '[Gizli]';
     }
     if (localStorage.getItem(storageKey) !== nextStorageValue) {
         localStorage.setItem(storageKey, nextStorageValue);

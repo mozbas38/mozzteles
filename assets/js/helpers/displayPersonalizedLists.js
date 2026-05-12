@@ -1,4 +1,4 @@
-import { updatePersonalizedList, applySavedPersonalizedList, channelsList, deletePersonalizedList, getPersonalizedLists } from "../channelManager.js";
+import { updatePersonalizedList, applySavedPersonalizedList, channelsList, deletePersonalizedList, getPersonalizedLists, getChannelEntries, removeChannelById } from "../channelManager.js";
 import { ID_PREFIX_CONTAINERS_CHANNELS, LS_KEY_ACTIVE_VIEW_MODE, LS_KEY_SAVED_CHANNELS_GRID_VIEW } from "../constants/index.js";
 import { tele } from "../main.js";
 import { formatDate } from "../utils/index.js";
@@ -70,7 +70,7 @@ export const renderPersonalizedListsUI = () => {
     const lists = getPersonalizedLists();
     const urls = Object.keys(lists);
     if (!urls.length) {
-        customListsContainerEl.innerHTML = '<p class="text-secondary fs-smaller mb-0">No hay listas guardadas.</p>';
+        customListsContainerEl.innerHTML = '<p class="text-secondary fs-smaller mb-0">Kayıtlı liste yok.</p>';
         return;
     }
     const fragment = document.createDocumentFragment();
@@ -98,7 +98,7 @@ const createPersonalizedListCard = (url, data = {}) => {
     bloqueInfo.innerHTML = `
             <p class="fw-semibold mb-0">${etiqueta}</p>
             <small class="text-secondary text-break">${url}</small><br>
-            <small class="text-secondary">Actualizado: ${formatDate(data.actualizado)}</small>
+            <small class="text-secondary">Güncellendi: ${formatDate(data.actualizado)}</small>
         `;
 
     const bloqueAcciones = document.createElement('div');
@@ -107,15 +107,15 @@ const createPersonalizedListCard = (url, data = {}) => {
     const botonPin = document.createElement('button');
     botonPin.type = 'button';
     botonPin.className = `btn btn-sm ${pinned ? 'btn-success' : 'btn-outline-secondary'}`;
-    botonPin.innerHTML = pinned ? '<i class="bi bi-pin-angle-fill"></i> Fijada' : '<i class="bi bi-pin-angle"></i> No fijada';
+    botonPin.innerHTML = pinned ? '<i class="bi bi-pin-angle-fill"></i> Sabitlendi' : '<i class="bi bi-pin-angle"></i> Sabitlenmedi';
     botonPin.addEventListener('click', () => {
         const currentState = (getPersonalizedLists()[url]?.pinned !== false);
         const newState = !currentState;
         updatePersonalizedList(url, { pinned: newState });
         renderPersonalizedListsUI();
         showToast({
-            title: 'Lista personalizada',
-            body: newState ? `La lista "${etiqueta}" se restaurará al recargar.` : `La lista "${etiqueta}" ya no se restaurará automáticamente.`,
+            title: 'Özel liste',
+            body: newState ? `"${etiqueta}" listesi yeniden yüklendiğinde geri yüklenecek.` : `"${etiqueta}" listesi artık otomatik olarak geri yüklenmeyecek.`,
             type: newState ? 'success' : 'info'
         })
     });
@@ -123,7 +123,7 @@ const createPersonalizedListCard = (url, data = {}) => {
     const botonAplicar = document.createElement('button');
     botonAplicar.type = 'button';
     botonAplicar.className = 'btn btn-sm btn-outline-primary';
-    botonAplicar.innerHTML = '<i class="bi bi-arrow-repeat"></i> Aplicar';
+    botonAplicar.innerHTML = '<i class="bi bi-arrow-repeat"></i> Uygula';
     botonAplicar.addEventListener('click', () => {
         const success = applySavedPersonalizedList(url);
         if (success) {
@@ -133,14 +133,14 @@ const createPersonalizedListCard = (url, data = {}) => {
             createCategoryButtons();
             resyncActiveChannelsVisualState();
             showToast({
-                title: 'Lista personalizada',
-                body: `Lista "${etiqueta}" aplicada correctamente.`,
+                title: 'Özel liste',
+                body: `Liste "${etiqueta}" başarıyla uygulandı.`,
                 type: 'success'
             })
         } else {
             showToast({
-                title: 'Lista personalizada',
-                body: 'No fue posible aplicar la lista seleccionada.',
+                title: 'Özel liste',
+                body: 'Seçilen liste uygulanamadı.',
                 type: 'danger',
                 autohide: false,
                 delay: 0,
@@ -152,14 +152,14 @@ const createPersonalizedListCard = (url, data = {}) => {
     const botonEliminar = document.createElement('button');
     botonEliminar.type = 'button';
     botonEliminar.className = 'btn btn-sm btn-outline-danger';
-    botonEliminar.innerHTML = '<i class="bi bi-trash"></i> Quitar';
+    botonEliminar.innerHTML = '<i class="bi bi-trash"></i> Kaldır';
     botonEliminar.addEventListener('click', () => {
-        if (!window.confirm(`¿Eliminar la lista "${etiqueta}" y sus canales asociados?`)) return;
+        if (!window.confirm(`"${etiqueta}" listesini ve ilişkili kanallarını silmek istediğinizden emin misiniz?`)) return;
         const deleted = deletePersonalizedList(url);
         if (!deleted) {
             showToast({
-                title: 'Error',
-                body: 'No se pudo eliminar la lista personalizada.',
+                title: 'Hata',
+                body: 'Özel liste silinemedi.',
                 type: 'danger'
             });
             return;
@@ -173,8 +173,8 @@ const createPersonalizedListCard = (url, data = {}) => {
 
         renderPersonalizedListsUI();
         showToast({
-            title: 'Lista personalizada',
-            body: `Lista eliminada. ${eliminados} canal(es) removidos.`,
+            title: 'Özel liste',
+            body: `Liste silindi. ${eliminados} kanal kaldırıldı.`,
             type: 'info'
         })
     });
@@ -189,14 +189,14 @@ const removeChannelsBySource = (fuente) => {
     if (!fuente || !channelsList) return 0;
     let eliminados = 0;
 
-    Object.keys(channelsList).forEach(canalId => {
-        if (channelsList[canalId]?.fuenteLista === fuente) {
+    getChannelEntries().forEach(([canalId, canal]) => {
+        if (canal?.fuenteLista === fuente) {
             try {
                 tele.remove?.(canalId);
             } catch (error) {
                 console.warn(`[teles] Couldn't remove active channel ${canalId}:`, error);
             }
-            delete channelsList[canalId];
+            removeChannelById(canalId);
             eliminados++;
         }
     });

@@ -27,105 +27,9 @@ buttonWelcomeModal?.addEventListener('click', () => {
     playAudio(AUDIO_SUCCESS);
 });
 
-// MARK: Button PWA Install
-let containerInstallPwa = document.querySelector('#pwa-install');
-const buttonInstallPwa = document.querySelector('#button-pwa-install');
-
-// Hide the button for unsupported browsers
-if (navigator.userAgent.toLowerCase().includes('firefox')) {
-    buttonInstallPwa?.classList.add('d-none');
-    containerInstallPwa?.classList.add('d-none');
-} else {
-    buttonInstallPwa?.addEventListener('click', () => {
-        try {
-            containerInstallPwa?.showDialog?.(true); // "true" value to forced
-        } catch (error) {
-            console.error('[teles] Error at attempt to show PWA install dialog:', error);
-        }
-    });
-}
 
 
 
-// MARK: Botón compartir
-const DATOS_NAVIGATOR_SHARE = {
-    title: 'teles',
-    text: 'PWA Código Abierto para ver/comparar preseleccionadas transmisiones de noticias provenientes de Chile (y el mundo).',
-    url: 'https://alplox.github.io/teles/'
-};
-
-/**
- * Genera una URL para compartir que incluye, cuando es posible, los canales activos
- * codificados en el parámetro `c` de la query string.
- * Se aplica un límite de seguridad tanto al número de canales como a la longitud total
- * de la URL para evitar problemas con navegadores/servidores.
- * @returns {string} URL lista para compartir.
- */
-function obtenerUrlCompartirConCanalesActivos() {
-    try {
-        const urlBase = new URL(DATOS_NAVIGATOR_SHARE.url, window.location.href);
-
-        const payload = localStorage.getItem(LS_KEY_SAVED_CHANNELS_GRID_VIEW);
-        if (!payload) {
-            urlBase.searchParams.delete('c');
-            return urlBase.toString();
-        }
-
-        const datos = JSON.parse(payload);
-        const ids = Object.keys(datos || {});
-        if (!ids.length) {
-            urlBase.searchParams.delete('c');
-            return urlBase.toString();
-        }
-
-        const LIMITE_CANALES = 100;
-        const idsLimitados = ids.slice(0, LIMITE_CANALES);
-
-        urlBase.searchParams.set('c', idsLimitados.join(','));
-
-        const LIMITE_URL = 1800;
-        let urlFinal = urlBase.toString();
-        if (urlFinal.length > LIMITE_URL) {
-            // Si aun así se excede, vamos reduciendo canales hasta que la URL entre en el límite
-            let canalesReducidos = idsLimitados.length;
-            while (urlFinal.length > LIMITE_URL && canalesReducidos > 0) {
-                canalesReducidos -= 5;
-                const subset = idsLimitados.slice(0, Math.max(canalesReducidos, 1));
-                if (!subset.length) break;
-                urlBase.searchParams.set('c', subset.join(','));
-                urlFinal = urlBase.toString();
-            }
-        }
-
-        if (urlFinal.length > LIMITE_URL) {
-            // Como último recurso, eliminamos el parámetro y usamos la URL base
-            urlBase.searchParams.delete('c');
-            return urlBase.toString();
-        }
-
-        return urlFinal;
-    } catch (error) {
-        console.error('[teles] Error at attempt to generate share URL with active channels:', error);
-        return DATOS_NAVIGATOR_SHARE.url;
-    }
-}
-
-const BOTON_COMPARTIR = document.querySelector('#boton-compartir');
-const CONTENEDOR_BOTONES_COMPARTIR_RRSS = document.querySelector('#contenedor-botones-compartir');
-
-// Compartir sitio (sin configuración de canales)
-if (navigator.share && BOTON_COMPARTIR) {
-    BOTON_COMPARTIR.addEventListener('click', async () => {
-        try {
-            await navigator.share(DATOS_NAVIGATOR_SHARE);
-        } catch (err) {
-            console.error(`[teles] Error at attempt to share using navigator.share: ${err}`);
-        }
-    });
-} else {
-    BOTON_COMPARTIR?.classList.add('d-none');
-    CONTENEDOR_BOTONES_COMPARTIR_RRSS?.classList.replace('d-none', 'd-flex');
-}
 
 // MARK: Botones carga canales predeterminados
 const cargarCanalesPredeterminados = () => {
@@ -135,8 +39,8 @@ const cargarCanalesPredeterminados = () => {
         getDefaultChannels(isMobile?.any).forEach(canal => tele.add(canal));
     } catch (error) {
         showToast({
-            title: 'Error al cargar canales predeterminados',
-            body: `Error: ${error}`,
+            title: 'Varsayılan kanallar yüklenirken hata oluştu',
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -162,8 +66,8 @@ const removeAllChannels = (withAudio = true) => {
     } catch (error) {
         console.error(`[teles] Error at attempt to remove all channels: ${error}`);
         showToast({
-            title: 'Ha ocurrido un error al intentar quitar todos los canales.',
-            body: `Error: ${error}`,
+            title: 'Tüm kanalları kaldırmaya çalışırken bir hata oluştu.',
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -213,8 +117,8 @@ BOTON_BORRAR_LOCALSTORAGE?.addEventListener('click', () => {
     } catch (error) {
         console.error('[teles] Error at attempt to clear local storage: ', error);
         showToast({
-            title: 'Error al intentar eliminar almacenamiento local',
-            body: `Error: ${error}`,
+            title: 'Yerel depolama silinmeye çalışılırken hata oluştu',
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -240,8 +144,8 @@ function enterFullscreen() {
     } catch (error) {
         console.error('[teles] Error at attempt to enter fullscreen: ', error);
         showToast({
-            title: 'Error al solicitar entrar a pantalla completa',
-            body: `Error: ${error}`,
+            title: 'Tam ekrana geçiş istenirken hata oluştu',
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -266,8 +170,8 @@ function exitFullscreen() {
     } catch (error) {
         console.error('[teles] Error at attempt to exit fullscreen: ', error);
         showToast({
-            title: 'Error al solicitar salir de pantalla completa',
-            body: `Error: ${error}`,
+            title: 'Tam ekrandan çıkış istenirken hata oluştu',
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -308,8 +212,8 @@ if (!isFullscreenSupported() && BOTON_FULLSCREEN?.parentElement?.parentElement) 
 function handleFullscreenChange() {
     if (!BOTON_FULLSCREEN) return;
     isFullscreen()
-        ? (BOTON_FULLSCREEN.innerHTML = 'Salir pantalla completa <i class="bi bi-fullscreen-exit ms-auto"></i>', BOTON_FULLSCREEN.classList.replace('btn-light-subtle', CSS_CLASS_BUTTON_PRIMARY))
-        : (BOTON_FULLSCREEN.innerHTML = 'Entrar pantalla completa <i class="bi bi-arrows-fullscreen ms-auto"></i>', BOTON_FULLSCREEN.classList.replace(CSS_CLASS_BUTTON_PRIMARY, 'btn-light-subtle'));
+        ? (BOTON_FULLSCREEN.innerHTML = 'Tam ekrandan çık <i class="bi bi-fullscreen-exit ms-auto"></i>', BOTON_FULLSCREEN.classList.replace('btn-light-subtle', CSS_CLASS_BUTTON_PRIMARY))
+        : (BOTON_FULLSCREEN.innerHTML = 'Tam ekrana geç <i class="bi bi-arrows-fullscreen ms-auto"></i>', BOTON_FULLSCREEN.classList.replace(CSS_CLASS_BUTTON_PRIMARY, 'btn-light-subtle'));
 }
 
 /* window.addEventListener('resize', handleFullscreenChange); */
@@ -327,103 +231,6 @@ document.addEventListener('mozfullscreenchange', handleFullscreenChange);
 document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
 
-// MARK: Botón copiar enlace sitio
-const BOTON_COPIAR_ENLACE_COMPARTIR = document.querySelector('#boton-copiar-enlace-compartir');
-const INPUT_ENLACE_COMPARTIR = document.querySelector('#input-enlace-compartir');
-
-BOTON_COPIAR_ENLACE_COMPARTIR?.addEventListener('click', async () => {
-    try {
-        INPUT_ENLACE_COMPARTIR?.select?.();
-
-        if (navigator.clipboard && INPUT_ENLACE_COMPARTIR) {
-            await navigator.clipboard.writeText(INPUT_ENLACE_COMPARTIR.value);
-            playAudio(AUDIO_SUCCESS);
-            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Copiado exitoso! <i class="bi bi-clipboard-check"></i>';
-            BOTON_COPIAR_ENLACE_COMPARTIR.classList.add('bg-success');
-        } else {
-            throw new Error('Clipboard API no soportada o input no encontrado');
-        }
-    } catch (error) {
-        console.error('[teles] Error at attempt to copy link using navigator.clipboard: ', error);
-        try {
-            document.execCommand('copy', false, INPUT_ENLACE_COMPARTIR?.value ?? DATOS_NAVIGATOR_SHARE.url);
-            playAudio(AUDIO_SUCCESS);
-            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Copiado exitoso! <i class="bi bi-clipboard-check"></i>';
-            BOTON_COPIAR_ENLACE_COMPARTIR.classList.add('bg-success');
-        } catch (execError) {
-            console.error('[teles] Error at attempt to copy link using execCommand: ', execError);
-            playAudio(AUDIO_FAIL);
-            BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Copiado fallido! <i class="bi bi-clipboard-x"></i>';
-            BOTON_COPIAR_ENLACE_COMPARTIR.classList.add('bg-danger');
-            return;
-        }
-    } finally {
-        setTimeout(() => {
-            if (BOTON_COPIAR_ENLACE_COMPARTIR) {
-                BOTON_COPIAR_ENLACE_COMPARTIR.innerHTML = 'Copiar enlace <i class="bi bi-clipboard"></i>';
-                BOTON_COPIAR_ENLACE_COMPARTIR.classList.remove('bg-success', 'bg-danger');
-            }
-        }, 2000);
-    }
-});
-
-// MARK: Botón copiar enlace configuración de canales
-export const BOTON_COPIAR_ENLACE_COMPARTIR_SETUP = document.querySelector('#boton-copiar-enlace-compartir-setup');
-const INPUT_ENLACE_COMPARTIR_SETUP = document.querySelector('#input-enlace-compartir-setup');
-
-/**
- * Actualiza el input de compartir configuración con la URL generada según
- * los canales activos actuales, respetando los límites internos de
- * obtenerUrlCompartirConCanalesActivos.
- * @returns {void}
- */
-function actualizarInputCompartirSetup() {
-    if (!INPUT_ENLACE_COMPARTIR_SETUP) return;
-    INPUT_ENLACE_COMPARTIR_SETUP.value = obtenerUrlCompartirConCanalesActivos();
-}
-
-const OFFCANVAS_PERSONALIZACION = document.querySelector('#sidepanel');
-OFFCANVAS_PERSONALIZACION?.addEventListener('shown.bs.offcanvas', () => {
-    actualizarInputCompartirSetup();
-});
-
-BOTON_COPIAR_ENLACE_COMPARTIR_SETUP?.addEventListener('click', async () => {
-    try {
-        actualizarInputCompartirSetup();
-        INPUT_ENLACE_COMPARTIR_SETUP?.select?.();
-
-        if (navigator.clipboard && INPUT_ENLACE_COMPARTIR_SETUP) {
-            await navigator.clipboard.writeText(INPUT_ENLACE_COMPARTIR_SETUP.value);
-            playAudio(AUDIO_SUCCESS);
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Copiado exitoso! <i class="bi bi-clipboard-check"></i>';
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.classList.add('bg-success');
-        } else {
-            throw new Error('Clipboard API no soportada o input no encontrado');
-        }
-    } catch (error) {
-        console.error('[teles] Error at attempt to copy link using navigator.clipboard: ', error);
-        try {
-            const textoFallback = INPUT_ENLACE_COMPARTIR_SETUP?.value ?? obtenerUrlCompartirConCanalesActivos();
-            document.execCommand('copy', false, textoFallback);
-            playAudio(AUDIO_SUCCESS);
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Copiado exitoso! <i class="bi bi-clipboard-check"></i>';
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.classList.add('bg-success');
-        } catch (execError) {
-            console.error('[teles] Error at attempt to copy link using execCommand: ', execError);
-            playAudio(AUDIO_FAIL);
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Copiado fallido! <i class="bi bi-clipboard-x"></i>';
-            BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.classList.add('bg-danger');
-            return;
-        }
-    } finally {
-        setTimeout(() => {
-            if (BOTON_COPIAR_ENLACE_COMPARTIR_SETUP) {
-                BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.innerHTML = 'Copiar setup <i class="bi bi-clipboard"></i>';
-                BOTON_COPIAR_ENLACE_COMPARTIR_SETUP.classList.remove('bg-success', 'bg-danger');
-            }
-        }, 2000);
-    }
-});
 
 // Ordenar botones canales
 

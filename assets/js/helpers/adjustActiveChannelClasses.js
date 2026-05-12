@@ -34,65 +34,46 @@ export const adjustBootstrapColumnClasses = () => {
         if (viewMode === 'free-view') return;
 
         const activeTransmissions = gridViewContainer.querySelectorAll('div[data-canal]');
-        const storedColNumber = JSON.parse(localStorage.getItem(LS_KEY_BOOTSTRAP_COL_NUMBER));
-
-        if (!storedColNumber || isNaN(Number(storedColNumber))) return;
+        
+        // Remove legacy Bootstrap classes from older versions just in case
+        const classesToRemove = ['col-12', 'col-6', 'col-4', 'col-3', 'col-2', 'col-1', 'col', 'vh-100', 'overflow-hidden'];
+        activeTransmissions.forEach(transmission => transmission.classList.remove(...classesToRemove));
+        
+        if (activeTransmissions.length === 0) return;
 
         const isFullHeightMode = JSON.parse(localStorage.getItem(LS_KEY_LAYOUT_FULL_HEIGHT_ENABLED));
-        const fullHeightClasses = isFullHeightMode ? ['vh-100', 'overflow-hidden'] : [];
 
         if (isFullHeightMode) {
-            gridViewContainer.classList.add('h-100');
+            gridViewContainer.classList.add('full-height-mode');
         } else {
-            gridViewContainer.classList.remove('h-100');
+            gridViewContainer.classList.remove('full-height-mode');
         }
 
         const channelsPerRow = obtainNumberOfChannelsPerRow();
+        const storedColNumber = JSON.parse(localStorage.getItem(LS_KEY_BOOTSTRAP_COL_NUMBER));
+        
+        if (!storedColNumber || isNaN(Number(storedColNumber))) return;
+        
+        let gridCols = 1;
 
         if (!isMobile.any) {
             // Desktop logic
-            if (activeTransmissions.length < channelsPerRow && !isFullHeightMode) {
-                for (const transmission of activeTransmissions) {
-                    assignColumnClasses(transmission, [`col-${storedColNumber}`]);
-                }
-            } else if (activeTransmissions.length < channelsPerRow) {
-                for (const transmission of activeTransmissions) {
-                    assignColumnClasses(transmission, ['col', ...fullHeightClasses]);
-                }
-            } else {
-                for (const transmission of activeTransmissions) {
-                    assignColumnClasses(transmission, [`col-${storedColNumber}`]);
-                    if (storedColNumber === 12 || storedColNumber === 6) {
-                        transmission.classList.add(...fullHeightClasses);
-                    }
-                }
-            }
+            gridCols = Math.min(activeTransmissions.length, channelsPerRow) || 1;
         } else if (screen.orientation && screen.orientation.type === 'landscape-primary') {
             // Mobile Landscape
-            if (activeTransmissions.length < channelsPerRow) {
-                for (const transmission of activeTransmissions) {
-                    assignColumnClasses(transmission, ['col', ...fullHeightClasses]);
-                }
-            } else {
-                for (const transmission of activeTransmissions) {
-                    assignColumnClasses(transmission, [`col-${storedColNumber}`]);
-                    if (storedColNumber === 12 || storedColNumber === 6) {
-                        transmission.classList.add(...fullHeightClasses);
-                    }
-                }
-            }
+            gridCols = Math.min(activeTransmissions.length, channelsPerRow) || 1;
         } else {
             // Mobile Portrait / Default
-            if (activeTransmissions.length < channelsPerRow) {
-                for (const transmission of activeTransmissions) {
-                    assignColumnClasses(transmission, ['col', ...fullHeightClasses]);
-                }
+            // Force 1 column on portrait mobile regardless of setting, unless less active than channels per row
+            if (activeTransmissions.length < channelsPerRow && channelsPerRow > 1) {
+                gridCols = Math.min(activeTransmissions.length, channelsPerRow) || 1;
             } else {
-                for (const transmission of activeTransmissions) {
-                    assignColumnClasses(transmission, [`col-${storedColNumber}`]);
-                }
+                gridCols = 1;
             }
         }
+        
+        // Apply CSS Grid inline column constraint
+        gridViewContainer.style.gridTemplateColumns = `repeat(${gridCols}, 1fr)`;
 
     } catch (error) {
         console.error('[teles] Error adjusting "col" classes for active channels: ', error);

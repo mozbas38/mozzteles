@@ -1,7 +1,7 @@
-import { crearFragmentCanal } from "../canalUI.js";
-import { channelsList } from "../channelManager.js";
+import { crearFragmentCanal, setTransmissionMuted } from "../canalUI.js";
+import { hasChannelId } from "../channelManager.js";
 import {
-    AMBIENT_MUSIC,
+
     CSS_CLASS_BUTTON_PRIMARY,
     CSS_CLASS_BUTTON_SECONDARY,
     LS_KEY_ACTIVE_VIEW_MODE,
@@ -48,11 +48,6 @@ import {
     disposeBootstrapTooltips
 } from "../utils/index.js";
 
-/** @type {HTMLButtonElement|null} Button to copy share setup link */
-const COPY_SHARE_LINK_BUTTON = document.querySelector('#boton-copiar-enlace-compartir-setup');
-
-/** @type {HTMLInputElement|null} Input field for share setup link */
-const SHARE_LINK_INPUT = document.querySelector('#input-enlace-compartir-setup');
 
 /**
  * Disables grid view-specific controls when switching to single view mode or free view mode.
@@ -98,12 +93,6 @@ const disableGridAndFreeViewControls = () => {
         dynamicUrlValueSpan.textContent = '[solo en visión cuadrícula/libre]';
     }
 
-    // Disable share setup controls
-    COPY_SHARE_LINK_BUTTON?.setAttribute('disabled', 'disabled');
-    COPY_SHARE_LINK_BUTTON.innerHTML = '[solo en visión cuadrícula/libre]';
-
-    SHARE_LINK_INPUT?.setAttribute('disabled', 'disabled');
-
     toggleGridViewControls(true);
 };
 
@@ -125,11 +114,6 @@ const enableGridViewControls = () => {
             applyDynamicUrlState(isDynamicUrlMode);
         }
     }
-
-    // Enable share setup controls
-    COPY_SHARE_LINK_BUTTON?.removeAttribute('disabled');
-    COPY_SHARE_LINK_BUTTON.innerHTML = 'Copiar setup <i class="bi bi-clipboard"></i>';
-    SHARE_LINK_INPUT?.removeAttribute('disabled');
 
     // Enable width range controls
     widthRangeInput.disabled = false;
@@ -195,6 +179,7 @@ const backupActiveChannels = () => {
     const activeChannelsInDOM = gridViewContainer.querySelectorAll('div[data-canal]');
 
     activeChannelsInDOM.forEach(channelDiv => {
+        setTransmissionMuted(channelDiv, true);
         // Clear resources before clearing HTML
         cleanTransmissionResources(channelDiv);
         // Clear HTML instead of removing to avoid triggering observer
@@ -214,6 +199,7 @@ const restoreBackedUpChannels = () => {
     activeChannelsInDOM.forEach(channelDiv => {
         channelDiv.dataset.canal = channelDiv.dataset.respaldo;
         channelDiv.append(crearFragmentCanal(channelDiv.dataset.canal));
+        setTransmissionMuted(channelDiv, true);
         adjustChannelButtonClass(channelDiv.dataset.canal, true);
         initializeBootstrapTooltips();
         hideOverlayButtonText();
@@ -249,13 +235,19 @@ const loadFirstSavedChannel = () => {
     if (channelIds.length > 0) {
         try {
             const firstChannelId = channelIds[0];
-            if (channelsList[firstChannelId]) {
+            if (hasChannelId(firstChannelId)) {
                 tele.add(firstChannelId);
             }
         } catch (error) {
             console.error(`[teles] Error loading channels for single view mode. Error: ${error}`);
         }
     }
+};
+
+const setActiveTransmissionsMuted = (rootElement, muted) => {
+    rootElement?.querySelectorAll('div[data-canal]').forEach(channelDiv => {
+        setTransmissionMuted(channelDiv, muted);
+    });
 };
 
 /**
@@ -266,11 +258,6 @@ const loadFirstSavedChannel = () => {
  */
 export function activateSingleView() {
     try {
-        // Stop ambient music playback controls if music is playing
-        if (!AMBIENT_MUSIC.paused) {
-            adjustVisibilityButtonsRemoveAllActiveChannels();
-        }
-
         // Initialize single view channel buttons if not already present
         loadSingleViewOrder();
         const singleViewButtonsContainer = document.querySelector('#single-view-channels-buttons-container');
@@ -287,6 +274,8 @@ export function activateSingleView() {
         disableGridAndFreeViewControls();
 
         resetChannelButtonStyles();
+        setActiveTransmissionsMuted(gridViewContainer, true);
+        setActiveTransmissionsMuted(freeViewContainer, true);
         backupActiveChannels();
 
         // Toggle view containers visibility
@@ -298,6 +287,7 @@ export function activateSingleView() {
         updateFloatingButtonsForViewMode(true);
 
         loadFirstSavedChannel();
+        setActiveTransmissionsMuted(singleViewContainer, false);
 
         // Add empty class for CSS media query purposes
         document.querySelector('#boton-personalizar-boton-mover-overlay')?.classList.add('clase-vacia');
@@ -333,6 +323,7 @@ export function deactivateSingleView({ skipDefaultChannelsLoad = false } = {}) {
         // Alternative to tele.remove() to avoid saving empty string to localStorage
         try {
             if (activeChannelInSingleView !== null) {
+                setTransmissionMuted(activeChannelInSingleView, true);
                 cleanTransmissionResources(activeChannelInSingleView);
                 disposeBootstrapTooltips();
                 activeChannelInSingleView.remove();
@@ -358,6 +349,8 @@ export function deactivateSingleView({ skipDefaultChannelsLoad = false } = {}) {
 
         // Restore backed up channels or load defaults
         const restoredChannelsCount = restoreBackedUpChannels();
+        setActiveTransmissionsMuted(gridViewContainer, true);
+        setActiveTransmissionsMuted(freeViewContainer, true);
 
         if (restoredChannelsCount === 0) {
             if (!skipDefaultChannelsLoad) {

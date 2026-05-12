@@ -16,7 +16,7 @@ const UNDEFINED_CATEGORY_VALUE = "undefined";
 function buildRelations() {
     const categoriesByCountryMap = new Map();
     const countriesByCategoryMap = new Map();
-    const channels = channelsList ? Object.values(channelsList) : [];
+    const channels = channelsList || [];
 
     for (const channel of channels) {
         const countryCode = channel?.país?.trim()

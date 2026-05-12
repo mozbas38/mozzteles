@@ -1,4 +1,4 @@
-import { channelsList } from "../channelManager.js";
+import { getChannelById } from "../channelManager.js";
 import { LS_KEY_CHANNEL_SIGNAL_PREFERENCE } from "../constants/localStorageKeys.js";
 import { areAllSignalsEmpty, showToast } from "./index.js";
 
@@ -11,7 +11,7 @@ export const deleteInvalidSignalPreferences = () => {
 
             if (!areAllSignalsEmpty(SAVED_CHANNEL_ID)) {
                 if (signalType === 'iframe_url' || signalType === 'm3u8_url') {
-                    if (channelsList?.[SAVED_CHANNEL_ID]?.señales?.[signalType][signalIndex] === undefined) {
+                    if (getChannelById(SAVED_CHANNEL_ID)?.señales?.[signalType][signalIndex] === undefined) {
                         console.error(`[teles] Prefer signal for ${SAVED_CHANNEL_ID} (${signalType}[${signalIndex}]) not available.`);
                         showToast({
                             title: `Señal preferida para ${SAVED_CHANNEL_ID} (${signalType}[${signalIndex}]) no disponible.`,
@@ -22,7 +22,7 @@ export const deleteInvalidSignalPreferences = () => {
                         localStorage.setItem(LS_KEY_CHANNEL_SIGNAL_PREFERENCE, JSON.stringify(lsSignalPreferences));
                     }
                 } else {
-                    if (channelsList?.[SAVED_CHANNEL_ID]?.señales?.[signalType] === '') {
+                    if (getChannelById(SAVED_CHANNEL_ID)?.señales?.[signalType] === '') {
                         console.error(`[teles] Prefer signal for ${SAVED_CHANNEL_ID} (${signalType}) not available.`);
                         showToast({
                             title: `Señal preferida para ${SAVED_CHANNEL_ID} (${signalType}) no disponible.`,

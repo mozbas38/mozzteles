@@ -46,14 +46,7 @@
     <script src="https://cdn.jsdelivr.net/npm/ismobilejs@1.1.1/dist/isMobile.min.js" defer></script>
     <meta name="theme-color" content="#212529" />
     <link rel="manifest" href="./site.webmanifest">
-    <script type="module">
-        import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
-        const el = document.createElement('pwa-update');
-        el.swpath = "./pwabuilder-sw.js"
-        el.updatemessage = "Yeni sürüm hazır";
-        el.offlineToastDuration = 2000;
-        document.body.appendChild(el);
-    </script>
+
     <script src="https://widget.time.is/t.js"></script>
     <script>
         time_is_widget.init({
@@ -63,7 +56,7 @@
     <link href="https://cdn.jsdelivr.net/npm/gridstack@12.4.2/dist/gridstack.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gridstack@12.4.2/dist/gridstack-all.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js" defer></script>
-    <script src="https://unpkg.com/@khmyznikov/pwa-install@0.3.5/dist/pwa-install.bundle.js" defer></script>
+
 </head>
 
 <body>
@@ -86,40 +79,7 @@
     </div>
 
     <div class="fondo-global">
-        <section id="container-tarjeta-logo-background">
-            <div
-                class="position-absolute top-50 start-50 translate-middle border border-light-subtle rounded-5 shadow cursor-default-en-hover user-select-none overflow-hidden">
-                <div
-                    class="tarjeta-logo-background bg-transparent bg-blur px-5 pb-4 pt-5 d-flex flex-column justify-content-center align-items-center">
-                    <div class="position-relative bg-light-subtle p-3 rounded-4 shadow" tabindex="-1">
-                        <img src="./assets/favicon/android-chrome-512x512.png" alt="Mozbasport logosu">
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
-                            <i class="badge bg-secondary">v0.26</i>
-                        </span>
-                    </div>
-                    <p class="display-1 gradient-text">Reji Masası</p>
 
-                    <div id="audio-controls" class="z-3 d-flex flex-column gap-2 align-items-center p-2 rounded-4">
-                        <button id="ambient-music-toggle"
-                            class="btn btn-sm rounded-pill d-flex align-items-center gap-2"
-                            title="Ortam müziğini oynat">
-                            <i class="bi bi-play-fill text-flicker fs-4" id="music-icon"></i>
-                            <a id="ambient-music-track"
-                                class="fs-smaller bg-light-subtle p-2 rounded-pill user-select-auto"
-                                href="https://freesound.org/people/YellowTree/sounds/693384/">Weather
-                                Forecast Type Beat by
-                                YellowTree</a>
-                        </button>
-                        <div class="d-flex align-items-center gap-2 bg-dark-subtle p-2 rounded-4">
-                            <i class="bi bi-volume-down"></i>
-                            <input type="range" id="ambient-music-volume" class="form-range" min="0" max="100"
-                                value="50" style="width: 150px;">
-                            <i class="bi bi-volume-up"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </div>
 
     <noscript>
@@ -131,7 +91,7 @@
         </div>
     </noscript>
 
-    <pwa-install id="pwa-install" manifest-url="./site.webmanifest"></pwa-install>
+
 
     <div id="alerta-borrado-localstorage" class="z-9999 position-fixed overflow-hidden vw-100 vh-100 bg-flicker d-none">
         <div class="d-flex flex-column align-items-center justify-content-center bg-dark-subtle p-5 vw-100 vh-100">
@@ -146,33 +106,13 @@
         </div>
     </div>
 
-    <nav class='navbar navbar-expand-lg bg-dark-subtle shadow-sm p-1' id="navbar">
-        <div class="container-fluid">
-            <a href="./" target="_self" class="gradient-text me-2 fs-4 d-none">teles</a>
-            <div class="btn-group" role="group" aria-label="Kanallar seçici düğme grubu">
-                <button type="button" class="btn btn-sm btn-indigo rounded-start-pill" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvas-canales" aria-controls="offcanvas-canales"><i class="bi bi-chevron-right"
-                        title="Yan panel Kanallar"></i>
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-indigo rounded-end-pill" data-bs-toggle="modal"
-                    data-bs-target="#modal-canales">
-                    <i class="bi bi-collection-play"></i> Kanallar
-                </button>
-            </div>
-            <span class="reloj px-2 px-md-4" title="Türkiye Saati" data-bs-toggle="tooltip"
-                data-bs-title="Türkiye Saati">
-                <time id="Turkey_z179" tabindex="-1">
-                    <span onclick="location='http://time.is/'" title="http://time.is/" tabindex="-1"></span>
-                </time>
-            </span>
-        </div>
-    </nav>
+
 
     <main class='vh-100'>
         <div class="grid-stack grid-stack-background d-none h-100" id="container-vision-libre">
         </div>
 
-        <div class="row g-0 h-100" id="container-vision-cuadricula">
+        <div class="g-0 h-100" id="container-vision-cuadricula">
         </div>
 
         <div class='vh-100 w-100 position-absolute overflow-hidden d-none' id="container-single-view">
@@ -180,8 +120,7 @@
                 <div class="h-100 overflow-hidden p-2 d-flex flex-column shadow rounded-3 border border-light-subtle"
                     id="panel-canales-single-view">
 
-                    <button type="button" data-bs-toggle="tooltip"
-                        data-bs-title="Bu paneli sürükle ve taşı [sol-sağ]"
+                    <button type="button" data-bs-toggle="tooltip" data-bs-title="Bu paneli sürükle ve taşı [sol-sağ]"
                         id="boton-mover-panel-canales-single-view"
                         class="btn btn-sm btn-dark-subtle p-0 px-1 rounded-3 mb-2">
                         <div class="d-flex gap-1 pe-auto w-100 clase-para-mover">
@@ -313,127 +252,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-cambiar-canal" tabindex="-1" aria-labelledby="modal exclusivo cambio"
-        aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen-sm-down modal-dialog-scrollable">
-            <div class="modal-content bg-transparent bg-blur border-0">
-                <div class="modal-header bg-transparent border-0 d-flex flex-column pb-0">
-                    <h2 class="text-light m-0">Kanal değiştiriliyor [<span class="modal-title fs-5"
-                            id="label-para-nombre-canal-cambiar"></span>]</h2>
-                </div>
 
-                <div class="modal-body vh-100 scrollbar-thin-gray bg-transparent rounded-bottom-3">
-                    <div>
-                        <div class="modal-cambiar-canal-mensaje-alerta shadow d-none" tabindex="0"
-                            id="modal-cambiar-canal-mensaje-alerta">
-                            <div
-                                class="d-flex flex-column rounded-3 justify-content-center align-items-center text-wrap h-100 bg-danger-subtle p-3">
-                                <p class="fs-4 bg-danger p-3 rounded-3 overflow-auto" style="max-height: 150px;">
-                                    <i class="bi bi-backspace-reverse"></i>
-                                    Aramanız için sonuç bulunamadı
-                                    (<span class="text-break fst-italic"></span>).
-                                </p>
-                                <div class="bg-danger bg-opacity-10 p-3 rounded-3 text-start">
-                                    <ul>
-                                        <li>Tüm kelimelerin doğru yazıldığından emin ol.</li>
-                                        <li>Farklı anahtar kelimeler dene.</li>
-                                        <li>İspanyolca kelimeler deneyebilirsin.</li>
-                                        <li>Ülke ve/veya kategori filtrelerini devre dışı bırak.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="autocomplete-container shadow d-flex flex-column gap-2"
-                        id="modal-cambiar-canal-channels-buttons-container"></div>
-                </div>
 
-                <div class="modal-footer bg-transparent border-0 d-flex align-items-center justify-content-center">
-                    <div class="w-100 bg-light-subtle p-2 rounded-3 mt-2 rounded-4">
-                        <div class="d-flex align-items-center gap-2">
-                            <button
-                                class="btn btn-sm d-flex align-items-center gap-1 p-0 border-0 bg-transparent flex-shrink-0"
-                                type="button" data-bs-toggle="collapse"
-                                data-bs-target="#modal-cambiar-canal-filtros-collapse" aria-expanded="false"
-                                aria-controls="modal-cambiar-canal-filtros-collapse">
-                                <span class="small text-secondary-emphasis d-inline-flex align-items-center gap-1">
-                                    <i class="bi bi-sliders"></i>
-                                    <span>Filtreler</span>
-                                </span>
-                                <i class="bi bi-chevron-down icono-filtros-estado"></i>
-                            </button>
-
-                            <div class="flex-grow-1">
-                                <input class="form-control form-control-sm rounded-4" type="search"
-                                    id="modal-cambiar-canal-input-filtro" placeholder="Aramak için yaz...">
-                            </div>
-                        </div>
-
-                        <div class="collapse mt-2" id="modal-cambiar-canal-filtros-collapse">
-                            <div class="d-flex gap-1 flex-wrap">
-                                <div class="d-flex flex-column">
-                                    <div class="btn-group btn-group-sm container-btn-group" role="group"
-                                        aria-label="Ülke filtresi düğme grubu"
-                                        id="modal-cambiar-canal-collapse-botones-listado-filtro-paises">
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <div class="btn-group btn-group-sm container-btn-group" role="group"
-                                        aria-label="Kategori filtresi düğme grubu"
-                                        id="modal-cambiar-canal-collapse-botones-listado-filtro-categorias">
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <div class="btn-group">
-                                        <button type="button"
-                                            class="btn btn-sm btn-dark dropdown-toggle h-100 rounded-pill"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-sort-down"></i> Sıralama
-                                        </button>
-                                        <ul class="dropdown-menu p-2 rounded-4">
-                                            <li class="my-1">
-                                                <input type="radio" class="btn-check"
-                                                    name="btn-ascending-change-channel-modal"
-                                                    id="modal-cambiar-canal-btn-ascending-order" autocomplete="off" />
-                                                <label
-                                                    class="btn btn-sm btn-outline-indigo w-100 d-flex gap-1 rounded-3"
-                                                    for="modal-cambiar-canal-btn-ascending-order"><i
-                                                        class="bi bi-sort-alpha-down"></i> Artan</label>
-                                            </li>
-                                            <li class="my-1">
-                                                <input type="radio" class="btn-check"
-                                                    name="btn-descending-change-channel-modal"
-                                                    id="modal-cambiar-canal-btn-descending-order" autocomplete="off" />
-                                                <label
-                                                    class="btn btn-sm btn-outline-indigo w-100 d-flex gap-1 rounded-3"
-                                                    for="modal-cambiar-canal-btn-descending-order"><i
-                                                        class="bi bi-sort-alpha-up-alt"></i> Azalan</label>
-                                            </li>
-                                            <li class="my-1">
-                                                <input type="radio" class="btn-check"
-                                                    name="btn-default-order-change-channel-modal"
-                                                    id="modal-cambiar-canal-btn-default-order" autocomplete="off"
-                                                    checked="checked" />
-                                                <label
-                                                    class="btn btn-sm btn-outline-indigo w-100 d-flex gap-1 rounded-3"
-                                                    for="modal-cambiar-canal-btn-default-order"><i
-                                                        class="bi bi-arrow-clockwise"></i> Varsayılan</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button"
-                        class="btn btn-secondary rounded-pill d-flex justify-content-center align-items-center"
-                        data-bs-dismiss="modal" style="height: 2.5rem; width: 2.5rem">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="modal fade" id="modal-canales" tabindex="-1" aria-labelledby="Kanallar Listesi Modalı"
         aria-hidden="true">
@@ -682,7 +502,7 @@
             </div>
         </footer>
     </div>
-    
+
     <div class="modal fade" id="modal-creditos" tabindex="-1" aria-labelledby="Emeğe Saygı Modalı" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-transparent border-0 shadow">
@@ -748,21 +568,7 @@
         </div>
         <div class="offcanvas-body scrollbar-thin-gray">
             <ul class="d-flex flex-column justify-content-start align-items-center w-100 gap-3 list-unstyled">
-                <li class="w-100">
-                    <div class="py-2 px-3 bg-dark-subtle rounded-pill border border-light-subtle shadow">
-                        <div class="form-check form-switch d-flex align-items-center gap-2" title="Gezinti çubuğunu gizle">
-                            <input class="form-check-input" type="checkbox" role="switch"
-                                id="checkbox-personalizar-visualizacion-navbar">
-                            <label class="form-check-label w-100 d-flex justify-content-between align-items-center"
-                                for="checkbox-personalizar-visualizacion-navbar">
-                                Gezinti çubuğu
-                                <span class="ps-1 fs-smaller text-secondary"
-                                    id="span-valor-visualizacion-navbar"></span>
-                                <i class="bi bi-border-top ms-auto bg-light-subtle px-2 py-1 rounded-circle"></i>
-                            </label>
-                        </div>
-                    </div>
-                </li>
+
                 <li class="w-100">
                     <div class="py-2 px-3 bg-dark-subtle rounded-4 border border-light-subtle shadow">
                         <p class="mb-1"><i class="bi bi-display"></i> Görselleştirme tasarımı</p>
@@ -799,54 +605,7 @@
                                     id="icono-personalizar-visualizacion-overlay"></i>
                             </label>
                         </div>
-                        <div class="w-100 btn-group d-flex flex-column justify-content-center align-items-center py-2 px-3 bg-dark-subtle border border-light-subtle rounded-4 shadow mt-2"
-                            role="group" aria-label="Üst menü düğme grubu"
-                            id="grupo-botones-personalizar-botones-dentro-overlay">
-                            <p class="align-self-start">Üst menü düğmeleri</p>
-                            <div class="d-flex justify-content-between w-100">
-                                <div class="d-flex flex-column overlay-toggle-item align-items-center">
-                                    <input type="checkbox" class="btn-check" name="btncheckboxbotonesoverlay"
-                                        id="btnSelecionarSeñal" autocomplete="off" checked
-                                        data-botonOverlay="overlay-boton-selecionar-señal">
-                                    <label class="btn btn-outline-indigo rounded-4" for="btnSelecionarSeñal"><i
-                                            class="bi bi-collection"></i></label>
-                                    <span class="fs-smaller text-secondary"></span>
-                                </div>
-                                <div class="d-flex flex-column overlay-toggle-item align-items-center"
-                                    id="boton-personalizar-boton-mover-overlay">
-                                    <input type="checkbox" class="btn-check" name="btncheckboxbotonesoverlay"
-                                        id="btnMover" autocomplete="off" checked
-                                        data-botonOverlay="overlay-boton-mover">
-                                    <label class="btn btn-outline-indigo rounded-4" for="btnMover"><i
-                                            class="bi bi-arrows-move"></i></label>
-                                    <span class="fs-smaller text-secondary"></span>
-                                </div>
-                                <div class="d-flex flex-column overlay-toggle-item align-items-center">
-                                    <input type="checkbox" class="btn-check" name="btncheckboxbotonesoverlay"
-                                        id="btnCambiar" autocomplete="off" checked
-                                        data-botonOverlay="overlay-boton-cambiar">
-                                    <label class="btn btn-outline-indigo rounded-4" for="btnCambiar"><i
-                                            class="bi bi-arrow-repeat"></i></label>
-                                    <span class="fs-smaller text-secondary"></span>
-                                </div>
-                                <div class="d-flex flex-column overlay-toggle-item align-items-center">
-                                    <input type="checkbox" class="btn-check" name="btncheckboxbotonesoverlay"
-                                        id="btnFuente" autocomplete="off" checked
-                                        data-botonOverlay="overlay-boton-pagina-oficial">
-                                    <label class="btn btn-outline-indigo rounded-4" for="btnFuente"><i
-                                            class="bi bi-box-arrow-up-right"></i></label>
-                                    <span class="fs-smaller text-secondary"></span>
-                                </div>
-                                <div class="d-flex flex-column overlay-toggle-item align-items-center">
-                                    <input type="checkbox" class="btn-check" name="btncheckboxbotonesoverlay"
-                                        id="btnQuitar" autocomplete="off" checked
-                                        data-botonOverlay="overlay-boton-quitar">
-                                    <label class="btn btn-outline-indigo rounded-4" for="btnQuitar"><i
-                                            class="bi bi-x-circle"></i></label>
-                                    <span class="fs-smaller text-secondary"></span>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </li>
                 <li class="w-100">
@@ -912,7 +671,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="w-100">
+                <li class="w-100" id="li-size-height-setting">
                     <div class="py-2 px-3 bg-dark-subtle rounded-4 border border-light-subtle shadow">
                         <label for="input-range-tamaño-container-vision-cuadricula"
                             class="slider-label form-label d-flex align-items-center gap-1">Boyut
@@ -943,7 +702,7 @@
 
                     </div>
                 </li>
-                <li class="w-100">
+                <li class="w-100" id="li-channels-per-row-setting">
                     <div class="py-2 px-3 bg-dark-subtle rounded-4 border border-light-subtle shadow">
                         Satır başına kanal sayısı
                         <div class="fs-smaller text-secondary d-inline">
@@ -958,7 +717,7 @@
                             <button value="3" type="button" class="btn btn-light-subtle rounded-4 w-100">4</button>
                             <button value="2" type="button" class="btn btn-light-subtle rounded-4 w-100">6</button>
                             <button value="1" type="button" class="btn btn-light-subtle rounded-4 w-100"
-                                data-bs-toggle="tooltip" data-bs-title="çığırından">12</button>
+                                data-bs-toggle="tooltip" data-bs-title="Maksimum kapasite">12</button>
                         </div>
                     </div>
                 </li>
@@ -974,8 +733,7 @@
                 <li class="w-100">
                     <div class="w-100 btn-group d-flex flex-column justify-content-center align-items-center 
                     py-2 px-3 bg-dark-subtle border border-light-subtle rounded-4 shadow gap-1" role="group"
-                        aria-label="Kayan düğme konumu grubu"
-                        id="grupo-botones-posicion-botones-flotantes">
+                        aria-label="Kayan düğme konumu grubu" id="grupo-botones-posicion-botones-flotantes">
                         <p class="my-2 align-self-start">Kayan düğmeler</p>
                         <div class="d-flex gap-1">
                             <input type="radio" class="btn-check" name="btnradioflotante" id="btnradioflotante1"
@@ -1047,7 +805,8 @@
                     <div class="w-100 d-flex bg-dark-subtle rounded-pill py-2 px-3 border border-light-subtle shadow">
                         <button type="button"
                             class="btn btn-danger rounded-pill btn-sm w-100 d-flex justify-content-between align-items-center text-start"
-                            data-bs-toggle="modal" data-bs-target="#modal-reset"><span class="flex-grow-1">Kişiselleştirmeleri
+                            data-bs-toggle="modal" data-bs-target="#modal-reset"><span
+                                class="flex-grow-1">Kişiselleştirmeleri
                                 sıfırla</span><i
                                 class="bi bi-question-circle ms-auto bg-light-subtle text-body rounded-circle px-1"
                                 data-bs-toggle="tooltip"
@@ -1058,9 +817,7 @@
             </ul>
         </div>
         <div class="d-flex p-3 bg-dark bg-opacity-75 gap-2 rounded-bottom-5">
-            <button type="button" class="btn btn-success rounded-pill" id="button-pwa-install">
-                <i class="bi bi-plus-circle-dotted"></i> Yükle
-            </button>
+
 
             <button class="btn btn-secondary ms-auto rounded-pill" data-bs-dismiss="offcanvas"
                 aria-label="Kapat">Kapat</button>
@@ -1068,31 +825,20 @@
     </div>
 
     <div class="modal modal-alert py-5" tabindex="-1" role="dialog" id="modal-reset">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content rounded-4 shadow bg-danger-subtle border-0">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title">Tüm kişiselleştirmelerini sıfırlamak istediğinden emin misin?</h5>
-                </div>
-                <div class="modal-body py-4">
-                    <p>
-                        Bu işlem, bu sitenin tarayıcında localStorage üzerinden oluşturduğu tüm kayıtları siler.
-                        Bu, sayfayı sıfırdan yeniden yüklemekle eşdeğerdir.
-                    </p>
-                    <p class="text-secondary fst-italic">
-                        Sayfanın çalışmasıyla ilgili sorun yaşıyorsan devam etmek ve/veya tarayıcı önbelleğini
-                        temizlemek önerilir.
-                    </p>
+                <div class="modal-header border-0 text-center d-block">
+                    <h5 class="modal-title w-100">Tüm kişiselleştirmelerini sıfırlamak istediğinden emin misin?</h5>
                 </div>
                 <div class="modal-footer flex-nowrap p-0 overflow-hidden border-0">
-                    <button type="button" class="btn btn-danger w-100 m-0 rounded-0" id="boton-borrar-localstorage"
+                    <button type="button" class="btn btn-danger w-50 m-0 rounded-0" id="boton-borrar-localstorage"
                         data-bs-dismiss="modal" data-bs-toggle="offcanvas">
                         <strong><i class="bi bi-trash3"></i> Sıfırla</strong>
                     </button>
-                    <button type="button" class="btn btn-secondary w-100 m-0 rounded-0" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary w-50 m-0 rounded-0" data-bs-dismiss="modal">
                         Kapat
                     </button>
                 </div>
-
             </div>
         </div>
     </div>

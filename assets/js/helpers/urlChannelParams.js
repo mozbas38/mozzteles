@@ -1,4 +1,4 @@
-import { channelsList } from "../channelManager.js";
+import { hasChannelId } from "../channelManager.js";
 import { LS_KEY_ACTIVE_VIEW_MODE, LS_KEY_SAVED_CHANNELS_GRID_VIEW } from "../constants/index.js";
 import { isLoadingFromSharedUrl, isDynamicUrlMode } from "../main.js";
 
@@ -112,7 +112,7 @@ export const getChannelsFromUrl = () => {
         return param
             .split(',')
             .map(id => id.trim())
-            .filter(id => id.length > 0 && channelsList?.[id]);
+            .filter(id => id.length > 0 && hasChannelId(id));
     } catch (error) {
         console.error('[teles] Error reading shared channels from URL:', error);
         return [];

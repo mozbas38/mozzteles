@@ -1,5 +1,5 @@
 // Funciones para crear overlays y fragmentos de canal
-import { channelsList } from './channelManager.js';
+import { getChannelById } from './channelManager.js';
 
 import {
     COUNTRY_CODES,
@@ -15,8 +15,7 @@ import {
     showToast,
     hideOverlayButtonText,
     registerManualChannelChange,
-    cleanTransmissionResources,
-    createButtonsForChangeChannelModal
+    cleanTransmissionResources
 } from './helpers/index.js';
 import { tele } from './main.js';
 import {
@@ -31,8 +30,109 @@ function guardarSeñalPreferida(canalId, señalUtilizar = '', indexSeñalUtiliza
     localStorage.setItem(LS_KEY_CHANNEL_SIGNAL_PREFERENCE, JSON.stringify(lsPreferenciasSeñalCanales));
 }
 
+const shouldStartMuted = (viewMode = localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) || 'grid-view') => {
+    return viewMode !== 'single-view';
+};
+
+const setUrlParam = (url, param, value) => {
+    if (!url) return url;
+    try {
+        const parsedUrl = new URL(url, window.location.href);
+        parsedUrl.searchParams.set(param, value);
+        return parsedUrl.toString();
+    } catch {
+        return url;
+    }
+};
+
+const applyIframeMutePreference = (url, muted) => {
+    if (!url) return url;
+    const muteValue = muted ? '1' : '0';
+    const mutedValue = muted ? 'true' : 'false';
+
+    if (/youtube|youtu\.be|youtube-nocookie/i.test(url)) {
+        return setUrlParam(url, 'mute', muteValue);
+    }
+
+    if (/player\.twitch\.tv/i.test(url)) {
+        return setUrlParam(url, 'muted', mutedValue);
+    }
+
+    if (/[?&]mute=/.test(url)) {
+        return setUrlParam(url, 'mute', muteValue);
+    }
+
+    if (/[?&]muted=/.test(url)) {
+        return setUrlParam(url, 'muted', mutedValue);
+    }
+
+    return url;
+};
+
+const isValidSignalString = (value) => {
+    return typeof value === 'string' && value.trim() !== '';
+};
+
+const createYouTubeLiveUrl = (id, startMuted) => {
+    const cleanId = id.trim();
+    if (cleanId.startsWith('UC')) {
+        return `https://www.youtube-nocookie.com/embed/live_stream?channel=${encodeURIComponent(cleanId)}&autoplay=1&mute=${startMuted ? 1 : 0}&modestbranding=1&rel=0&origin=${window.location.origin}`;
+    } else {
+        return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(cleanId)}?autoplay=1&mute=${startMuted ? 1 : 0}&modestbranding=1&rel=0&origin=${window.location.origin}`;
+    }
+};
+
+const createYouTubeVideoUrl = (videoId, startMuted) => {
+    return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId.trim())}?autoplay=1&mute=${startMuted ? 1 : 0}&modestbranding=1&rel=0&origin=${window.location.origin}`;
+};
+
+export const setTransmissionMuted = (transmissionContainer, muted) => {
+    if (!transmissionContainer) return;
+    const changeContainer = transmissionContainer.querySelector('div[data-canal-cambio]');
+    if (!changeContainer) return;
+
+    changeContainer.querySelectorAll('video').forEach(video => {
+        video.muted = muted;
+        if (!muted) video.volume = 1;
+    });
+
+    try {
+        if (changeContainer._videojsPlayer?.muted) {
+            changeContainer._videojsPlayer.muted(muted);
+            if (!muted && changeContainer._videojsPlayer.volume) {
+                changeContainer._videojsPlayer.volume(1);
+            }
+        }
+    } catch (error) {
+        console.warn('[teles] Video.js mute state could not be updated:', error);
+    }
+
+    try {
+        if (changeContainer._clapprPlayer?.setVolume) {
+            changeContainer._clapprPlayer.setVolume(muted ? 0 : 100);
+        }
+        if (changeContainer._clapprPlayer?.core?.mediaControl?.setVolume) {
+            changeContainer._clapprPlayer.core.mediaControl.setVolume(muted ? 0 : 100);
+        }
+    } catch (error) {
+        console.warn('[teles] Clappr mute state could not be updated:', error);
+    }
+
+    try {
+        if (changeContainer._oplayerPlayer?.volume) {
+            changeContainer._oplayerPlayer.volume(muted ? 0 : 1);
+        }
+        if (changeContainer._oplayerPlayer?.muted) {
+            changeContainer._oplayerPlayer.muted(muted);
+        }
+    } catch (error) {
+        console.warn('[teles] OPlayer mute state could not be updated:', error);
+    }
+};
+
 export function crearIframe(canalId, tipoSeñalParaIframe, valorIndex = 0, viewMode = 'grid-view') {
     valorIndex = Number(valorIndex)
+    const startMuted = shouldStartMuted(viewMode);
     const DIV_ELEMENT = document.createElement('div');
     if (viewMode === 'free-view') {
         DIV_ELEMENT.classList.add('ratio', 'ratio-16x9', 'w-100', 'h-100');
@@ -40,22 +140,25 @@ export function crearIframe(canalId, tipoSeñalParaIframe, valorIndex = 0, viewM
         DIV_ELEMENT.classList.add('ratio', 'ratio-16x9', 'h-100');
     }
     DIV_ELEMENT.setAttribute('data-canal-cambio', canalId);
-    const { nombre, señales } = channelsList[canalId];
+    const { nombre, señales } = getChannelById(canalId);
 
     const URL_POR_TIPO_SEÑAL = {
         'iframe_url': señales.iframe_url && señales.iframe_url[valorIndex],
-        'yt_id': señales.yt_id && `https://www.youtube-nocookie.com/embed/live_stream?channel=${señales.yt_id}&autoplay=1&mute=1&modestbranding=1&vq=medium&showinfo=0`,
-        'yt_embed': señales.yt_embed && `https://www.youtube-nocookie.com/embed/${señales.yt_embed}?autoplay=1&mute=1&modestbranding=1&showinfo=0`,
-        'yt_playlist': señales.yt_playlist && `https://www.youtube-nocookie.com/embed/videoseries?list=${señales.yt_playlist}&autoplay=0&mute=0&modestbranding=1&showinfo=0`,
-        'twitch_id': señales.twitch_id && `https://player.twitch.tv/?channel=${señales.twitch_id}&parent=${TWITCH_PARENT}`
+        'yt_id': isValidSignalString(señales.yt_id) && createYouTubeLiveUrl(señales.yt_id, startMuted),
+        'yt_embed': señales.yt_embed && createYouTubeVideoUrl(señales.yt_embed, startMuted),
+        'yt_playlist': señales.yt_playlist && `https://www.youtube-nocookie.com/embed/videoseries?list=${señales.yt_playlist}&autoplay=0&mute=${startMuted ? 1 : 0}&modestbranding=1&showinfo=0`,
+        'twitch_id': señales.twitch_id && `https://player.twitch.tv/?channel=${señales.twitch_id}&parent=${TWITCH_PARENT}&muted=${startMuted ? 'true' : 'false'}`
     };
 
     const IFRAME_ELEMENT = document.createElement('iframe');
-    IFRAME_ELEMENT.src = URL_POR_TIPO_SEÑAL[tipoSeñalParaIframe];
+    IFRAME_ELEMENT.src = applyIframeMutePreference(URL_POR_TIPO_SEÑAL[tipoSeñalParaIframe], startMuted);
     IFRAME_ELEMENT.classList.add('pe-auto');
     IFRAME_ELEMENT.setAttribute('contenedor-canal-cambio', canalId);
-    IFRAME_ELEMENT.allowFullscreen = true;
-    IFRAME_ELEMENT.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+    IFRAME_ELEMENT.setAttribute('width', '100%');
+    IFRAME_ELEMENT.setAttribute('height', '100%');
+    IFRAME_ELEMENT.setAttribute('frameborder', '0');
+    IFRAME_ELEMENT.setAttribute('allowfullscreen', 'true');
+    IFRAME_ELEMENT.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     IFRAME_ELEMENT.title = nombre;
     if (tipoSeñalParaIframe === 'yt_id' || tipoSeñalParaIframe === 'yt_embed' || tipoSeñalParaIframe === 'yt_playlist'
         || (tipoSeñalParaIframe === 'iframe_url' && URL_POR_TIPO_SEÑAL[tipoSeñalParaIframe]?.includes('youtube', 'youtu.be', 'youtube-nocookie'))) {
@@ -73,6 +176,7 @@ export function crearIframe(canalId, tipoSeñalParaIframe, valorIndex = 0, viewM
 
 export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
     const tipoReproductor = localStorage.getItem(LS_KEY_M3U8_PLAYER_CHOICE) || 'videojs';
+    const startMuted = shouldStartMuted(viewMode);
     if (tipoReproductor === 'clappr' && typeof Clappr !== 'undefined') {
         const DIV_ELEMENT = document.createElement('div');
         DIV_ELEMENT.setAttribute('data-canal-cambio', canalId);
@@ -95,17 +199,20 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
                     source: urlCarga,
                     parent: playerContainer,
                     autoPlay: true,
-                    mute: true,
+                    mute: startMuted,
                     width: '100%',
                     height: '100%'
                 });
+                if (!startMuted && clapprPlayer.setVolume) {
+                    clapprPlayer.setVolume(100);
+                }
                 // Almacenamos la instancia del reproductor para usarla en el futuro para limpiar recursos
                 DIV_ELEMENT._clapprPlayer = clapprPlayer;
             } catch (error) {
                 console.error(`[teles] Error at attempt to initialize Clappr for channel with id: ${canalId}. Error: ${error}`);
                 showToast({
-                    title: `Error al inicializar Clappr para canal ${canalId}. Se usará Video.js.`,
-                    body: `Error: ${error}`,
+                    title: `Clappr başlatılırken hata oluştu (${canalId}). Video.js kullanılacak.`,
+                    body: `Hata: ${error}`,
                     type: 'danger',
                     autohide: false,
                     delay: 0,
@@ -129,7 +236,8 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
         videoElement.setAttribute('contenedor-canal-cambio', canalId);
         videoElement.classList.add('position-absolute', 'p-0', 'w-100', 'h-100');
         videoElement.autoplay = true;
-        videoElement.muted = true;
+        videoElement.muted = startMuted;
+        videoElement.volume = startMuted ? 0 : 1;
         // La interfaz de Shaka manejará los controles
         videoElement.controls = false;
         DIV_ELEMENT.append(videoElement);
@@ -156,6 +264,8 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
                     player.addEventListener('error', (event) => {
                         console.error('[teles] Shaka Player error:', event.detail);
                     });
+                    videoElement.muted = startMuted;
+                    videoElement.volume = startMuted ? 0 : 1;
                     await player.load(urlCarga);
                     DIV_ELEMENT._shakaPlayer = player;
                     DIV_ELEMENT._shakaUi = ui; // Guardamos la UI también por si es necesaria
@@ -173,14 +283,12 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
 
                 if (error) {
                     showToast({
-                        title: `Error al inicializar Shaka Player para canal ${canalId}. 
-                        ${isShakaError1001 ? 'No se puede reproducir el contenido, por favor intente con otro reproductor. (Posible señal inactiva)' : ''}
-                        ${isShakaError1002 ? 'Error al solicitar el contenido, por favor intente de nuevo. (Posible señal inactiva)' : ''}`,
-                        body: `Error: ${error.message || error}`,
+                        title: `Shaka Player başlatılırken hata oluştu (${canalId}). 
+                        ${isShakaError1001 ? 'İçerik oynatılamıyor, lütfen başka bir oynatıcı deneyin. (Sinyal inaktif olabilir)' : ''}
+                        ${isShakaError1002 ? 'İçerik istenirken hata oluştu, lütfen tekrar deneyin. (Sinyal inaktif olabilir)' : ''}`,
+                        body: `Hata: ${error.message || error}`,
                         type: 'warning',
                         delay: 10000,
-
-
                     });
                 }
             }
@@ -212,7 +320,8 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
                         title: canalId
                     },
                     autoplay: true,
-                    muted: true
+                    muted: startMuted,
+                    volume: startMuted ? 0 : 1
                 });
                 if (typeof OHls !== 'undefined') {
                     instancia = instancia.use([
@@ -231,8 +340,8 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
             } catch (error) {
                 console.error(`[teles] Error at attempt to initialize OPlayer for channel with id: ${canalId}. Error: ${error}`);
                 showToast({
-                    title: `Error al inicializar OPlayer para canal ${canalId}. Se usará Video.js.`,
-                    body: `Error: ${error}`,
+                    title: `OPlayer başlatılırken hata oluştu (${canalId}). Video.js kullanılacak.`,
+                    body: `Hata: ${error}`,
                     type: 'danger',
                     autohide: false,
                     delay: 0,
@@ -246,25 +355,38 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
     }
     const DIV_ELEMENT = document.createElement('div');
     DIV_ELEMENT.setAttribute('data-canal-cambio', canalId);
-    DIV_ELEMENT.classList.add('ratio', 'ratio-16x9', 'h-100');
+    if (viewMode === 'free-view') {
+        DIV_ELEMENT.classList.add('ratio', 'ratio-16x9', 'w-100', 'h-100');
+    } else {
+        DIV_ELEMENT.classList.add('ratio', 'ratio-16x9', 'h-100');
+    }
     const videoElement = document.createElement('video');
     videoElement.setAttribute('contenedor-canal-cambio', canalId);
-    videoElement.classList.add('position-absolute', 'p-0', 'video-js', 'vjs-16-9', 'vjs-fill', 'overflow-hidden');
+
+    if (viewMode === 'free-view') {
+        videoElement.classList.add('position-absolute', 'p-0', 'video-js', 'vjs-16-9', 'vjs-fill', 'overflow-hidden');
+    } else {
+        videoElement.classList.add('position-absolute', 'p-0', 'video-js', 'vjs-fill', 'overflow-hidden');
+    }
     videoElement.toggleAttribute('controls');
+    videoElement.muted = startMuted;
+    videoElement.volume = startMuted ? 0 : 1;
     DIV_ELEMENT.append(videoElement);
     try {
-        videojs(videoElement).src({
+        const player = videojs(videoElement);
+        player.src({
             src: urlCarga,
         });
-        videojs(videoElement).autoplay(true);
-        videojs(videoElement).muted(true);
+        player.autoplay(true);
+        player.muted(startMuted);
+        player.volume(startMuted ? 0 : 1);
         // Almacenamos la instancia del reproductor para usarla en el futuro para limpiar recursos
-        DIV_ELEMENT._videojsPlayer = videojs(videoElement);
+        DIV_ELEMENT._videojsPlayer = player;
     } catch (error) {
         console.error(`[teles] Error at attempt to initialize Video.js for channel with id: ${canalId}. Error: ${error}`);
         showToast({
-            title: `Error al inicializar Video.js para canal ${canalId}. Se procesará el siguiente canal.`,
-            body: `Error: ${error}`,
+            title: `Video.js başlatılırken hata oluştu (${canalId}). Sıradaki kanala geçiliyor.`,
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -274,168 +396,46 @@ export function crearVideoJs(canalId, urlCarga, viewMode = 'grid-view') {
     return DIV_ELEMENT;
 }
 
-export const changeChannelModalEl = document.querySelector('#modal-cambiar-canal');
-// Create buttons for channels on event listener so it runs only one time
-changeChannelModalEl.addEventListener('shown.bs.modal', () => {
-    const contenedorCambiar = document.querySelector('#modal-cambiar-canal-channels-buttons-container');
-    if (contenedorCambiar && !contenedorCambiar.querySelector('button[data-canal]')) {
-        createButtonsForChangeChannelModal();
-    }
-});
 
-
-const changeChannelModalLabelEl = document.querySelector('#label-para-nombre-canal-cambiar');
-export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
+export function crearOverlay(canalId) {
     try {
-        let { nombre = 'Nombre Canal', señales, sitio_oficial, país, categoría } = channelsList[canalId];
-
-        valorIndex = Number(valorIndex);
-        categoría = categoría.toLowerCase();
-        let iconoCategoria = categoría in CATEGORIES_ICONS ? CATEGORIES_ICONS[categoría] : '<i class="bi bi-tv"></i>';
-
         const FRAGMENT_OVERLAY = document.createDocumentFragment();
         const DIV_ELEMENT = document.createElement('div');
         DIV_ELEMENT.id = `overlay-de-canal-${canalId}`;
         DIV_ELEMENT.classList.add('position-absolute', 'w-100', 'bg-transparent', 'me-1', 'd-flex', 'gap-2', 'justify-content-end', 'align-items-start', 'flex-wrap', 'top-0', 'end-0', 'barra-overlay');
 
-        const BOTON_SELECCIONAR_SEÑAL_CANAL = document.createElement("button");
-        BOTON_SELECCIONAR_SEÑAL_CANAL.id = 'overlay-boton-selecionar-señal'
-        BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('type', 'button');
-        BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('title', 'Seleccionar diferente señal');
-        BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('data-bs-toggle', 'dropdown');
-        BOTON_SELECCIONAR_SEÑAL_CANAL.setAttribute('aria-expanded', 'false');
-
-        BOTON_SELECCIONAR_SEÑAL_CANAL.innerHTML = '<span>Seleccionar señal</span><i class="bi bi-collection" data-bs-toggle="tooltip" data-bs-title="Seleccionar diferente señal"></i>';
-        BOTON_SELECCIONAR_SEÑAL_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'dropdown-toggle', 'd-flex', 'justify-content-center', 'align-items-center', 'gap-1', 'p-0', 'px-1', 'pe-auto', 'mt-1', 'rounded-3');
-
-        const DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL = document.createElement("ul");
-        DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL.classList.add('dropdown-menu');
-
-        for (const key in señales) {
-            let iconoSeñal = '<i class="bi bi-globe"></i>'
-            if (key.startsWith('iframe_')) {
-                iconoSeñal = '<i class="bi bi-globe"></i>'
-            } else if (key.startsWith('m3u8_')) {
-                iconoSeñal = '<i class="bi bi-play-btn"></i>'
-            } else if (key.startsWith('yt_')) {
-                iconoSeñal = '<i class="bi bi-youtube"></i>'
-            } else if (key.startsWith('twitch_')) {
-                iconoSeñal = '<i class="bi bi-twitch"></i>'
-            }
-
-            const value = señales[key];
-            if (Array.isArray(value) && value.length > 0) {
-                value.forEach((url, index) => {
-                    const listItem = document.createElement("li");
-                    listItem.classList.add('dropdown-item', 'pe-auto', 'py-2', 'user-select-none');
-                    if (tipoSeñalCargada === key && valorIndex === index) listItem.classList.add('bg-indigo', 'fw-bold');
-                    listItem.innerHTML = value.length === 1 ? `${iconoSeñal} ${key.split('_')[0]}` : `${iconoSeñal} ${key.split('_')[0]} <span class="fst-italic">${index}</span>`;
-                    listItem.addEventListener("click", () => {
-                        DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL.querySelectorAll('.dropdown-item').forEach(item => {
-                            item.classList.remove('bg-indigo', 'fw-bold');
-                        });
-                        listItem.classList.add('bg-indigo', 'fw-bold');
-                        guardarSeñalPreferida(canalId, key.toString(), Number(index));
-                        cambiarSoloSeñalActiva(canalId);
-                    });
-                    DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL.append(listItem);
-                });
-            } else if (typeof value === "string" && value !== "") {
-                const listItem = document.createElement("li");
-                listItem.classList.add('dropdown-item', 'pe-auto', 'py-2', 'user-select-none');
-                if (tipoSeñalCargada === key) listItem.classList.add('bg-indigo', 'fw-bold');
-                listItem.innerHTML = `${iconoSeñal} ${key.replace('_', ' ')}`;
-                listItem.addEventListener("click", () => {
-                    DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL.querySelectorAll('.dropdown-item').forEach(item => {
-                        item.classList.remove('bg-indigo', 'fw-bold');
-                    });
-                    listItem.classList.add('bg-indigo', 'fw-bold');
-                    guardarSeñalPreferida(canalId, key.toString());
-                    cambiarSoloSeñalActiva(canalId);
-                });
-                DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL.append(listItem);
-            }
-        }
-
         const BOTON_MOVER_CANAL = document.createElement('div');
         BOTON_MOVER_CANAL.id = 'overlay-boton-mover';
         BOTON_MOVER_CANAL.setAttribute('role', 'button');
-        BOTON_MOVER_CANAL.setAttribute('title', 'Arrastrar y mover este canal');
+        BOTON_MOVER_CANAL.setAttribute('title', 'Kanalı taşı');
         BOTON_MOVER_CANAL.setAttribute('data-bs-toggle', 'tooltip');
-        BOTON_MOVER_CANAL.setAttribute('data-bs-title', 'Arrastrar y mover este canal');
-        BOTON_MOVER_CANAL.innerHTML = '<span>Mover</span><i class="bi bi-arrows-move"></i>';
+        BOTON_MOVER_CANAL.setAttribute('data-bs-title', 'Kanalı taşı');
+        BOTON_MOVER_CANAL.innerHTML = '<i class="bi bi-arrows-move"></i>';
         BOTON_MOVER_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-auto', 'mt-1', 'rounded-3', 'clase-para-mover');
-
-        const BOTON_CAMBIAR_CANAL = document.createElement('button');
-        BOTON_CAMBIAR_CANAL.id = 'overlay-boton-cambiar';
-        BOTON_CAMBIAR_CANAL.setAttribute('type', 'button');
-        BOTON_CAMBIAR_CANAL.setAttribute('title', 'Cambiar este canal');
-        BOTON_CAMBIAR_CANAL.setAttribute('data-bs-toggle', 'tooltip');
-        BOTON_CAMBIAR_CANAL.setAttribute('data-bs-title', 'Cambiar este canal');
-        BOTON_CAMBIAR_CANAL.setAttribute('data-button-cambio', canalId);
-        BOTON_CAMBIAR_CANAL.innerHTML = '<span>Cambiar</span><i class="bi bi-arrow-repeat"></i>';
-        BOTON_CAMBIAR_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-auto', 'mt-1', 'rounded-3');
-        BOTON_CAMBIAR_CANAL.addEventListener('click', () => {
-            changeChannelModalLabelEl.textContent = nombre;
-            changeChannelModalEl.dataset.channelSource = canalId;
-
-            // Asegurar que los botones estén creados antes de mostrar el modal (lazy load preventivo)
-            const contenedorCambiar = document.querySelector('#modal-cambiar-canal-channels-buttons-container');
-            if (contenedorCambiar && !contenedorCambiar.querySelector('button[data-canal]')) {
-                createButtonsForChangeChannelModal();
-            }
-
-            bootstrap.Modal.getOrCreateInstance(changeChannelModalEl).show();
-        });
-
-        const BOTON_SITIO_OFICIAL_CANAL = document.createElement('a');
-        BOTON_SITIO_OFICIAL_CANAL.id = 'overlay-boton-pagina-oficial';
-        BOTON_SITIO_OFICIAL_CANAL.title = 'Ir a la página oficial de esta transmisión';
-        if (tipoSeñalCargada === 'yt_id') sitio_oficial = `https://www.youtube.com/channel/${señales.yt_id}`;
-        if (tipoSeñalCargada === 'twitch_id') sitio_oficial = `https://www.twitch.tv/${señales.twitch_id}`;
-        BOTON_SITIO_OFICIAL_CANAL.href = sitio_oficial !== '' ? sitio_oficial : `https://www.duckduckgo.com/?q=${nombre}+en+vivo`;
-        BOTON_SITIO_OFICIAL_CANAL.setAttribute('role', 'button');
-        BOTON_SITIO_OFICIAL_CANAL.setAttribute('data-bs-toggle', 'tooltip');
-        BOTON_SITIO_OFICIAL_CANAL.setAttribute('data-bs-title', 'Ir a la página oficial de esta transmisión');
-        BOTON_SITIO_OFICIAL_CANAL.rel = 'noopener nofollow noreferrer';
-        BOTON_SITIO_OFICIAL_CANAL.innerHTML = `<span>
-                ${nombre}
-                ${país
-                ? ` <img src="https://flagcdn.com/${país.toLowerCase()}.svg" alt="bandera ${COUNTRY_CODES[país]}" title="${COUNTRY_CODES[país]}" class="svg-bandera">`
-                : ''}
-                ${iconoCategoria
-                ? ` ${iconoCategoria}`
-                : ''}
-                </span> <i class="bi bi-box-arrow-up-right"></i>`;
-        BOTON_SITIO_OFICIAL_CANAL.classList.add('btn', 'btn-sm', CSS_CLASS_BUTTON_SECONDARY, 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-auto', 'mt-1', 'rounded-3', 'text-nowrap');
 
         const BOTON_QUITAR_CANAL = document.createElement('button');
         BOTON_QUITAR_CANAL.id = 'overlay-boton-quitar';
-        BOTON_QUITAR_CANAL.setAttribute('aria-label', 'Close');
+        BOTON_QUITAR_CANAL.setAttribute('aria-label', 'Kapat');
         BOTON_QUITAR_CANAL.setAttribute('type', 'button');
-        BOTON_QUITAR_CANAL.setAttribute('title', 'Quitar canal');
+        BOTON_QUITAR_CANAL.setAttribute('title', 'Kanalı kapat');
         BOTON_QUITAR_CANAL.setAttribute('data-bs-toggle', 'tooltip');
-        BOTON_QUITAR_CANAL.setAttribute('data-bs-title', 'Quitar canal');
-        BOTON_QUITAR_CANAL.innerHTML = '<span>Quitar</span><i class="bi bi-x-circle"></i>';
+        BOTON_QUITAR_CANAL.setAttribute('data-bs-title', 'Kanalı kapat');
+        BOTON_QUITAR_CANAL.innerHTML = '<i class="bi bi-x-circle"></i>';
         BOTON_QUITAR_CANAL.classList.add('btn', 'btn-sm', 'btn-danger', 'p-0', 'px-1', 'd-flex', 'gap-1', 'pe-auto', 'mt-1', 'rounded-3');
         BOTON_QUITAR_CANAL.addEventListener('click', () => {
             tele.remove(canalId);
             playAudio(AUDIO_POP);
         });
 
-        DIV_ELEMENT.append(BOTON_SELECCIONAR_SEÑAL_CANAL);
-        DIV_ELEMENT.append(DROPDOWN_MENU_SELECCIONAR_SEÑAL_CANAL);
         DIV_ELEMENT.append(BOTON_MOVER_CANAL);
-        DIV_ELEMENT.append(BOTON_CAMBIAR_CANAL);
-        DIV_ELEMENT.append(BOTON_SITIO_OFICIAL_CANAL);
         DIV_ELEMENT.append(BOTON_QUITAR_CANAL);
         FRAGMENT_OVERLAY.append(DIV_ELEMENT);
         return FRAGMENT_OVERLAY;
     } catch (error) {
         console.error(`[teles] Error at attempt to create overlay for channel with id: ${canalId}. Error: ${error}`);
         showToast({
-            title: `Error al crear overlay para canal ${canalId}.`,
-            body: `Error: ${error}`,
+            title: `Kanal (${canalId}) için katman oluşturulurken hata.`,
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -448,35 +448,37 @@ export function crearOverlay(canalId, tipoSeñalCargada, valorIndex = 0) {
 
 
 export function crearFragmentCanal(canalId, viewMode = 'grid-view') {
-    if (channelsList[canalId]?.señales) {
-        let { iframe_url = [], m3u8_url = [], yt_id = '', yt_embed = '', yt_playlist = '', twitch_id = '' } = channelsList[canalId].señales;
+    const canal = getChannelById(canalId);
+    if (canal?.señales) {
+        let { iframe_url = [], m3u8_url = [], yt_id = '', yt_embed = '', yt_playlist = '', twitch_id = '' } = canal.señales;
         let lsPreferenciasSeñalCanales = JSON.parse(localStorage.getItem(LS_KEY_CHANNEL_SIGNAL_PREFERENCE)) || {};
 
         let señalUtilizar;
         let valorIndexArraySeñal = 0;
 
-        if (Array.isArray(iframe_url) && iframe_url.length > 0) {
-            señalUtilizar = 'iframe_url';
+        if (isValidSignalString(yt_id)) {
+            señalUtilizar = 'yt_id';
+        } else if (isValidSignalString(yt_embed)) {
+            señalUtilizar = 'yt_embed';
         } else if (Array.isArray(m3u8_url) && m3u8_url.length > 0) {
             señalUtilizar = 'm3u8_url';
-        } else if (yt_id !== '') {
-            señalUtilizar = 'yt_id';
-        } else if (yt_embed !== '') {
-            señalUtilizar = 'yt_embed';
-        } else if (yt_playlist !== '') {
+        } else if (Array.isArray(iframe_url) && iframe_url.length > 0) {
+            señalUtilizar = 'iframe_url';
+        } else if (isValidSignalString(yt_playlist)) {
             señalUtilizar = 'yt_playlist';
-        } else if (twitch_id !== '') {
+        } else if (isValidSignalString(twitch_id)) {
             señalUtilizar = 'twitch_id';
         }
 
+        // LocalStorage'daki kullanıcı tercihi geçerli değilse temizle (Bozuk sinyal kayıtlarını önleme)
         if (lsPreferenciasSeñalCanales[canalId]) {
             const tipoPreferido = Object.keys(lsPreferenciasSeñalCanales[canalId])[0].toString();
             const indicePreferido = Number(Object.values(lsPreferenciasSeñalCanales[canalId]));
-            const valorPreferido = channelsList?.[canalId]?.señales?.[tipoPreferido];
+            const valorPreferido = canal.señales[tipoPreferido];
 
             let preferenciaValida = false;
             if (Array.isArray(valorPreferido)) {
-                preferenciaValida = valorPreferido[indicePreferido] !== undefined;
+                preferenciaValida = valorPreferido[indicePreferido] !== undefined && valorPreferido[indicePreferido] !== '';
             } else if (typeof valorPreferido === 'string') {
                 preferenciaValida = valorPreferido.trim() !== '';
             }
@@ -485,6 +487,7 @@ export function crearFragmentCanal(canalId, viewMode = 'grid-view') {
                 señalUtilizar = tipoPreferido;
                 valorIndexArraySeñal = indicePreferido;
             } else {
+                // Sinyal artık geçerli değilse LocalStorage'dan sil ve varsayılan aktif sinyale dön
                 delete lsPreferenciasSeñalCanales[canalId];
                 localStorage.setItem(LS_KEY_CHANNEL_SIGNAL_PREFERENCE, JSON.stringify(lsPreferenciasSeñalCanales));
             }
@@ -494,21 +497,21 @@ export function crearFragmentCanal(canalId, viewMode = 'grid-view') {
         if (señalUtilizar === 'm3u8_url') {
             FRAGMENT_CANAL.append(
                 crearVideoJs(canalId, m3u8_url[valorIndexArraySeñal], viewMode),
-                crearOverlay(canalId, 'm3u8_url', valorIndexArraySeñal)
+                crearOverlay(canalId)
             );
             return FRAGMENT_CANAL;
         } else {
             FRAGMENT_CANAL.append(
                 crearIframe(canalId, señalUtilizar, valorIndexArraySeñal, viewMode),
-                crearOverlay(canalId, señalUtilizar, valorIndexArraySeñal)
+                crearOverlay(canalId)
             );
             return FRAGMENT_CANAL;
         }
     } else {
         console.error(`[teles] Error at attempt to create fragment for channel with id: ${canalId}. Error: ${error}`);
         showToast({
-            title: `Canal ${canalId} no tiene señales definidas. Se procesará el siguiente canal.`,
-            body: `Error: ${error}`,
+            title: `Kanal (${canalId}) tanımlanmış bir sinyale sahip değil. Sıradaki kanala geçiliyor.`,
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -517,48 +520,3 @@ export function crearFragmentCanal(canalId, viewMode = 'grid-view') {
     }
 }
 
-export function cambiarSoloSeñalActiva(canalId) {
-    try {
-        if (!canalId) return console.error(`[teles] Error at attempt to change signal: canalId is missing.`);
-
-        let divPadreACambiar = document.querySelector(`div[data-canal="${canalId}"]`);
-        if (!divPadreACambiar) {
-            console.warn(`[teles] Could not find container for channel "${canalId}" to change its signal.`);
-            return;
-        }
-        let divExistenteACambiar = divPadreACambiar.querySelector(`div[data-canal-cambio="${canalId}"]`);
-        let barraOverlayDeCanalACambiar = divPadreACambiar.querySelector(`#overlay-de-canal-${canalId}`);
-
-        disposeBootstrapTooltips();
-
-        cleanTransmissionResources(divPadreACambiar);
-
-        if (divExistenteACambiar) divExistenteACambiar.remove();
-        if (barraOverlayDeCanalACambiar) barraOverlayDeCanalACambiar.remove();
-
-        const viewMode = localStorage.getItem(LS_KEY_ACTIVE_VIEW_MODE) || 'grid-view';
-        let containerToAppend = divPadreACambiar;
-        const innerGridstackContent = divPadreACambiar.querySelector('.grid-stack-item-content');
-        if (innerGridstackContent) {
-            containerToAppend = innerGridstackContent;
-        }
-
-        containerToAppend.append(crearFragmentCanal(canalId, viewMode));
-
-        if (typeof initializeBootstrapTooltips === 'function') initializeBootstrapTooltips();
-        if (typeof hideOverlayButtonText === 'function') hideOverlayButtonText();
-        if (typeof registerManualChannelChange === 'function') registerManualChannelChange();
-
-    } catch (error) {
-        console.error(`[teles] Error at attempt to change signal for channel with id: ${canalId}. Error: ${error}`);
-        showToast({
-            title: `Error al intentar cambiar señal para canal ${canalId}.`,
-            body: `Error: ${error}`,
-            type: 'danger',
-            autohide: false,
-            delay: 0,
-            showReloadOnError: true
-        });
-        return;
-    }
-}

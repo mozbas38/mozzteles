@@ -3,13 +3,85 @@ import { LS_KEY_CHANNELS_BACKUP, LS_KEY_CHANNELS_BACKUP_DATE, LS_KEY_COMBINE_PER
 import { m3uToJson, validateM3UContent } from "./helpers/index.js";
 
 // Backup and channel fetch management
-export const DEFAULT_CHANNELS_ARRAY = ['24-horas', 'meganoticias', 't13'];
-export const EXTRA_DEFAULT_CHANNELS_ARRAY = ['chv-noticias', 'cnn-cl', 'lofi-girl'];
-
 export let channelsList;
 
 export const BACKUP_EXPIRATION_HOURS = 24;
-export const DEFAULT_SOURCE_ORIGIN = 'Canales predeterminados (github.com/Alplox/json-teles)';
+export const DEFAULT_SOURCE_ORIGIN = '';
+
+export const normalizeChannelList = (data = []) => {
+    const usedIds = new Set();
+    const ensureChannelId = (channel, fallback) => {
+        const baseId = slugifyValue(channel?.id || channel?.nombre || fallback);
+        let id = baseId;
+        let counter = 2;
+        while (usedIds.has(id)) {
+            id = `${baseId}-${counter}`;
+            counter += 1;
+        }
+        usedIds.add(id);
+        return { ...(channel || {}), id };
+    };
+
+    if (Array.isArray(data)) {
+        return data.map((channel, index) => ensureChannelId(channel, `canal-${index + 1}`));
+    }
+
+    if (!data || typeof data !== 'object') {
+        return [];
+    }
+
+    return Object.entries(data).map(([key, value]) => {
+        if (typeof value === 'string') {
+            return ensureChannelId(createChannelFromUrl(key, value), key);
+        }
+        return ensureChannelId(value, key);
+    });
+};
+
+export const getChannelById = (channelId) => {
+    if (!channelId || !Array.isArray(channelsList)) return undefined;
+    return channelsList.find(channel => channel?.id === channelId);
+};
+
+export const hasChannelId = (channelId) => Boolean(getChannelById(channelId));
+
+export const getChannelIds = () => Array.isArray(channelsList)
+    ? channelsList.map(channel => channel?.id).filter(Boolean)
+    : [];
+
+export const getChannelEntries = () => Array.isArray(channelsList)
+    ? channelsList
+        .filter(channel => channel?.id)
+        .map(channel => [channel.id, channel])
+    : [];
+
+export const removeChannelById = (channelId) => {
+    if (!Array.isArray(channelsList)) return false;
+    const index = channelsList.findIndex(channel => channel?.id === channelId);
+    if (index === -1) return false;
+    channelsList.splice(index, 1);
+    return true;
+};
+
+function createChannelFromUrl(nameOrId, url) {
+    const id = slugifyValue(nameOrId);
+    return {
+        id,
+        nombre: nameOrId,
+        señales: {
+            m3u8_url: [url],
+            iframe_url: [],
+            yt_id: "",
+            yt_embed: "",
+            yt_playlist: "",
+            twitch_id: ""
+        },
+        país: 'tr',
+        categoría: 'general',
+        logo: "",
+        sitio_oficial: ""
+    };
+}
 
 /**
  * Checks if the stored backup is valid based on expiration time.
@@ -55,19 +127,11 @@ let initialChannelsListBackup = null;
  */
 export async function fetchLoadChannels() {
     try {
-        if (isBackupValid()) {
-            console.info('[teles] Loading channels from localStorage backup');
-            channelsList = readChannelBackup();
-            if (channelsList) {
-                // Save in-memory copy for fast restoration
-                initialChannelsListBackup = JSON.parse(JSON.stringify(channelsList));
-                return;
-            }
-        }
         console.info('[teles] Attempting to load main channel file');
         const response = await fetch(URL_JSON_MAIN_CHANNELS);
         try {
-            channelsList = await response.json();
+            channelsList = normalizeChannelList(await response.json());
+
             saveChannelBackup(channelsList);
             assignBaseOrigin();
 
@@ -78,7 +142,7 @@ export async function fetchLoadChannels() {
             // Try loading backup if exists
             if (isBackupValid()) {
                 console.warn('[teles] Using channel list backup from localStorage due to parsing error');
-                channelsList = readChannelBackup();
+                channelsList = normalizeChannelList(readChannelBackup());
                 if (channelsList) {
                     initialChannelsListBackup = JSON.parse(JSON.stringify(channelsList));
                     return;
@@ -111,8 +175,7 @@ export function restoreChannelsFromMemory() {
  */
 function assignBaseOrigin() {
     if (!channelsList) return;
-    for (const canalId of Object.keys(channelsList)) {
-        const canal = channelsList[canalId];
+    for (const canal of channelsList) {
         if (!canal.origenLista) {
             canal.origenLista = DEFAULT_SOURCE_ORIGIN;
         }
@@ -151,7 +214,7 @@ function combineChannelsWithList(parseM3u = {}, { origin = 'unknown-list', sourc
     if (!parseM3u || typeof parseM3u !== 'object') return;
 
     if (!channelsList) {
-        channelsList = {};
+        channelsList = [];
     }
 
     const shouldCombineMatches =
@@ -159,9 +222,9 @@ function combineChannelsWithList(parseM3u = {}, { origin = 'unknown-list', sourc
 
     const channelMap = {};
     if (shouldCombineMatches) {
-        for (const canal of Object.keys(channelsList)) {
-            const listName = channelsList[canal].nombre ?? 'Canal sin nombre';
-            channelMap[listName] = channelsList[canal];
+        for (const canal of channelsList) {
+            const listName = canal.nombre ?? 'İsimsiz kanal';
+            channelMap[listName] = canal;
         }
     }
 
@@ -169,7 +232,7 @@ function combineChannelsWithList(parseM3u = {}, { origin = 'unknown-list', sourc
     console.groupCollapsed(`[teles][m3u] Processing ${m3uKeys.length} channels from ${origin}`);
     for (const channelName of m3uKeys) {
         const newData = parseM3u[channelName];
-        const parsedM3uName = newData.nombre ?? 'Canal sin nombre';
+        const parsedM3uName = newData.nombre ?? 'İsimsiz kanal';
         let existingChannel = null;
 
         if (shouldCombineMatches) {
@@ -225,7 +288,8 @@ function combineChannelsWithList(parseM3u = {}, { origin = 'unknown-list', sourc
             newData.fuentesCombinadas = origin ? [origin] : [];
             newData.esSeñalCombinada = false;
             const resultId = getAvailableChannelId(channelName, parsedM3uName, origin);
-            channelsList[resultId] = newData;
+            newData.id = resultId;
+            channelsList.push(newData);
 
             console.info('[teles][m3u] New channel added', {
                 origin,
@@ -248,13 +312,13 @@ function combineChannelsWithList(parseM3u = {}, { origin = 'unknown-list', sourc
  */
 export async function loadPersonalizedM3UList(url) {
     if (!url || typeof url !== 'string') {
-        throw new Error('Debes proporcionar una URL válida a un archivo .m3u');
+        throw new Error('Geçerli bir .m3u dosyasına işaret eden geçerli bir URL sağlamalısınız');
     }
 
     console.info(`[teles] Loading personalized list from: ${url}`);
     const response = await fetch(url);
     if (!response.ok) {
-        throw new Error(`No se pudo cargar la lista personalizada (estado ${response.status})`);
+        throw new Error(`Kişiselleştirilmiş liste yüklenemedi (durum ${response.status})`);
     }
 
     const m3uData = await response.text();
@@ -280,7 +344,7 @@ export async function loadPersonalizedM3UList(url) {
  */
 export async function loadPersonalizedListFromText(content, options = {}) {
     if (!content || typeof content !== 'string') {
-        throw new Error('Debes proporcionar el contenido de un archivo .m3u en texto');
+        throw new Error('Bir .m3u dosyasının içeriğini metin olarak sağlamalısınız');
     }
 
     const { isValid, errors: errores } = validateM3UContent(content);
@@ -291,7 +355,7 @@ export async function loadPersonalizedListFromText(content, options = {}) {
     const { etiqueta, clave } = options;
     const parseM3u = await m3uToJson(content);
 
-    const finalLabel = etiqueta || 'Lista manual';
+    const finalLabel = etiqueta || 'Manuel liste';
     const listKey = clave || finalLabel;
 
     combineChannelsWithList(parseM3u, {
@@ -452,12 +516,12 @@ export function setCombineChannelsPreference(combine) {
  */
 function getAvailableChannelId(baseId = '', fallbackName = '', origin = '') {
     const baseSlug = slugifyValue(baseId || fallbackName || origin || `canal-${Date.now()}`);
-    if (!channelsList?.[baseSlug]) {
+    if (!hasChannelId(baseSlug)) {
         return baseSlug;
     }
     let counter = 2;
     let candidate = `${baseSlug}-${counter}`;
-    while (channelsList?.[candidate]) {
+    while (hasChannelId(candidate)) {
         counter += 1;
         candidate = `${baseSlug}-${counter}`;
     }

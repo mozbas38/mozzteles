@@ -1,4 +1,4 @@
-import { channelsList } from "../channelManager.js";
+import { getChannelById } from "../channelManager.js";
 
 /**
  * Checks if all signals for a given channel are empty or undefined.
@@ -6,7 +6,7 @@ import { channelsList } from "../channelManager.js";
  * @returns {boolean} `true` if all signals are empty or undefined, `false` otherwise.
  */
 export const areAllSignalsEmpty = (channelId) => {
-    const signals = channelsList?.[channelId]?.señales;
+    const signals = getChannelById(channelId)?.señales;
     if (!signals) return true;
 
     const allEmpty = Object.values(signals).every(signal => {

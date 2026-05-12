@@ -9,7 +9,7 @@ export const applyTheme = (isDarkTheme) => {
         isDarkTheme ? 'bi-moon-stars' : 'bi-sun'
     );
     document.querySelector('#checkbox-change-theme').checked = isDarkTheme;
-    document.querySelector('#span-current-theme').textContent = isDarkTheme ? 'Oscuro' : 'Claro';
+    document.querySelector('#span-current-theme').textContent = isDarkTheme ? 'Karanlık' : 'Aydınlık';
     document.documentElement.setAttribute('data-bs-theme', isDarkTheme ? LS_VALUE_DARK_THEME : LS_VALUE_LIGHT_THEME);
     localStorage.setItem(LS_KEY_THEME, isDarkTheme ? LS_VALUE_DARK_THEME : LS_VALUE_LIGHT_THEME);
 }

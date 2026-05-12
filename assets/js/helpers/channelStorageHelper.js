@@ -1,4 +1,4 @@
-import { channelsList } from "../channelManager.js";
+import { getChannelById } from "../channelManager.js";
 import { showToast } from "../helpers/index.js";
 import { LS_KEY_ACTIVE_VIEW_MODE, LS_KEY_SAVED_CHANNELS_GRID_VIEW } from "../constants/index.js";
 import { gridViewContainer, freeViewContainer } from "../main.js";
@@ -26,7 +26,7 @@ export const saveChannelsToLocalStorage = () => {
 
         activeChannelsInDom.forEach(channelDiv => {
             const channelId = channelDiv.dataset.canal;
-            const channelData = channelId && channelsList[channelId];
+            const channelData = channelId && getChannelById(channelId);
             if (!channelData || !channelData.nombre) {
                 return; // Ignore channels not defined in channelsList
             }

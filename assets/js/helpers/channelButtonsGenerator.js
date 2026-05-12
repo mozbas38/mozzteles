@@ -1,7 +1,7 @@
-import { channelsList, DEFAULT_SOURCE_ORIGIN } from "../channelManager.js";
+import { getChannelEntries, DEFAULT_SOURCE_ORIGIN } from "../channelManager.js";
 import { CSS_CLASS_BUTTON_PRIMARY, CSS_CLASS_BUTTON_SECONDARY, COUNTRY_CODES, CATEGORIES_ICONS, ID_PREFIX_CONTAINERS_CHANNELS, LS_KEY_SHOW_CHANNELS_LOGO } from "../constants/index.js";
 import { singleViewVideoContainer, tele } from "../main.js";
-import { showToast, areAllSignalsEmpty, saveOriginalOrder, replaceActiveChannel, getActiveChannelIds } from "./index.js";
+import { showToast, areAllSignalsEmpty, saveOriginalOrder, getActiveChannelIds } from "./index.js";
 
 
 /** @type {string} SVG placeholder for channels with unknown country */
@@ -36,18 +36,7 @@ const BUTTON_SCENARIOS = {
             tele[action](channelId);
         }
     },
-    change: {
-        description: 'Replaces the active signal from the "Change channel" modal.',
-        onSelect: ({ channelId }) => {
-            const modal = document.querySelector('#modal-cambiar-canal');
-            const previousChannel = modal?.dataset.channelSource;
-            if (!previousChannel) {
-                console.warn('[teles] There is no channel selected to replace in the "Change channel" modal.');
-                return;
-            }
-            replaceActiveChannel(channelId, previousChannel);
-        }
-    },
+
     'single-view': {
         description: 'Only allows one active channel at a time in single view.',
         onSelect: ({ channelId, isSelecting }) => {
@@ -94,12 +83,7 @@ const BUTTON_CONTAINER_CONFIG = [
         scenario: 'grid',
         delegateEvents: true
     },
-    {
-        selector: '#modal-cambiar-canal-channels-buttons-container',
-        scenario: 'change',
-        delegateEvents: false,
-        applyDismissAttribute: true
-    },
+
     {
         selector: '#single-view-channels-buttons-container',
         scenario: 'single-view',
@@ -114,8 +98,7 @@ const BUTTON_CONTAINER_CONFIG = [
 const groupChannelsByOrigin = () => {
     const groups = new Map();
 
-    for (const channelId of Object.keys(channelsList)) {
-        const data = channelsList[channelId];
+    for (const [channelId, data] of getChannelEntries()) {
         const origin = data?.origenLista ?? DEFAULT_SOURCE_ORIGIN;
 
         if (!groups.has(origin)) {
@@ -174,7 +157,7 @@ const buildChannelsFragment = (groups, { baseId = 'grupo-canales' } = {}, active
         header.setAttribute('aria-controls', collapseId);
         header.innerHTML = `
             <p class="badge rounded-pill text-bg-secondary text-wrap mb-0 w-100">${origin}</p>
-            <small class="text-secondary">${channels.length} canales</small>
+            <small class="text-secondary">${channels.length} kanal</small>
             <i class="bi bi-chevron-up ms-auto icono-estado-colapso"></i>
         `;
 
@@ -224,7 +207,7 @@ const createChannelButton = (channelId, channelData, activeChannelIds = []) => {
 
     const countryName = país && COUNTRY_CODES[país.toLowerCase()]
         ? COUNTRY_CODES[país.toLowerCase()]
-        : 'Desconocido';
+        : 'Bilinmiyor';
 
     const combinedSources = Array.isArray(channelData?.fuentesCombinadas)
         ? channelData.fuentesCombinadas.filter(Boolean)
@@ -232,10 +215,10 @@ const createChannelButton = (channelId, channelData, activeChannelIds = []) => {
     const isCombinedSignal = channelData?.esSeñalCombinada === true && combinedSources.length > 1;
     const sourcesDescription = combinedSources.length > 0
         ? combinedSources.join(', ')
-        : 'fuentes múltiples';
+        : 'çoklu kaynaklar';
 
     const combinedBadge = isCombinedSignal
-        ? `<span class="badge badge-señal-combinada" data-bs-toggle="tooltip" data-bs-title="Señales desde: ${sourcesDescription}"><i class="bi bi-shuffle"></i> Mix</span>`
+        ? `<span class="badge badge-señal-combinada" data-bs-toggle="tooltip" data-bs-title="Şuradan gelen sinyaller: ${sourcesDescription}"><i class="bi bi-shuffle"></i> Mix</span>`
         : '';
 
     const button = document.createElement('button');
@@ -258,8 +241,8 @@ const createChannelButton = (channelId, channelData, activeChannelIds = []) => {
     }
 
     const flagHtml = país && COUNTRY_CODES[país.toLowerCase()]
-        ? `<img src="https://flagcdn.com/${país.toLowerCase()}.svg" alt="bandera ${countryName}" title="${countryName}" class="svg-bandera rounded-1">`
-        : `<span class="svg-bandera rounded-1 h-100" title="Sin bandera para país [${countryName}]">${SVG_UNKNOWN_COUNTRY}</span>`;
+        ? `<img src="https://flagcdn.com/${país.toLowerCase()}.svg" alt="${countryName} bayrağı" title="${countryName}" class="svg-bandera rounded-1">`
+        : `<span class="svg-bandera rounded-1 h-100" title="[${countryName}] ülkesi için bayrak yok">${SVG_UNKNOWN_COUNTRY}</span>`;
 
     const showLogos = localStorage.getItem(LS_KEY_SHOW_CHANNELS_LOGO) === 'show';
     const logoHtml = showLogos && channelData.logo
@@ -427,8 +410,8 @@ export const createChannelButtons = (specificPrefix) => {
     } catch (error) {
         console.error(`[teles] Error creating channel buttons. Error: ${error}`);
         showToast({
-            title: 'Ha ocurrido un error durante la creación de botones para los canales.',
-            body: `Error: ${error}`,
+            title: 'Kanal butonları oluşturulurken bir hata meydana geldi.',
+            body: `Hata: ${error}`,
             type: 'danger',
             autohide: false,
             delay: 0,
@@ -438,7 +421,7 @@ export const createChannelButtons = (specificPrefix) => {
         const targets = specificPrefix ? [specificPrefix] : ID_PREFIX_CONTAINERS_CHANNELS;
         for (const PREFIX of targets) {
             document.querySelector(`#${PREFIX}-channels-buttons-container`)
-                ?.insertAdjacentElement('afterend', insertarDivError(error, 'Ha ocurrido un error durante la creación de botones para los canales'));
+                ?.insertAdjacentElement('afterend', insertarDivError(error, 'Kanal butonları oluşturulurken bir hata meydana geldi'));
         }
     }
 };
@@ -450,13 +433,7 @@ const insertarDivError = (error, message) => {
     return div;
 }
 
-/**
- * Renders channel buttons in the "Change channel" modal container on demand.
- * @returns {void}
- */
-export const createButtonsForChangeChannelModal = () => {
-    createChannelButtons('modal-cambiar-canal');
-};
+
 
 /**
  * Renders channel buttons in the Single View selection container on demand.

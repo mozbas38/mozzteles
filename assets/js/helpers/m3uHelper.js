@@ -11,12 +11,12 @@ export function validateM3UContent(content) {
     const text = typeof content === 'string' ? content.trim() : '';
 
     if (!text) {
-        errors.push('Pega el contenido completo de tu archivo .m3u.');
+        errors.push('Lütfen .m3u dosyanızın tüm içeriğini yapıştırın.');
         return { isValid: false, errors };
     }
 
     if (SIMPLE_HTTP_URL_REGEX.test(text) && !text.includes('\n')) {
-        errors.push('Pegaste únicamente una URL. Usa el campo de URL para archivos remotos.');
+        errors.push('Yalnızca bir URL yapıştırdınız. Uzak dosyalar için URL alanını kullanın.');
     }
 
     const lines = text
@@ -25,22 +25,22 @@ export function validateM3UContent(content) {
         .filter(line => line !== '');
 
     if (!lines.length) {
-        errors.push('No se detectó contenido utilizable en la lista .m3u.');
+        errors.push('.m3u listesinde kullanılabilir içerik bulunamadı.');
         return { isValid: false, errors };
     }
 
     if (!lines[0].toUpperCase().startsWith('#EXTM3U')) {
-        errors.push('La lista debe comenzar con la cabecera #EXTM3U.');
+        errors.push('Liste #EXTM3U başlığı ile başlamalıdır.');
     }
 
     const hasExtinf = lines.some(line => line.toUpperCase().startsWith('#EXTINF'));
     if (!hasExtinf) {
-        errors.push('No se encontraron bloques #EXTINF dentro de la lista.');
+        errors.push('Liste içinde #EXTINF bloğu bulunamadı.');
     }
 
     const hasUrls = lines.some(line => STREAM_URL_REGEX.test(line) || line.toLowerCase().endsWith('.m3u8'));
     if (!hasUrls) {
-        errors.push('No se identificaron URLs de transmisión dentro de la lista.');
+        errors.push('Liste içinde yayın URL\'si tanımlanamadı.');
     }
 
     return {
@@ -83,7 +83,7 @@ export async function m3uToJson(m3u) {
 
             // Extract the channel name correctly, even if there are extra attributes before the comma
             const lastCommaIndex = lines[i].lastIndexOf(',');
-            const channelName = lastCommaIndex !== -1 ? lines[i].substring(lastCommaIndex + 1).trim() : 'Nombre canal no encontrado';
+            const channelName = lastCommaIndex !== -1 ? lines[i].substring(lastCommaIndex + 1).trim() : 'Kanal adı bulunamadı';
 
             const logoImg = attributes['tvg-logo'] ?? "";
             const groupTitleId = attributes['group-title']?.toLowerCase() ?? "";

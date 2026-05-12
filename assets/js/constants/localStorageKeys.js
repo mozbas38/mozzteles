@@ -17,11 +17,7 @@ export const LS_KEY_TELES_GRIDSTACK_LAYOUT = 'teles-gridstack-layout';
 //overlay canales y opciones
 export const LS_KEY_OVERLAY_VISIBILITY = 'overlay-visibility';
 
-export const LS_KEY_OVERLAY_BUTTON_SELECT_SIGNAL = 'overlay-button-select-signal';
-export const LS_KEY_OVERLAY_BUTTON_MOVE = 'overlay-button-move';
-export const LS_KEY_OVERLAY_BUTTON_CHANGE = 'overlay-button-change';
-export const LS_KEY_OVERLAY_BUTTON_SOURCE = 'overlay-button-source';
-export const LS_KEY_OVERLAY_BUTTON_REMOVE = 'overlay-button-remove';
+
 
 export const LS_KEY_M3U8_PLAYER_CHOICE = 'm3u8-player';
 
